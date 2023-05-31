@@ -1,0 +1,16 @@
+# Idea #
+.idea
+*.iml
+*.log
+
+# Gradle #
+.gradle/
+
+# Build #
+target/
+build/
+
+# Web #
+node_modules/
+dist/
+yarn.lock
