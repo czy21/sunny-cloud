@@ -1,0 +1,11 @@
+dependencyManagement {
+    generatedPomCustomization {
+        enabled = true
+    }
+    dependencies {
+        dependency "com.sunny:cloud.framework-infrastructure:${project.version}"
+        dependency "com.sunny:cloud.framework-db:${project.version}"
+        dependency "com.sunny:cloud.framework-web:${project.version}"
+        dependency "com.sunny:cloud.framework-doc:${project.version}"
+    }
+}
