@@ -1,0 +1,48 @@
+plugins {
+    id 'org.springframework.boot' apply false
+}
+ext {
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'io.spring.dependency-management'
+    group = 'com.sunny'
+    version = '0.1.0-SNAPSHOT'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    tasks.withType(JavaCompile) {
+        options.encoding('UTF-8')
+    }
+
+    dependencyManagement {
+        generatedPomCustomization {
+            enabled = false
+        }
+        imports {
+            mavenBom "com.sunny:sunny-cloud-framework-bom:3.0.0-SNAPSHOT"
+        }
+    }
+
+    dependencies {
+        implementation "org.apache.commons:commons-pool2"
+        implementation "org.apache.commons:commons-lang3"
+        implementation "org.apache.commons:commons-collections4"
+        implementation "commons-io:commons-io"
+        implementation "commons-validator:commons-validator"
+
+        implementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
+        annotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
+        testImplementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
+        testAnnotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
+
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
