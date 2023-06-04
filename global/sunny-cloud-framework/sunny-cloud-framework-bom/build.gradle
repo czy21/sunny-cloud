@@ -3,9 +3,9 @@ dependencyManagement {
         enabled = true
     }
     dependencies {
-        dependency "com.sunny:cloud.framework-core:${project.version}"
-        dependency "com.sunny:cloud.framework-db:${project.version}"
-        dependency "com.sunny:cloud.framework-doc:${project.version}"
-        dependency "com.sunny:cloud.framework-web:${project.version}"
+        dependency "com.sunny:sunny-cloud-framework-core:${project.version}"
+        dependency "com.sunny:sunny-cloud-framework-db:${project.version}"
+        dependency "com.sunny:sunny-cloud-framework-doc:${project.version}"
+        dependency "com.sunny:sunny-cloud-framework-web:${project.version}"
     }
 }
