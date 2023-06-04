@@ -2,14 +2,13 @@ package com.sunny.cloud.framework.web;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunny.cloud.framework.web.feign.FeignConfigure;
 import com.sunny.cloud.framework.web.json.JacksonConfigure;
-import com.sunny.cloud.framework.web.service.OptionServiceImpl;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -27,11 +26,9 @@ import java.util.List;
 @EnableWebMvc
 @Configuration
 @Import({
-        OptionServiceImpl.class,
         JacksonConfigure.class,
         FeignConfigure.class
 })
-@ComponentScan(basePackageClasses = WebAutoConfigure.class)
 public class WebAutoConfigure implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;

@@ -1,12 +1,13 @@
 package com.sunny.cloud.framework.web.json;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.czy.learning.infranstructure.util.DateUtil;
+import com.sunny.cloud.framework.core.util.DateUtil;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -36,8 +37,7 @@ public class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> imple
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         if (useTimeStamp) {
             gen.writeNumber(DateUtil.toTimeStamp(value));
-        }
-        else {
+        } else {
             gen.writeString(value.format(formatter));
         }
     }
