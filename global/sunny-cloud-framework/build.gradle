@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' apply false
 }
 def bomName = "sunny-cloud-framework-bom"
+
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -76,6 +77,8 @@ subprojects {
             manifest {
                 attributes 'Implementation-Title': archiveBaseName
                 attributes 'Implementation-Version': archiveVersion
+                attributes 'Built-Gradle': gradle.gradleVersion
+                attributes 'Build-OS': System.getProperty("os.name")
                 attributes 'Built-By': System.getProperty("user.name")
                 attributes 'Build-Jdk-Spec': System.getProperty("java.version")
                 attributes 'Build-Time': LocalDateTime.now().format("yyyy-MM-dd HH:mm:ss")
@@ -105,9 +108,7 @@ subprojects {
 
     List<String> applyPlugins = []
     if (name != bomName) {
-        if (name.startsWith("spring")) {
-            applyPlugins.add("spring.build")
-        }
+        applyPlugins.add("spring.build")
     }
     logger.info("${project.name} apply plugins: ${applyPlugins}")
     applyPlugins.forEach { t -> project.plugins.apply(t) }
