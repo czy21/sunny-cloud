@@ -1,9 +1,10 @@
-package com.sunny.cloud.framework.web.advice;
+package com.sunny.cloud.framework.web.handler;
 
 
 import com.sunny.cloud.framework.core.exception.CommonException;
 import com.sunny.cloud.framework.core.exception.kind.CommonCodeEnum;
 import com.sunny.cloud.framework.core.model.CommonResult;
+import com.sunny.cloud.framework.web.feign.FeignCommonException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -20,17 +21,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ExceptionAdvice {
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
+public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public CommonResult<Void> handleException(Exception e) {
         logger.error(e.getMessage(), e);
-//        if (e.getCause() instanceof FeignCommonException) {
-//            FeignCommonException fcException = (FeignCommonException) e.getCause();
-//            return CommonResult.error(fcException.getCode(), fcException.getMessage());
-//        }
+        if (e.getCause() instanceof FeignCommonException fcException) {
+            return CommonResult.error(fcException.getCode(), fcException.getMessage());
+        }
         return CommonResult.error(CommonCodeEnum.EXCEPTION.getMessage());
     }
 

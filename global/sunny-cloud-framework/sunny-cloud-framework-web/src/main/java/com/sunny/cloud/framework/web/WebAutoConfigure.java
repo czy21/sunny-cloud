@@ -25,10 +25,7 @@ import java.util.List;
 
 @EnableWebMvc
 @Configuration
-@Import({
-        JacksonConfigure.class,
-        FeignConfigure.class
-})
+@Import({JacksonConfigure.class, FeignConfigure.class})
 public class WebAutoConfigure implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;

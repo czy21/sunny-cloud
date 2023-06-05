@@ -15,6 +15,6 @@ public class FeignConfigure {
 
     @Bean
     public Decoder decoder(ObjectMapper objectMapper) {
-        return new JacksonDecoder(objectMapper);
+        return new DecoderProxy(new JacksonDecoder(objectMapper));
     }
 }
