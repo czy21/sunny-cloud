@@ -3,11 +3,6 @@ dependencies {
     api("com.sunny:sunny-cloud-framework-web")
     api("com.sunny:sunny-cloud-framework-db")
     api 'com.sunny:sunny-cloud-framework-doc'
-    implementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
-    annotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
-    testImplementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
 
 //    implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config"
 //    implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
