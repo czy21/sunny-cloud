@@ -1,6 +1,7 @@
-plugins{
-    id 'portal.build'
+plugins {
+    id 'org.springframework.boot'
 }
 
 dependencies {
+    api project(":sunny-cloud-system-core")
 }
