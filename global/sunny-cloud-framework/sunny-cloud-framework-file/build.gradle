@@ -1,0 +1,9 @@
+plugins {
+    id "common.build"
+}
+dependencies {
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    api 'com.alibaba:easyexcel'
+    api 'org.springframework.data:spring-data-redis'
+    api "jakarta.validation:jakarta.validation-api"
+}

@@ -1,5 +1,6 @@
 dependencies {
     api project(":sunny-cloud-framework-core")
+    api project(":sunny-cloud-framework-file")
     api("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
@@ -10,7 +11,5 @@ dependencies {
             "io.github.mweirauch:micrometer-jvm-extras"
     api "org.springframework.cloud:spring-cloud-starter-openfeign",
             "io.github.openfeign:feign-jackson"
-
-    api "com.alibaba:easyexcel"
     api 'net.logstash.logback:logstash-logback-encoder'
 }
