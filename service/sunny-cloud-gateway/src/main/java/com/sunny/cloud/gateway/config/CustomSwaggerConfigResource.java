@@ -57,9 +57,7 @@ public class CustomSwaggerConfigResource extends SwaggerConfigResource {
         List<RouteDefinition> routes = Optional.ofNullable(gatewayProperties.getRoutes()).orElse(new ArrayList<>());
         for (RouteDefinition r : routes) {
             if (!existsNames.contains(r.getId())) {
-                String name = Optional.ofNullable((String) r.getMetadata().get("name")).orElse(r.getId());
-                urlsOfMap.add(toMap(name,name,contextPath + "/" + r.getId() + "/v3/api-docs",contextPath + "/" + r.getId()
-                ));
+                urlsOfMap.add(toMap(r.getId(), r.getId(), contextPath + "/" + r.getId() + "/v3/api-docs", contextPath + "/" + r.getId()));
             }
         }
         resp.put(SwaggerUiConfigParameters.URLS_PROPERTY, urlsOfMap);
