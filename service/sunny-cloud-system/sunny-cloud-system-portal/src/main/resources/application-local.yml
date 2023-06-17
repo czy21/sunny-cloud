@@ -1,2 +1,2 @@
-xxl-job:
-  enabled: false
+server:
+  port: 8082
