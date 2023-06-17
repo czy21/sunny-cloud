@@ -1,11 +1,11 @@
 package com.sunny.cloud.system.core.job;
 
 import com.xxl.job.core.handler.annotation.XxlJob;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 
-@Component
+@Configuration
 public class TestJob {
 
 
