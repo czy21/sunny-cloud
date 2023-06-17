@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@PropertySource(value = "classpath:gh-common-job-default.properties")
+@PropertySource(value = "classpath:sunny-common-job-default.properties")
 @ConditionalOnProperty(prefix = XxlJobProperties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(XxlJobProperties.class)
 @Configuration
