@@ -13,5 +13,5 @@ public interface SysDictApi {
     List<SimpleItemModel<Object>> getSimplesByKeys(@RequestParam("keys") List<String> keys);
 
     @RequestMapping(path = "/provider/sys/dict/getSimpleMapByKeys")
-    Map<String,List<SimpleItemModel<Object>>> getSimpleMapByKeys(@RequestParam("keys") List<String> keys);
+    Map<String, List<SimpleItemModel<Object>>> getSimpleMapByKeys(@RequestParam("keys") List<String> keys);
 }
