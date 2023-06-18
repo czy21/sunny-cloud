@@ -18,7 +18,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://sunny-cloud-dev1.czy21-internal.com/api/',
+                target: 'http://sunny-cloud-dev.czy21-internal.com/api/',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },
