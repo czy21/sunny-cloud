@@ -3,5 +3,5 @@ package com.sunny.cloud.system.core.model.dto;
 import lombok.Data;
 
 @Data
-public class SysDeptDTO {
+public class DeptDTO {
 }

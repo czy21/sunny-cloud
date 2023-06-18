@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sunny.cloud.system.core.mapper.DictPOMapper">
+<mapper namespace="com.sunny.cloud.system.core.mapper.DictMapper">
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.cloud.system.core.model.po.DictPO" useGeneratedKeys="true">
-        insert into dict
+        insert into sys_dict
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="code != null">code,</if>
                 <if test="name != null">name,</if>
@@ -29,7 +29,7 @@
         </trim>
     </insert>
     <update id="update" parameterType="com.sunny.cloud.system.core.model.po.DictPO">
-        update dict
+        update sys_dict
         <set>
                 <if test="code != null">
                     code = #{code,jdbcType=VARCHAR},
