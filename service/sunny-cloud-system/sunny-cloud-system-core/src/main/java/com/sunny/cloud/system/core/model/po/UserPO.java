@@ -6,6 +6,6 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysUserPO extends BasePO<Long, Long> {
+public class UserPO extends BasePO<Long, Long> {
     private String name;
 }
