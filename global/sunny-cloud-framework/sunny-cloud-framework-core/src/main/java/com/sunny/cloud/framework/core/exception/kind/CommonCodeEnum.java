@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum CommonCodeEnum {
-    SUCCESS(200, "消息处理成功"),
+    SUCCESS(200, "成功"),
     ARGUMENT_INVALID(400, "参数校验不合法"),
     EXCEPTION(500, "系统繁忙,请稍后重试");
     private final Integer code;

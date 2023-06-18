@@ -12,10 +12,16 @@ public class CommonResult<T> {
     private Long timestamp;
 
     public CommonResult(Integer code, String message, T data) {
+        this(code, message, data, DateUtil.toTimeStamp(LocalDateTime.now()));
+    }
+
+    public CommonResult(Integer code, String message, T data, Long timestamp) {
         this.code = code;
         this.message = message;
         this.data = data;
+        this.timestamp = timestamp;
     }
+
 
     public Integer getCode() {
         return code;
@@ -41,8 +47,12 @@ public class CommonResult<T> {
         this.data = data;
     }
 
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Long getTimestamp() {
-        return DateUtil.toTimeStamp(LocalDateTime.now());
+        return this.timestamp;
     }
 
     public static <T> CommonResult<T> ok() {
