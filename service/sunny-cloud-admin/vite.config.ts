@@ -1,6 +1,6 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path, {resolve} from 'path'
+import {resolve} from 'path'
 
 const alias = {
     "@": "src",
@@ -14,5 +14,14 @@ export default defineConfig({
     },
     resolve: {
         alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: resolve(alias[c])}), {})
+    },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://sunny-cloud-dev1.czy21-internal.com/api/',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+        }
     }
 })
