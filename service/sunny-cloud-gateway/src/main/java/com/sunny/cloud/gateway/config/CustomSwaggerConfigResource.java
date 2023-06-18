@@ -51,23 +51,23 @@ public class CustomSwaggerConfigResource extends SwaggerConfigResource {
         log.info("contextPath: {}", contextPath);
         LinkedHashSet<Map<String, Object>> urlsOfMap = new LinkedHashSet<>();
         for (SwaggerUrl t : urls) {
-            urlsOfMap.add(toMap(t.getName(), t.getDisplayName(), t.getUrl(), contextPath + "/" + t.getName()));
+            urlsOfMap.add(toMap(t.getName(), t.getUrl(), contextPath + "/" + t.getName()));
         }
         Set<String> existsNames = urls.stream().map(SwaggerUrl::getName).collect(Collectors.toSet());
         List<RouteDefinition> routes = Optional.ofNullable(gatewayProperties.getRoutes()).orElse(new ArrayList<>());
         for (RouteDefinition r : routes) {
             if (!existsNames.contains(r.getId())) {
-                urlsOfMap.add(toMap(r.getId(), r.getId(), contextPath + "/" + r.getId() + "/v3/api-docs", contextPath + "/" + r.getId()));
+                String name = Optional.ofNullable((String) r.getMetadata().get("name")).orElse(r.getId());
+                urlsOfMap.add(toMap(name, contextPath + "/" + r.getId() + "/v3/api-docs", contextPath + "/" + r.getId()));
             }
         }
         resp.put(SwaggerUiConfigParameters.URLS_PROPERTY, urlsOfMap);
         return resp;
     }
 
-    private Map<String, Object> toMap(String name, String displayName, String url, String contextPath) {
+    private Map<String, Object> toMap(String name, String url, String contextPath) {
         Map<String, Object> m = new HashMap<>();
         m.put("name", name);
-        m.put("displayName", displayName);
         m.put("url", url);
         m.put("contextPath", contextPath);
         return m;
