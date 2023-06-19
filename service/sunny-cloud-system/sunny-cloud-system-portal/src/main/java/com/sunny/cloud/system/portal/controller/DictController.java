@@ -6,10 +6,12 @@ import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.framework.web.controller.BaseController;
 import com.sunny.cloud.system.api.model.DictDTO;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
+import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,13 +45,13 @@ public class DictController extends BaseController {
 
     @Operation(summary = "添加")
     @PostMapping(path = "add")
-    public CommonResult<Void> add() {
+    public CommonResult<Void> add(@Validated(DictVO.AddValid.class) @RequestBody DictVO vo) {
         return CommonResult.ok();
     }
 
     @Operation(summary = "编辑")
     @PostMapping(path = "edit")
-    public CommonResult<Void> edit() {
+    public CommonResult<Void> edit(@Validated(DictVO.EditValid.class) @RequestBody DictVO vo) {
         return CommonResult.ok();
     }
 
