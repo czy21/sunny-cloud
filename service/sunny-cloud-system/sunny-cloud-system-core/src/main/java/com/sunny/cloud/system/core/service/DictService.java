@@ -8,11 +8,18 @@ import java.util.List;
 import java.util.Map;
 
 public interface DictService {
-    Map<String, List<SimpleItemModel<Object>>> findMapByKeys(SimpleQuery query);
 
     void add(DictDTO dto);
 
     void edit(DictDTO dto);
 
     void delete(Long id);
+
+    Map<String, List<SimpleItemModel<Object>>> findMapByKeys(SimpleQuery query);
+
+    DictDTO findByCode(String code);
+
+    String getCacheKey(String code);
+
+    void delCache(String code);
 }

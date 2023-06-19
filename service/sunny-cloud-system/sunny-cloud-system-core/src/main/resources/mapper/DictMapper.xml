@@ -61,4 +61,40 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
+
+    <resultMap id="DictValueMap" type="com.sunny.cloud.system.api.model.DictDTO">
+        <result column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="value_type" property="valueType"/>
+        <collection column="dict_id" property="values" ofType="com.sunny.cloud.system.api.model.DictValueDTO">
+            <result column="value_id" property="id"/>
+            <result column="value_name" property="name"/>
+            <result column="value_sort" property="sort"/>
+            <result column="value" property="value"/>
+        </collection>
+    </resultMap>
+    <sql id="BASE_SELECT_SQL">
+        select
+            d.*,
+            dv.id as value_id,
+            dv.name as value_name,
+            dv.sort as value_sort,
+            dv.value as value
+        from dict d
+            inner join dict_value dv on dv.dict_id = d.id
+    </sql>
+    <select id="selectListByCodes" resultMap="DictValueMap">
+        <include refid="BASE_SELECT_SQL"/>
+        where
+        d.code in
+        <foreach collection="codes" open="(" close=")" separator="," item="t">
+            #{t}
+        </foreach>
+    </select>
+    <select id="selectOneByCode" resultMap="DictValueMap">
+        <include refid="BASE_SELECT_SQL"/>
+        where d.code = #{code}
+    </select>
 </mapper>
