@@ -82,8 +82,8 @@
             dv.name as value_name,
             dv.sort as value_sort,
             dv.value as value
-        from dict d
-            inner join dict_value dv on dv.dict_id = d.id
+        from sys_dict d
+        inner join sys_dict_value dv on dv.dict_id = d.id
     </sql>
     <select id="selectListByCodes" resultMap="DictValueMap">
         <include refid="BASE_SELECT_SQL"/>
