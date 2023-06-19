@@ -3,6 +3,7 @@ package com.sunny.cloud.framework.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.cloud.framework.web.feign.FeignConfigure;
+import com.sunny.cloud.framework.web.handler.GlobalExceptionHandler;
 import com.sunny.cloud.framework.web.json.JacksonConfigure;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
@@ -27,7 +28,7 @@ import java.util.List;
 @PropertySource("classpath:sunny-common-web-default.properties")
 @EnableWebMvc
 @Configuration
-@Import({JacksonConfigure.class, FeignConfigure.class})
+@Import({JacksonConfigure.class, FeignConfigure.class, GlobalExceptionHandler.class})
 public class WebAutoConfigure implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;

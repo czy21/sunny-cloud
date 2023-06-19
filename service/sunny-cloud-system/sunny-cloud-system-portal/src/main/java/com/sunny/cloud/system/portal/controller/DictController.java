@@ -1,6 +1,7 @@
 package com.sunny.cloud.system.portal.controller;
 
 import com.sunny.cloud.framework.core.model.CommonResult;
+import com.sunny.cloud.framework.core.model.CommonValid;
 import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.framework.web.controller.BaseController;
@@ -45,13 +46,13 @@ public class DictController extends BaseController {
 
     @Operation(summary = "添加")
     @PostMapping(path = "add")
-    public CommonResult<Void> add(@Validated(DictVO.AddValid.class) @RequestBody DictVO vo) {
+    public CommonResult<Void> add(@Validated(CommonValid.Add.class) @RequestBody DictVO vo) {
         return CommonResult.ok();
     }
 
     @Operation(summary = "编辑")
     @PostMapping(path = "edit")
-    public CommonResult<Void> edit(@Validated(DictVO.EditValid.class) @RequestBody DictVO vo) {
+    public CommonResult<Void> edit(@Validated(CommonValid.Edit.class) @RequestBody DictVO vo) {
         return CommonResult.ok();
     }
 
