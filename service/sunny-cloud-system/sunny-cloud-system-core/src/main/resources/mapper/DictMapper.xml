@@ -97,7 +97,7 @@
     </select>
     <select id="selectOneByCode" resultMap="DictValueMap">
         <include refid="BASE_SELECT_SQL"/>
-        where d.code = #{code}
+        where d.code = #{code} and d.deleted = 0
     </select>
 
     <select id="exists" resultType="boolean">
@@ -111,6 +111,7 @@
             <if test="includeId == true">
                 and d.id &lt;&gt; #{po.id}
             </if>
+            and d.deleted = 0
         </where>
     </select>
 </mapper>
