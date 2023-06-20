@@ -6,54 +6,56 @@
     <insert id="insert" keyColumn="key" keyProperty="key" parameterType="com.sunny.cloud.system.core.model.po.FileTargetPO" useGeneratedKeys="true">
         insert into sys_file_target
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="rootUrl != null">root_url,</if>
-                <if test="rootPath != null">root_path,</if>
-                <if test="targetKind != null">target_kind,</if>
-                <if test="createTime != null">create_time,</if>
-                <if test="createUser != null">create_user,</if>
-                <if test="updateTime != null">update_time,</if>
-                <if test="updateUser != null">update_user,</if>
-                <if test="deleted != null">deleted,</if>
+            <if test="key != null">key,</if>
+            <if test="rootUrl != null">root_url,</if>
+            <if test="rootPath != null">root_path,</if>
+            <if test="targetKind != null">target_kind,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="deleted != null">deleted,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="rootUrl != null">#{rootUrl,jdbcType=VARCHAR},</if>
-                <if test="rootPath != null">#{rootPath,jdbcType=VARCHAR},</if>
-                <if test="targetKind != null">#{targetKind,jdbcType=VARCHAR},</if>
-                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
-                <if test="createUser != null">#{createUser,jdbcType=VARCHAR},</if>
-                <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
-                <if test="updateUser != null">#{updateUser,jdbcType=VARCHAR},</if>
-                <if test="deleted != null">#{deleted,jdbcType=BIT},</if>
+            <if test="key != null">#{key},</if>
+            <if test="rootUrl != null">#{rootUrl},</if>
+            <if test="rootPath != null">#{rootPath},</if>
+            <if test="targetKind != null">#{targetKind},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="deleted != null">#{deleted},</if>
         </trim>
     </insert>
     <update id="update" parameterType="com.sunny.cloud.system.core.model.po.FileTargetPO">
         update sys_file_target
         <set>
-                <if test="rootUrl != null">
-                    root_url = #{rootUrl,jdbcType=VARCHAR},
-                </if>
-                <if test="rootPath != null">
-                    root_path = #{rootPath,jdbcType=VARCHAR},
-                </if>
-                <if test="targetKind != null">
-                    target_kind = #{targetKind,jdbcType=VARCHAR},
-                </if>
-                <if test="createTime != null">
-                    create_time = #{createTime,jdbcType=TIMESTAMP},
-                </if>
-                <if test="createUser != null">
-                    create_user = #{createUser,jdbcType=VARCHAR},
-                </if>
-                <if test="updateTime != null">
-                    update_time = #{updateTime,jdbcType=TIMESTAMP},
-                </if>
-                <if test="updateUser != null">
-                    update_user = #{updateUser,jdbcType=VARCHAR},
-                </if>
-                <if test="deleted != null">
-                    deleted = #{deleted,jdbcType=BIT},
-                </if>
+            <if test="rootUrl != null">
+                root_url = #{rootUrl},
+            </if>
+            <if test="rootPath != null">
+                root_path = #{rootPath},
+            </if>
+            <if test="targetKind != null">
+                target_kind = #{targetKind},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
         </set>
-        where   key = #{key,jdbcType=VARCHAR} 
+        where key = #{key}
     </update>
 </mapper>

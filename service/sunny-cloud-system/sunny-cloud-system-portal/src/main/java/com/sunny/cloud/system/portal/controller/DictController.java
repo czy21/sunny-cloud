@@ -6,6 +6,7 @@ import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.framework.web.controller.BaseController;
 import com.sunny.cloud.system.api.model.DictDTO;
+import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
@@ -34,25 +35,27 @@ public class DictController extends BaseController {
 
     @Operation(summary = "分页")
     @PostMapping(path = "page")
-    public CommonResult<PagingResult<DictDTO>> page() {
-        return CommonResult.ok();
+    public CommonResult<PagingResult<DictDTO>> page(@RequestBody DictQuery query) {
+        return CommonResult.ok(dictService.page(query));
     }
 
     @Operation(summary = "详情")
     @GetMapping(path = "detail")
-    public CommonResult<DictDTO> detail() {
-        return CommonResult.ok();
+    public CommonResult<DictDTO> detail(@RequestParam Long id) {
+        return CommonResult.ok(dictService.detail(id));
     }
 
     @Operation(summary = "添加")
     @PostMapping(path = "add")
     public CommonResult<Void> add(@Validated(CommonValid.Add.class) @RequestBody DictVO vo) {
+        dictService.add(vo);
         return CommonResult.ok();
     }
 
     @Operation(summary = "编辑")
     @PostMapping(path = "edit")
     public CommonResult<Void> edit(@Validated(CommonValid.Edit.class) @RequestBody DictVO vo) {
+        dictService.edit(vo);
         return CommonResult.ok();
     }
 

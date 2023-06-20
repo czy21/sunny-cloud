@@ -9,7 +9,7 @@ public class DictDTO {
     private Long id;
     private String code;
     private String name;
-    private String desc;
+    private String remark;
     private Integer valueType;
     List<DictValueDTO> values;
 }

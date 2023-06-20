@@ -4,11 +4,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.cloud.framework.core.exception.CommonException;
+import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.system.api.model.DictDTO;
+import com.sunny.cloud.system.core.automap.DictAutoMap;
 import com.sunny.cloud.system.core.kind.DictValueKind;
 import com.sunny.cloud.system.core.mapper.DictMapper;
+import com.sunny.cloud.system.core.model.po.DictPO;
+import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
+import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,12 +37,18 @@ public class DictServiceImpl implements DictService {
     ObjectMapper objectMapper;
     DictMapper dictMapper;
 
-    public DictServiceImpl(StringRedisTemplate redisTemplate, ObjectMapper objectMapper, DictMapper dictMapper) {
+    DictAutoMap dictAutoMap;
+
+    public DictServiceImpl(StringRedisTemplate redisTemplate,
+                           ObjectMapper objectMapper,
+                           DictMapper dictMapper,
+                           DictAutoMap dictAutoMap) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper.copy();
         this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.dictMapper = dictMapper;
+        this.dictAutoMap = dictAutoMap;
     }
 
     @Override
@@ -104,13 +115,34 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void add(DictDTO dto) {
-
+    public PagingResult<DictDTO> page(DictQuery query) {
+        return null;
     }
 
     @Override
-    public void edit(DictDTO dto) {
+    public DictDTO detail(Long id) {
+        return null;
+    }
 
+    @Override
+    public void add(DictVO dto) {
+        DictPO po = dictAutoMap.mapToPO(dto);
+        po.setId(null);
+        checkUnique(po, false);
+        dictMapper.insert(po);
+    }
+
+    @Override
+    public void edit(DictVO dto) {
+        DictPO po = dictAutoMap.mapToPO(dto);
+        checkUnique(po, true);
+        dictMapper.update(po);
+    }
+
+    private void checkUnique(DictPO po, boolean edit) {
+        if (dictMapper.exists(po, edit)) {
+            throw new CommonException("编码已存在");
+        }
     }
 
     @Override
