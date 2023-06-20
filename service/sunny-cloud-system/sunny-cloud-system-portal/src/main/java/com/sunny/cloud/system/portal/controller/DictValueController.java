@@ -3,7 +3,7 @@ package com.sunny.cloud.system.portal.controller;
 import com.sunny.cloud.framework.core.model.CommonResult;
 import com.sunny.cloud.framework.core.model.CommonValid;
 import com.sunny.cloud.framework.web.controller.BaseController;
-import com.sunny.cloud.system.api.model.DictValueDTO;
+import com.sunny.cloud.system.core.model.dto.DictValueDTO;
 import com.sunny.cloud.system.core.model.query.DictValueQuery;
 import com.sunny.cloud.system.core.model.vo.DictValueVO;
 import com.sunny.cloud.system.core.service.DictValueService;

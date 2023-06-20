@@ -1,6 +1,6 @@
 package com.sunny.cloud.system.core.service;
 
-import com.sunny.cloud.system.api.model.DictValueDTO;
+import com.sunny.cloud.system.core.model.dto.DictValueDTO;
 import com.sunny.cloud.system.core.model.query.DictValueQuery;
 import com.sunny.cloud.system.core.model.vo.DictValueVO;
 

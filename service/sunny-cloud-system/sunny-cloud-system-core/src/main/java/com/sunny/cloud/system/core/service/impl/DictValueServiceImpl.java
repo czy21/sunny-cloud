@@ -1,7 +1,7 @@
 package com.sunny.cloud.system.core.service.impl;
 
 import com.sunny.cloud.framework.core.exception.CommonException;
-import com.sunny.cloud.system.api.model.DictValueDTO;
+import com.sunny.cloud.system.core.model.dto.DictValueDTO;
 import com.sunny.cloud.system.core.automap.DictValueAutoMap;
 import com.sunny.cloud.system.core.mapper.DictValueMapper;
 import com.sunny.cloud.system.core.model.po.DictValuePO;

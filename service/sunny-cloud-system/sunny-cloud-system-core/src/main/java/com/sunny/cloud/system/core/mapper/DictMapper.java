@@ -1,11 +1,9 @@
 package com.sunny.cloud.system.core.mapper;
 
-import com.sunny.cloud.system.api.model.DictDTO;
+import com.sunny.cloud.system.core.model.dto.DictDTO;
 import com.sunny.cloud.system.core.model.po.DictPO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 public interface DictMapper {
     int insert(DictPO record);

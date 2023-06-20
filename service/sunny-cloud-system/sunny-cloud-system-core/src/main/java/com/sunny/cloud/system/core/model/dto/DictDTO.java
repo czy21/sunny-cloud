@@ -1,4 +1,4 @@
-package com.sunny.cloud.system.api.model;
+package com.sunny.cloud.system.core.model.dto;
 
 import lombok.Data;
 

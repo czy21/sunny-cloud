@@ -88,7 +88,7 @@
             and dv.deleted = 0
         </where>
     </select>
-    <select id="selectListBy" resultType="com.sunny.cloud.system.api.model.DictValueDTO">
+    <select id="selectListBy" resultType="com.sunny.cloud.system.core.model.dto.DictValueDTO">
         select
             dv.*
         from sys_dict_value dv

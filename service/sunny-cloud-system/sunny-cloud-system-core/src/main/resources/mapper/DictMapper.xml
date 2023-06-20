@@ -64,13 +64,13 @@
         where id = #{id}
     </update>
 
-    <resultMap id="DictValueMap" type="com.sunny.cloud.system.api.model.DictDTO">
+    <resultMap id="DictValueMap" type="com.sunny.cloud.system.core.model.dto.DictDTO">
         <result column="id" property="id"/>
         <result column="code" property="code"/>
         <result column="name" property="name"/>
         <result column="remark" property="remark"/>
         <result column="value_type" property="valueType"/>
-        <collection column="dict_id" property="values" ofType="com.sunny.cloud.system.api.model.DictValueDTO">
+        <collection column="dict_id" property="values" ofType="com.sunny.cloud.system.core.model.dto.DictValueDTO">
             <result column="value_id" property="id"/>
             <result column="value_name" property="name"/>
             <result column="value_sort" property="sort"/>

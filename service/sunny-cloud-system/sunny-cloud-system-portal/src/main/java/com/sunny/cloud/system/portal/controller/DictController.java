@@ -5,7 +5,7 @@ import com.sunny.cloud.framework.core.model.CommonValid;
 import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.framework.web.controller.BaseController;
-import com.sunny.cloud.system.api.model.DictDTO;
+import com.sunny.cloud.system.core.model.dto.DictDTO;
 import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
