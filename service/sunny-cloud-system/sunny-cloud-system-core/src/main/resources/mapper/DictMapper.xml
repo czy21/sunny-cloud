@@ -87,14 +87,6 @@
         from sys_dict d
         inner join sys_dict_value dv on dv.dict_id = d.id
     </sql>
-    <select id="selectListByCodes" resultMap="DictValueMap">
-        <include refid="BASE_SELECT_SQL"/>
-        where
-        d.code in
-        <foreach collection="codes" open="(" close=")" separator="," item="t">
-            #{t}
-        </foreach>
-    </select>
     <select id="selectOneByCode" resultMap="DictValueMap">
         <include refid="BASE_SELECT_SQL"/>
         where d.code = #{code} and d.deleted = 0

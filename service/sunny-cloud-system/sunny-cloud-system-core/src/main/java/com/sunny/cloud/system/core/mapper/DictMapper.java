@@ -12,8 +12,6 @@ public interface DictMapper {
 
     int update(DictPO record);
 
-    List<DictDTO> selectListByCodes(@Param("codes") List<String> codes);
-
     DictDTO selectOneByCode(String code);
 
     boolean exists(@Param("po") DictPO po, @Param("includeId") boolean includeId);
