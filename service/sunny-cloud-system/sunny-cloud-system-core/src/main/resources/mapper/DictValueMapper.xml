@@ -63,4 +63,41 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="exists" resultType="boolean">
+        select
+            count(0) > 0
+        from sys_dict_value dv
+        <where>
+            and dv.dict_id = #{po.dictId}
+            <if test="po.value != null and po.value != '' or po.name !=null and po.name !=''">
+                and (
+                <trim prefixOverrides="or">
+                    <if test="po.value != null and po.value != ''">
+                        or dv.value = #{po.value}
+                    </if>
+                    <if test="po.name !=null and po.name !=''">
+                        or dv.name = #{po.name}
+                    </if>
+                </trim>
+                )
+            </if>
+            <if test="includeId == true">
+                and dv.id &lt;&gt; #{po.id}
+            </if>
+            and dv.deleted = 0
+        </where>
+    </select>
+    <select id="selectListBy" resultType="com.sunny.cloud.system.api.model.DictValueDTO">
+        select
+            dv.*
+        from sys_dict_value dv
+        <where>
+            <if test="dictId !=null">
+                dv.dict_id = #{dictId}
+            </if>
+            and dv.deleted = 0
+        </where>
+        order by dv.sort asc
+    </select>
 </mapper>

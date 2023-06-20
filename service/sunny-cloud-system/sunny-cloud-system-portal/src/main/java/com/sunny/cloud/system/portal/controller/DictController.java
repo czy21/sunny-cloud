@@ -61,7 +61,8 @@ public class DictController extends BaseController {
 
     @Operation(summary = "删除")
     @PostMapping(path = "del")
-    public CommonResult<Void> del() {
+    public CommonResult<Void> del(@RequestParam Long id) {
+        dictService.delete(id);
         return CommonResult.ok();
     }
 }

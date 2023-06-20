@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class DictVO {
-    @NotEmpty(message = "id不能为空", groups = CommonValid.Edit.class)
+    @NotNull(message = "id不能为空", groups = CommonValid.Edit.class)
     private String id;
     @Schema(description = "编码")
     @NotEmpty(message = "编码不能为空", groups = {CommonValid.Add.class, CommonValid.Edit.class})

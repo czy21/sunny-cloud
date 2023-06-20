@@ -102,7 +102,7 @@
 
     <select id="exists" resultType="boolean">
         select
-            case when count(0) = 1 then 1 else 0 end
+            count(0) > 0
         from sys_dict d
         <where>
             <if test="po.code !=null and po.code !=''">

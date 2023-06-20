@@ -16,6 +16,7 @@ import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class DictServiceImpl implements DictService {
                                         }).collect(Collectors.toList());
                             } catch (NumberFormatException e) {
                                 delCache(dto.getCode());
-                                throw new CommonException("", MessageFormat.format("{0}: valueType error", dto.getCode()));
+                                logger.error("{}: valueType error", dto.getCode());
                             }
                         } else {
                             v = dto.getValues().stream()
@@ -139,14 +140,14 @@ public class DictServiceImpl implements DictService {
         dictMapper.update(po);
     }
 
-    private void checkUnique(DictPO po, boolean edit) {
-        if (dictMapper.exists(po, edit)) {
+    private void checkUnique(DictPO po, boolean includeId) {
+        if (dictMapper.exists(po, includeId)) {
             throw new CommonException("编码已存在");
         }
     }
 
     @Override
     public void delete(Long id) {
-
+        dictMapper.deleteById(id);
     }
 }
