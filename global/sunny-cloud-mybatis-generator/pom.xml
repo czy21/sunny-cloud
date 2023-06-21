@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>com.sunny</groupId>
     <artifactId>sunny-cloud-mybatis-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -32,6 +32,10 @@
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
             <version>${mybatis.generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sunny</groupId>
+            <artifactId>sunny-cloud-framework-core</artifactId>
         </dependency>
     </dependencies>
     <build>

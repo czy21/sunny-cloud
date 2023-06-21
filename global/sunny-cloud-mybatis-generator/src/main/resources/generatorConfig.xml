@@ -2,23 +2,51 @@
         "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+    <classPathEntry location="D:\Data\maven-repository\com\sunny\sunny-cloud-framework-core\3.0.0-SNAPSHOT\sunny-cloud-framework-core-3.0.0-SNAPSHOT.jar"/>
     <context id="simple" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
         <commentGenerator>
-            <!-- 是否生成注释代时间戳-->
-            <property name="suppressDate" value="true"/>
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="autoDelimitKeywords" value="false"/>
+            <!-- 是否生成注释 true： 否： false: 是 -->
             <property name="suppressAllComments" value="true"/>
+            <!-- 是否去除时间戳 true：是 ： false:否 -->
+            <property name="suppressDate" value="true"/>
         </commentGenerator>
         <!--数据库链接地址账号密码-->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.:3306/demo?serverTimezone=Asia/Shanghai" userId="" password=""/>
-
-        <javaModelGenerator targetPackage="generator.model" targetProject="src/main/java"/>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.:3306/?serverTimezone=Asia/Shanghai" userId="" password=""/>
+        <javaTypeResolver>
+            <!--是否使用bigDecimal，默认false。
+                false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+                true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
+            <property name="forceBigDecimals" value="true"/>
+            <!--默认 false
+                false，将所有 JDBC 的时间类型解析为 java.util.Date
+                true，将 JDBC 的时间类型按如下规则解析
+                    DATE	                -> java.time.LocalDate
+                    TIME	                -> java.time.LocalTime
+                    TIMESTAMP               -> java.time.LocalDateTime
+                    TIME_WITH_TIMEZONE  	-> java.time.OffsetTime
+                    TIMESTAMP_WITH_TIMEZONE	-> java.time.OffsetDateTime
+                -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="generator.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+            <property name="rootClass" value="com.sunny.cloud.framework.core.model.BasePO&lt;Long,Long&gt;"/>
+        </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="generator.mapper" targetProject="src/main/resources"/>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="generator.mapper" targetProject="src/main/java"/>
 
-        <table tableName="sys_dict"/>
+        <table tableName="sys_file" schema="sunny_sys"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
     </context>
 </generatorConfiguration>
