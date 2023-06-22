@@ -2,7 +2,7 @@
         "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <classPathEntry location="D:\Data\maven-repository\com\sunny\sunny-cloud-framework-core\3.0.0-SNAPSHOT\sunny-cloud-framework-core-3.0.0-SNAPSHOT.jar"/>
+    <properties resource="generator.properties"/>
     <context id="simple" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
         <commentGenerator>
@@ -13,7 +13,7 @@
             <property name="suppressDate" value="true"/>
         </commentGenerator>
         <!--数据库链接地址账号密码-->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.:3306/?serverTimezone=Asia/Shanghai" userId="" password=""/>
+        <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}"/>
         <javaTypeResolver>
             <!--是否使用bigDecimal，默认false。
                 false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
@@ -33,7 +33,7 @@
         <javaModelGenerator targetPackage="generator.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
-            <property name="rootClass" value="com.sunny.cloud.framework.core.model.BasePO&lt;Long,Long&gt;"/>
+            <property name="rootClass" value="generator.model.BasePO"/>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="generator.mapper" targetProject="src/main/resources"/>

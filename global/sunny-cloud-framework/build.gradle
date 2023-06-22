@@ -78,6 +78,8 @@ subprojects {
                 attributes 'Build-OS': System.getProperty("os.name")
                 attributes 'Built-By': System.getProperty("user.name")
                 attributes 'Build-Jdk-Spec': System.getProperty("java.version")
+                attributes 'Build-SourceCompatibility': sourceCompatibility
+                attributes 'Build-TargetCompatibility': targetCompatibility
                 attributes 'Build-Time': LocalDateTime.now().format("yyyy-MM-dd HH:mm:ss")
             }
         }
@@ -104,7 +106,7 @@ subprojects {
     }
 
     List<String> applyPlugins = []
-    if (name != bomName) {
+    if (bomName != name) {
         applyPlugins.add("spring.build")
     }
     logger.info("${project.name} apply plugins: ${applyPlugins}")
