@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
@@ -66,10 +67,46 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     }
 
     public static <T> String translateByValue(List<SimpleItemModel<T>> list, T value) {
-        return list.stream().filter(t -> t.getValue().equals(value)).map(SimpleItemModel::getLabel).findFirst().orElse(null);
+        return translateByValue(list, value, null);
+    }
+
+    public static <T> String translateByValue(List<SimpleItemModel<T>> list, T value, String defaultLabel) {
+        return list.stream().filter(t -> t.getValue().equals(value)).map(SimpleItemModel::getLabel).findFirst().orElse(defaultLabel);
     }
 
     public static <T> List<String> translateByValues(List<SimpleItemModel<T>> list, List<T> values) {
         return list.stream().filter(t -> values.contains(t.getValue())).map(SimpleItemModel::getLabel).collect(Collectors.toList());
+    }
+
+    public static String translateTrueFalse(Boolean value, TrueFalseTranslator trueFalseTranslator, String defaultLabel) {
+        return Optional.ofNullable(value).map(t -> t ? trueFalseTranslator.getTrueLabel() : trueFalseTranslator.getFalseLabel()).orElse(defaultLabel);
+    }
+
+    public static String translateTrueFalse(Boolean value, TrueFalseTranslator trueFalseTranslator) {
+        return translateTrueFalse(value, trueFalseTranslator, null);
+    }
+
+    public interface TrueFalseTranslator {
+        String getTrueLabel();
+
+        String getFalseLabel();
+    }
+
+    public static String translateYesNo(Boolean value, String defaultLabel) {
+        return translateTrueFalse(value, new TrueFalseTranslator() {
+            @Override
+            public String getTrueLabel() {
+                return "是";
+            }
+
+            @Override
+            public String getFalseLabel() {
+                return "否";
+            }
+        }, defaultLabel);
+    }
+
+    public static String translateYesNo(Boolean value) {
+        return translateYesNo(value, null);
     }
 }
