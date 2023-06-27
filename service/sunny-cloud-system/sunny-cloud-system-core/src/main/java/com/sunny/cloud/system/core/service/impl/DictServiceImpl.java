@@ -19,6 +19,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.config.AopConfigUtils;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +40,6 @@ public class DictServiceImpl implements DictService {
     StringRedisTemplate redisTemplate;
     ObjectMapper objectMapper;
     DictMapper dictMapper;
-
     DictAutoMap dictAutoMap;
 
     public DictServiceImpl(StringRedisTemplate redisTemplate,
@@ -53,9 +56,10 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public Map<String, List<SimpleItemModel<Object>>> findMapByKeys(SimpleQuery query) {
+        DictService dictService = (DictService) AopContext.currentProxy();
         return Optional.ofNullable(query.getKeys())
                 .orElse(new ArrayList<>()).stream().collect(HashMap::new, (m, n) -> {
-                    DictDTO dto = findByCode(n);
+                    DictDTO dto = dictService.findByCode(n);
                     List<SimpleItemModel<Object>> v = new ArrayList<>();
                     if (dto != null) {
                         if (DictValueKind.INT.getValue().equals(dto.getValueType())) {
@@ -67,7 +71,7 @@ public class DictServiceImpl implements DictService {
                                             return sim;
                                         }).collect(Collectors.toList());
                             } catch (NumberFormatException e) {
-                                delCache(dto.getCode());
+                                dictService.evictByCode(dto.getCode());
                                 logger.error("{}: valueType error", dto.getCode());
                             }
                         } else {
@@ -84,34 +88,16 @@ public class DictServiceImpl implements DictService {
                 }, Map::putAll);
     }
 
+    @Cacheable(value = "dict", key = "#code", unless = "#result==null")
     @Override
     public DictDTO findByCode(String code) {
-        String key = getCacheKey(code);
-        String dictStr = redisTemplate.opsForValue().get(key);
-        try {
-            if (StringUtils.isNotEmpty(dictStr)) {
-                return objectMapper.readValue(dictStr, DictDTO.class);
-            }
-            DictDTO de = dictMapper.selectOneByCode(code);
-            if (de != null && CollectionUtils.isNotEmpty(de.getValues())) {
-                redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(de), 1, TimeUnit.DAYS);
-                return de;
-            }
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[Dict] code: {0}", code), e);
-        }
-        return null;
+        return dictMapper.selectOneByCode(code);
     }
 
+    @CacheEvict(value = "dict", key = "#code")
     @Override
-    public String getCacheKey(String code) {
-        return CACHE_KEY_PREFIX_FUNC.apply(code);
-    }
+    public void evictByCode(String code) {
 
-    @Override
-    public void delCache(String code) {
-        String key = getCacheKey(code);
-        redisTemplate.delete(key);
     }
 
     @Override

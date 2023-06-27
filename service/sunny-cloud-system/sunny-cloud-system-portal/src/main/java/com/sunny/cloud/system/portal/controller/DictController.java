@@ -6,6 +6,7 @@ import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
 import com.sunny.cloud.framework.web.controller.BaseController;
 import com.sunny.cloud.system.core.model.dto.DictDTO;
+import com.sunny.cloud.system.core.model.po.DictPO;
 import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
@@ -64,5 +65,11 @@ public class DictController extends BaseController {
     public CommonResult<Void> del(@RequestParam Long id) {
         dictService.delete(id);
         return CommonResult.ok();
+    }
+
+    @Operation(summary = "t1")
+    @GetMapping(path = "getByCode")
+    public CommonResult<DictDTO> getByCode(@RequestParam String code) {
+        return CommonResult.ok(dictService.findByCode(code));
     }
 }

@@ -4,6 +4,7 @@ dependencyManagement {
     }
     dependencies {
         dependency "com.sunny:sunny-cloud-framework-core:${project.version}"
+        dependency "com.sunny:sunny-cloud-framework-cache:${project.version}"
         dependency "com.sunny:sunny-cloud-framework-db:${project.version}"
         dependency "com.sunny:sunny-cloud-framework-doc:${project.version}"
         dependency "com.sunny:sunny-cloud-framework-file:${project.version}"

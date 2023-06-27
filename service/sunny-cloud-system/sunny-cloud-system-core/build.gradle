@@ -2,10 +2,10 @@ dependencies {
     api project(":sunny-cloud-system-api")
     api "com.sunny:sunny-cloud-framework-web"
     api "com.sunny:sunny-cloud-framework-db"
-    api ('com.sunny:sunny-cloud-framework-doc')
+    api "com.sunny:sunny-cloud-framework-cache"
+    api 'com.sunny:sunny-cloud-framework-doc'
     api 'com.sunny:sunny-cloud-framework-job'
 
-    api "org.redisson:redisson-spring-boot-starter"
     api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config"
     api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
 }

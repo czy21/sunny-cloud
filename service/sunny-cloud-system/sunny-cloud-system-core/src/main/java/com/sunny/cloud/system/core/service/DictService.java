@@ -26,7 +26,5 @@ public interface DictService {
 
     DictDTO findByCode(String code);
 
-    String getCacheKey(String code);
-
-    void delCache(String code);
+    void evictByCode(String code);
 }
