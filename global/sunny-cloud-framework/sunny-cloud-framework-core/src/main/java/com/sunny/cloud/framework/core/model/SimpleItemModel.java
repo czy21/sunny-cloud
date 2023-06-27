@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
@@ -78,32 +79,16 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         return list.stream().filter(t -> values.contains(t.getValue())).map(SimpleItemModel::getLabel).collect(Collectors.toList());
     }
 
-    public static String translateTrueFalse(Boolean value, TrueFalseTranslator trueFalseTranslator, String defaultLabel) {
-        return Optional.ofNullable(value).map(t -> t ? trueFalseTranslator.getTrueLabel() : trueFalseTranslator.getFalseLabel()).orElse(defaultLabel);
+    public static String translateTrueFalse(Boolean value, Function<Boolean, String> labelFunc, String defaultLabel) {
+        return Optional.ofNullable(value).map(labelFunc).orElse(defaultLabel);
     }
 
-    public static String translateTrueFalse(Boolean value, TrueFalseTranslator trueFalseTranslator) {
-        return translateTrueFalse(value, trueFalseTranslator, null);
-    }
-
-    public interface TrueFalseTranslator {
-        String getTrueLabel();
-
-        String getFalseLabel();
+    public static String translateTrueFalse(Boolean value, Function<Boolean, String> labelFunc) {
+        return translateTrueFalse(value, labelFunc, null);
     }
 
     public static String translateYesNo(Boolean value, String defaultLabel) {
-        return translateTrueFalse(value, new TrueFalseTranslator() {
-            @Override
-            public String getTrueLabel() {
-                return "是";
-            }
-
-            @Override
-            public String getFalseLabel() {
-                return "否";
-            }
-        }, defaultLabel);
+        return translateTrueFalse(value, t -> t ? "是" : "否", defaultLabel);
     }
 
     public static String translateYesNo(Boolean value) {
