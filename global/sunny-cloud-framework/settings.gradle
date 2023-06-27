@@ -6,6 +6,7 @@ pluginManagement {
 
 // spring
 include("sunny-cloud-framework-bom")
+include("sunny-cloud-framework-cache")
 include("sunny-cloud-framework-core")
 include("sunny-cloud-framework-file")
 include("sunny-cloud-framework-job")
