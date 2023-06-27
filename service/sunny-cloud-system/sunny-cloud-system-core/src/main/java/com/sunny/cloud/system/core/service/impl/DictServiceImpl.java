@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class DictServiceImpl implements DictService {
 
     private static final Logger logger = LoggerFactory.getLogger(DictServiceImpl.class);
-    private static final Function<String, String> CACHE_KEY_PREFIX_FUNC = t -> String.join(":", "sunny", "dict", t);
+    private static final String CACHE_KEY_PREFIX = "dict";
     StringRedisTemplate redisTemplate;
     ObjectMapper objectMapper;
     DictMapper dictMapper;
@@ -65,22 +65,24 @@ public class DictServiceImpl implements DictService {
                         if (DictValueKind.INT.getValue().equals(dto.getValueType())) {
                             try {
                                 v = dto.getValues().stream()
-                                        .map(s -> {
-                                            SimpleItemModel<Object> sim = SimpleItemModel.of(s.getName(), Integer.parseInt(s.getValue()));
-                                            sim.setSort(s.getSort());
-                                            return sim;
-                                        }).collect(Collectors.toList());
+                                        .map(s -> SimpleItemModel.builder()
+                                                .label(s.getName())
+                                                .value(Integer.parseInt(s.getValue()))
+                                                .sort(s.getSort())
+                                                .build()
+                                        ).collect(Collectors.toList());
                             } catch (NumberFormatException e) {
                                 dictService.evictByCode(dto.getCode());
                                 logger.error("{}: valueType error", dto.getCode());
                             }
                         } else {
                             v = dto.getValues().stream()
-                                    .map(s -> {
-                                        SimpleItemModel<Object> sim = SimpleItemModel.of(s.getName(), s.getValue());
-                                        sim.setSort(s.getSort());
-                                        return sim;
-                                    }).collect(Collectors.toList());
+                                    .map(s -> SimpleItemModel.builder()
+                                            .label(s.getName())
+                                            .value(s.getValue())
+                                            .sort(s.getSort())
+                                            .build()
+                                    ).collect(Collectors.toList());
                         }
                     }
                     v = v.stream().sorted(Comparator.comparing(SimpleItemModel::getSort)).collect(Collectors.toList());
@@ -88,13 +90,13 @@ public class DictServiceImpl implements DictService {
                 }, Map::putAll);
     }
 
-    @Cacheable(value = "dict", key = "#code", unless = "#result==null")
+    @Cacheable(value = CACHE_KEY_PREFIX, key = "#code", unless = "#result==null")
     @Override
     public DictDTO findByCode(String code) {
         return dictMapper.selectOneByCode(code);
     }
 
-    @CacheEvict(value = "dict", key = "#code")
+    @CacheEvict(value = CACHE_KEY_PREFIX, key = "#code")
     @Override
     public void evictByCode(String code) {
 
@@ -118,6 +120,7 @@ public class DictServiceImpl implements DictService {
         dictMapper.insert(po);
     }
 
+    @CacheEvict(value = CACHE_KEY_PREFIX, key = "#dto.code")
     @Override
     public void edit(DictVO dto) {
         DictPO po = dictAutoMap.mapToPO(dto);
