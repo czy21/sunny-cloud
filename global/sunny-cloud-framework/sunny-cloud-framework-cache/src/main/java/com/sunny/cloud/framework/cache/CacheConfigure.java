@@ -33,14 +33,14 @@ public class CacheConfigure {
 
     @Bean
     public RedisCacheManager jacksonRedisCacheManager(RedisConnectionFactory factory) {
-        RedisSerializer<String> redisSerializer = new StringRedisSerializer();
-        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        RedisSerializer<String> keySerializer = new StringRedisSerializer();
+        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(Duration.ofHours(2))
                 .computePrefixWith(cacheName -> cacheName + ":")
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer));
         return RedisCacheManager.builder(factory).cacheDefaults(config).build();
     }
 }
