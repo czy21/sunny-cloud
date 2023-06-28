@@ -6,37 +6,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.cloud.framework.core.exception.CommonException;
 import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
-import com.sunny.cloud.system.core.model.dto.DictDTO;
 import com.sunny.cloud.system.core.automap.DictAutoMap;
+import com.sunny.cloud.system.core.constant.CacheConstant;
 import com.sunny.cloud.system.core.kind.DictValueKind;
 import com.sunny.cloud.system.core.mapper.DictMapper;
+import com.sunny.cloud.system.core.model.dto.DictDTO;
 import com.sunny.cloud.system.core.model.po.DictPO;
 import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class DictServiceImpl implements DictService {
 
     private static final Logger logger = LoggerFactory.getLogger(DictServiceImpl.class);
-    private static final String CACHE_KEY_PREFIX = "dict";
+
     StringRedisTemplate redisTemplate;
     ObjectMapper objectMapper;
     DictMapper dictMapper;
@@ -90,13 +85,13 @@ public class DictServiceImpl implements DictService {
                 }, Map::putAll);
     }
 
-    @Cacheable(value = CACHE_KEY_PREFIX, key = "#code", unless = "#result==null")
+    @Cacheable(value = CacheConstant.DICT_KEY_PREFIX, key = "#code", unless = "#result==null")
     @Override
     public DictDTO findByCode(String code) {
         return dictMapper.selectOneByCode(code);
     }
 
-    @CacheEvict(value = CACHE_KEY_PREFIX, key = "#code")
+    @CacheEvict(value = CacheConstant.DICT_KEY_PREFIX, key = "#code")
     @Override
     public void evictByCode(String code) {
 
@@ -120,7 +115,7 @@ public class DictServiceImpl implements DictService {
         dictMapper.insert(po);
     }
 
-    @CacheEvict(value = CACHE_KEY_PREFIX, key = "#dto.code")
+    @CacheEvict(value = CacheConstant.DICT_KEY_PREFIX, key = "#dto.code")
     @Override
     public void edit(DictVO dto) {
         DictPO po = dictAutoMap.mapToPO(dto);

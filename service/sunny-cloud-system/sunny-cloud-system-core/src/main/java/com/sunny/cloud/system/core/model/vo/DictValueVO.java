@@ -1,7 +1,6 @@
 package com.sunny.cloud.system.core.model.vo;
 
 import com.sunny.cloud.framework.core.model.CommonValid;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
