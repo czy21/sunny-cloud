@@ -11,9 +11,9 @@ import java.util.List;
 public interface DictValueMapper {
 
 
-    int insert(DictValuePO record);
+    int insert(DictValuePO entity);
 
-    int update(DictValuePO record);
+    int update(DictValuePO entity);
 
     boolean exists(@Param("po") DictValuePO po, @Param("includeId") boolean includeId);
 

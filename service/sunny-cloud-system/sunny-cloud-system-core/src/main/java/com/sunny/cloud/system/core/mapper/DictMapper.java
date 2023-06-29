@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 public interface DictMapper {
-    int insert(DictPO record);
+    int insert(DictPO entity);
 
-    int update(DictPO record);
+    int update(DictPO entity);
 
     DictDTO selectOneByCode(String code);
 

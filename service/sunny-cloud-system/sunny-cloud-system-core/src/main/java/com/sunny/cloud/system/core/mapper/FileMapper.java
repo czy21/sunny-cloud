@@ -4,7 +4,7 @@ import com.sunny.cloud.system.core.model.po.FilePO;
 
 public interface FileMapper {
 
-    int insert(FilePO record);
-    int update(FilePO record);
+    int insert(FilePO entity);
+    int update(FilePO entity);
 
 }
