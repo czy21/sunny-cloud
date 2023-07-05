@@ -3,7 +3,9 @@ package com.sunny.cloud.framework.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -71,12 +73,14 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         return translateByValue(list, value, null);
     }
 
-    public static <T> String translateByValue(List<SimpleItemModel<T>> list, T value, String defaultLabel) {
-        return list.stream().filter(t -> t.getValue().equals(value)).map(SimpleItemModel::getLabel).findFirst().orElse(defaultLabel);
+    public static <T> String translateByValue(List<SimpleItemModel<T>> list, T value, String defaultValue) {
+        return Optional.ofNullable(list).orElse(new ArrayList<>()).stream().filter(t -> t.getValue().equals(value)).map(SimpleItemModel::getLabel).findFirst().orElse(defaultValue);
     }
 
     public static <T> List<String> translateByValues(List<SimpleItemModel<T>> list, List<T> values) {
-        return list.stream().filter(t -> values.contains(t.getValue())).map(SimpleItemModel::getLabel).collect(Collectors.toList());
+        return CollectionUtils.isNotEmpty(values)
+                ? Optional.ofNullable(list).orElse(new ArrayList<>()).stream().filter(t -> values.contains(t.getValue())).map(SimpleItemModel::getLabel).collect(Collectors.toList())
+                : new ArrayList<>();
     }
 
     public static String translateTrueFalse(Boolean value, Function<Boolean, String> labelFunc, String defaultLabel) {
