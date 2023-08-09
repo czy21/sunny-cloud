@@ -1,0 +1,5 @@
+dependencies {
+
+    api project(":sunny-cloud-auth-api")
+    api("org.springframework.boot:spring-boot-starter-web")
+}
