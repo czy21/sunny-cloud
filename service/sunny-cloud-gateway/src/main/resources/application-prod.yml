@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: sunny-cloud-gateway
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.yml
+  cloud:
+    nacos:
+      server-addr: nacos.ops.svc:8848
+      config:
+        namespace: sunny
