@@ -5,4 +5,13 @@ spring:
     name: sunny-cloud-system
   cloud:
     nacos:
-      namespace: sunny
+      server-addr: nacos.czy21-internal.com:8848
+      config:
+        namespace: sunny
+---
+spring:
+  config:
+    import:
+      - nacos:${spring.application.name}.yml
+    activate:
+      on-profile: default
