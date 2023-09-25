@@ -40,6 +40,4 @@ dependencies {
     api "org.springframework.boot:spring-boot-starter-actuator"
     api "io.micrometer:micrometer-registry-prometheus"
     api "io.github.mweirauch:micrometer-jvm-extras"
-    api 'net.logstash.logback:logstash-logback-encoder'
-    api 'org.codehaus.janino:janino'
 }
