@@ -6,32 +6,38 @@
     <springProperty scope="context" name="LOG_LEVEL" source="sunny.cloud.logging.level" defaultValue="INFO"/>
     <springProperty scope="context" name="LOGSTASH_ADDR" source="logstash.addr" defaultValue="127.0.0.1:4560"/>
 
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_ADDR}</destination>
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <timeZone>Asia/Shanghai</timeZone>
-                </timestamp>
-                <pattern>
-                    <pattern>
-                        {
-                        "service": "${springAppName:-}",
-                        "level": "%level",
-                        "pid": "${PID:-}",
-                        "thread": "%thread",
-                        "class": "%logger{40}",
-                        "message": "%message",
-                        "exception": "%exception-conversion-word"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
-        </encoder>
-    </appender>
-
     <root level="${LOG_LEVEL}">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="LOGSTASH"/>
     </root>
+
+    <if condition='"${logstash.enabled}".equals("true")'>
+        <then>
+            <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+                <destination>${LOGSTASH_ADDR}</destination>
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <timestamp>
+                            <timeZone>Asia/Shanghai</timeZone>
+                        </timestamp>
+                        <pattern>
+                            <pattern>
+                                {
+                                "service": "${springAppName:-}",
+                                "level": "%level",
+                                "pid": "${PID:-}",
+                                "thread": "%thread",
+                                "class": "%logger{40}",
+                                "message": "%message",
+                                "exception": "%exception-conversion-word"
+                                }
+                            </pattern>
+                        </pattern>
+                    </providers>
+                </encoder>
+            </appender>
+            <root level="${LOG_LEVEL}">
+                <appender-ref ref="stash"/>
+            </root>
+        </then>
+    </if>
 </configuration>

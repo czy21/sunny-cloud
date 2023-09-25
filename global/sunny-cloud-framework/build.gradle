@@ -56,8 +56,8 @@ subprojects {
             dependency "com.alibaba:easyexcel:3.2.0"
             dependency "org.apache.pulsar:pulsar-client:2.11.0"
 
-            dependency "net.logstash.logback:logstash-logback-encoder:7.3"
-
+            dependency "net.logstash.logback:logstash-logback-encoder:7.4"
+            dependency 'org.codehaus.janino:janino:3.1.10'
         }
     }
 
