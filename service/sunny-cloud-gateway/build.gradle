@@ -41,4 +41,3 @@ dependencies {
     api "io.github.mweirauch:micrometer-jvm-extras"
     api 'net.logstash.logback:logstash-logback-encoder'
 }
-
