@@ -12,6 +12,4 @@ dependencies {
             "io.github.mweirauch:micrometer-jvm-extras"
     api "org.springframework.cloud:spring-cloud-starter-openfeign",
             "io.github.openfeign:feign-jackson"
-    api 'net.logstash.logback:logstash-logback-encoder'
-    api 'org.codehaus.janino:janino'
 }
