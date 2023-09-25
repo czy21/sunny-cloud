@@ -1,0 +1,7 @@
+spring:
+  config:
+    import:
+      - nacos:${spring.application.name}.yml
+  cloud:
+    nacos:
+      server-addr: nacos.ops.svc:8848
