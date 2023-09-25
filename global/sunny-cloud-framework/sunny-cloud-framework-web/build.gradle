@@ -1,6 +1,7 @@
 dependencies {
     api project(":sunny-cloud-framework-core")
     api project(":sunny-cloud-framework-file")
+    api project(":sunny-cloud-framework-log")
     api("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
