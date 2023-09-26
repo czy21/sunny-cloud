@@ -1,7 +1,0 @@
-spring:
-  config:
-    import:
-      - nacos:${spring.application.name}.yml
-  cloud:
-    nacos:
-      server-addr: nacos.czy21-internal.com:8848
