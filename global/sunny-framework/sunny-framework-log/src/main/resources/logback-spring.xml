@@ -3,10 +3,9 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
-    <springProperty scope="context" name="LOG_LEVEL" source="sunny.logging.level" defaultValue="INFO"/>
     <springProperty scope="context" name="LOGSTASH_ADDR" source="logstash.addr" defaultValue="127.0.0.1:4560"/>
 
-    <root level="${LOG_LEVEL}">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
@@ -35,7 +34,7 @@
                     </providers>
                 </encoder>
             </appender>
-            <root level="${LOG_LEVEL}">
+            <root level="INFO">
                 <appender-ref ref="stash"/>
             </root>
         </then>
