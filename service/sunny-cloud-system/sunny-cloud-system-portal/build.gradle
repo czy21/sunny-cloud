@@ -1,8 +1,0 @@
-plugins {
-    id 'org.springframework.boot'
-    id 'org.graalvm.buildtools.native' version '0.9.24'
-}
-
-dependencies {
-    api project(":sunny-cloud-system-core")
-}

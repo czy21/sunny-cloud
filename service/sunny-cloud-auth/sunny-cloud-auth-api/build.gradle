@@ -1,5 +1,0 @@
-dependencies {
-    api "io.swagger.core.v3:swagger-annotations-jakarta"
-    api "com.sunny:sunny-cloud-framework-core"
-    api "org.springframework:spring-web"
-}

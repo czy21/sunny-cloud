@@ -1,0 +1,16 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "${springBootVersion}"
+    }
+}
+
+// spring
+include("sunny-framework-bom")
+include("sunny-framework-cache")
+include("sunny-framework-core")
+include("sunny-framework-db")
+include('sunny-framework-doc')
+include("sunny-framework-file")
+include("sunny-framework-job")
+include("sunny-framework-log")
+include("sunny-framework-web")

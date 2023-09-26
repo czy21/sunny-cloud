@@ -1,0 +1,15 @@
+dependencyManagement {
+    generatedPomCustomization {
+        enabled = true
+    }
+    dependencies {
+        dependency "com.sunny:sunny-framework-core:${project.version}"
+        dependency "com.sunny:sunny-framework-cache:${project.version}"
+        dependency "com.sunny:sunny-framework-db:${project.version}"
+        dependency "com.sunny:sunny-framework-doc:${project.version}"
+        dependency "com.sunny:sunny-framework-file:${project.version}"
+        dependency "com.sunny:sunny-framework-job:${project.version}"
+        dependency "com.sunny:sunny-framework-log:${project.version}"
+        dependency "com.sunny:sunny-framework-web:${project.version}"
+    }
+}

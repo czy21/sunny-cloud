@@ -1,0 +1,11 @@
+dependencies {
+    api project(":sunny-system-api")
+    api "com.sunny:sunny-framework-web"
+    api "com.sunny:sunny-framework-db"
+    api "com.sunny:sunny-framework-cache"
+    api 'com.sunny:sunny-framework-doc'
+    api 'com.sunny:sunny-framework-job'
+
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config"
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
+}

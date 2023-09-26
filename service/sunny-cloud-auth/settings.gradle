@@ -1,9 +1,0 @@
-pluginManagement {
-    plugins {
-        id 'org.springframework.boot' version "${springBootVersion}"
-    }
-}
-
-include "sunny-cloud-auth-api"
-include "sunny-cloud-auth-core"
-include "sunny-cloud-auth-portal"
