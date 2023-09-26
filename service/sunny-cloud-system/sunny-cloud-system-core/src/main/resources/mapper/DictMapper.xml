@@ -85,7 +85,7 @@
             dv.sort as value_sort,
             dv.value as value
         from sys_dict d
-        inner join sys_dict_value dv on dv.dict_id = d.id
+        left join sys_dict_value dv on dv.dict_id = d.id
     </sql>
     <select id="selectOneByCode" resultMap="DictValueMap">
         <include refid="BASE_SELECT_SQL"/>
@@ -111,5 +111,10 @@
         select
             d.*
         from sys_dict d
+    </select>
+
+    <select id="selectById" resultMap="DictValueMap">
+      <include refid="BASE_SELECT_SQL"/>
+      where d.id = #{id}
     </select>
 </mapper>

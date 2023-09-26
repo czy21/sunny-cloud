@@ -15,11 +15,14 @@ import com.sunny.cloud.system.core.constant.CacheConstant;
 import com.sunny.cloud.system.core.kind.DictValueKind;
 import com.sunny.cloud.system.core.mapper.DictMapper;
 import com.sunny.cloud.system.core.model.dto.DictDTO;
+import com.sunny.cloud.system.core.model.dto.DictValueDTO;
 import com.sunny.cloud.system.core.model.po.DictPO;
 import com.sunny.cloud.system.core.model.query.DictQuery;
 import com.sunny.cloud.system.core.model.query.SimpleQuery;
 import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopContext;
@@ -35,6 +38,7 @@ import java.util.stream.Collectors;
 public class DictServiceImpl implements DictService {
 
     private static final Logger logger = LoggerFactory.getLogger(DictServiceImpl.class);
+    private static final Map<Integer, DictValueKind> DICT_VALUE_KIND_MAP = EnumUtils.getEnumList(DictValueKind.class).stream().collect(HashMap::new, (m, n) -> m.put(n.getValue(), n), Map::putAll);
 
     StringRedisTemplate redisTemplate;
     ObjectMapper objectMapper;
@@ -66,7 +70,7 @@ public class DictServiceImpl implements DictService {
                                 v = dto.getValues().stream()
                                         .map(s -> SimpleItemModel.builder()
                                                 .label(s.getName())
-                                                .value(Integer.parseInt(s.getValue()))
+                                                .value(Integer.parseInt((String) s.getValue()))
                                                 .sort(s.getSort())
                                                 .build()
                                         ).collect(Collectors.toList());
@@ -105,13 +109,20 @@ public class DictServiceImpl implements DictService {
     public PagingResult<DictDTO> page(DictQuery query) {
         try (Page<DictDTO> page = PageHelper.startPage(query.getPage(), query.getPageSize())) {
             PageInfo<DictDTO> pageInfo = page.doSelectPageInfo(() -> dictMapper.selectList(query));
+            if (CollectionUtils.isNotEmpty(pageInfo.getList())) {
+                pageInfo.getList().forEach(t -> {
+                    Optional.ofNullable(DICT_VALUE_KIND_MAP.get(t.getValueType())).ifPresent(p -> t.setValueTypeName(p.getLabel()));
+                });
+            }
             return PageUtil.convert(pageInfo);
         }
     }
 
     @Override
     public DictDTO detail(Long id) {
-        return null;
+        DictDTO dto = dictMapper.selectById(id);
+        Optional.ofNullable(DICT_VALUE_KIND_MAP.get(dto.getValueType())).ifPresent(p -> dto.setValueTypeName(p.getLabel()));
+        return dto;
     }
 
     @Override

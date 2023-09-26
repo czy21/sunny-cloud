@@ -21,4 +21,6 @@ public interface DictMapper {
     void deleteById(Long id);
 
     List<DictDTO> selectList(@Param("query") DictQuery query);
+
+    DictDTO selectById(Long id);
 }

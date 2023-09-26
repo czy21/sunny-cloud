@@ -11,5 +11,6 @@ public class DictDTO {
     private String name;
     private String remark;
     private Integer valueType;
+    private String valueTypeName;
     List<DictValueDTO> values;
 }
