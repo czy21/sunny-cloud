@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sunny.cloud.system.core.mapper.FileTargetPOMapper">
-    <insert id="insert" keyColumn="key" keyProperty="key" parameterType="com.sunny.cloud.system.core.model.po.FileTargetPO" useGeneratedKeys="true">
+<mapper namespace="com.sunny.system.core.mapper.FileTargetPOMapper">
+    <insert id="insert" keyColumn="key" keyProperty="key" parameterType="com.sunny.system.core.model.po.FileTargetPO" useGeneratedKeys="true">
         insert into sys_file_target
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="key != null">key,</if>
@@ -28,7 +28,7 @@
             <if test="deleted != null">#{deleted},</if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.cloud.system.core.model.po.FileTargetPO">
+    <update id="update" parameterType="com.sunny.system.core.model.po.FileTargetPO">
         update sys_file_target
         <set>
             <if test="rootUrl != null">

@@ -8,4 +8,4 @@ xxl-job:
   enabled: false
 logging:
   level:
-    com.sunny.cloud.system.core.mapper: debug
+    com.sunny.system.core.mapper: debug

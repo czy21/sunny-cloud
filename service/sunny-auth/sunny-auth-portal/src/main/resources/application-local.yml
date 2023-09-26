@@ -6,4 +6,4 @@ spring:
       - nacos:${spring.application.name}.yml
 logging:
   level:
-    com.sunny.cloud.system.core.mapper: debug
+    com.sunny.system.core.mapper: debug

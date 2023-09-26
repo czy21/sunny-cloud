@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sunny.cloud.system.core.mapper.DictMapper">
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.cloud.system.core.model.po.DictPO" useGeneratedKeys="true">
+<mapper namespace="com.sunny.system.core.mapper.DictMapper">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.system.core.model.po.DictPO" useGeneratedKeys="true">
         insert into sys_dict
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -30,7 +30,7 @@
             <if test="deleted != null">#{deleted},</if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.cloud.system.core.model.po.DictPO">
+    <update id="update" parameterType="com.sunny.system.core.model.po.DictPO">
         update sys_dict
         <set>
             <if test="code != null">
@@ -64,13 +64,13 @@
         where id = #{id}
     </update>
 
-    <resultMap id="DictValueMap" type="com.sunny.cloud.system.core.model.dto.DictDTO">
+    <resultMap id="DictValueMap" type="com.sunny.system.core.model.dto.DictDTO">
         <result column="id" property="id"/>
         <result column="code" property="code"/>
         <result column="name" property="name"/>
         <result column="remark" property="remark"/>
         <result column="value_type" property="valueType"/>
-        <collection column="dict_id" property="values" ofType="com.sunny.cloud.system.core.model.dto.DictValueDTO">
+        <collection column="dict_id" property="values" ofType="com.sunny.system.core.model.dto.DictValueDTO">
             <result column="value_id" property="id"/>
             <result column="value_name" property="name"/>
             <result column="value_sort" property="sort"/>
@@ -107,7 +107,7 @@
         </where>
     </select>
 
-    <select id="selectList" resultType="com.sunny.cloud.system.core.model.dto.DictDTO">
+    <select id="selectList" resultType="com.sunny.system.core.model.dto.DictDTO">
         select
             d.*
         from sys_dict d

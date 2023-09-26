@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sunny.cloud.system.core.mapper.DictValueMapper">
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.cloud.system.core.model.po.DictValuePO" useGeneratedKeys="true">
+<mapper namespace="com.sunny.system.core.mapper.DictValueMapper">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.system.core.model.po.DictValuePO" useGeneratedKeys="true">
         insert into sys_dict_value
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -30,7 +30,7 @@
             <if test="deleted != null">#{deleted},</if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.cloud.system.core.model.po.DictValuePO">
+    <update id="update" parameterType="com.sunny.system.core.model.po.DictValuePO">
         update sys_dict_value
         <set>
             <if test="name != null">
@@ -88,7 +88,7 @@
             and dv.deleted = 0
         </where>
     </select>
-    <select id="selectListBy" resultType="com.sunny.cloud.system.core.model.dto.DictValueDTO">
+    <select id="selectListBy" resultType="com.sunny.system.core.model.dto.DictValueDTO">
         select
             dv.*
         from sys_dict_value dv
