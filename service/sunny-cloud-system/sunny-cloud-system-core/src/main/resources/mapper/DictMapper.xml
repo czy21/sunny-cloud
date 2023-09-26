@@ -106,4 +106,10 @@
             and d.deleted = 0
         </where>
     </select>
+
+    <select id="selectList" resultType="com.sunny.cloud.system.core.model.dto.DictDTO">
+        select
+            d.*
+        from sys_dict d
+    </select>
 </mapper>

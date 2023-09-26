@@ -3,9 +3,13 @@ package com.sunny.cloud.system.core.service.impl;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sunny.cloud.framework.core.exception.CommonException;
 import com.sunny.cloud.framework.core.model.PagingResult;
 import com.sunny.cloud.framework.core.model.SimpleItemModel;
+import com.sunny.cloud.framework.core.util.PageUtil;
 import com.sunny.cloud.system.core.automap.DictAutoMap;
 import com.sunny.cloud.system.core.constant.CacheConstant;
 import com.sunny.cloud.system.core.kind.DictValueKind;
@@ -99,7 +103,10 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public PagingResult<DictDTO> page(DictQuery query) {
-        return null;
+        try (Page<DictDTO> page = PageHelper.startPage(query.getPage(), query.getPageSize())) {
+            PageInfo<DictDTO> pageInfo = page.doSelectPageInfo(() -> dictMapper.selectList(query));
+            return PageUtil.convert(pageInfo);
+        }
     }
 
     @Override
