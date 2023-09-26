@@ -4,6 +4,7 @@ import com.sunny.cloud.system.core.model.dto.DictDTO;
 import com.sunny.cloud.system.core.model.po.DictPO;
 import com.sunny.cloud.system.core.model.query.DictQuery;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface DictMapper {
     List<DictDTO> selectList(@Param("query") DictQuery query);
 
     DictDTO selectById(Long id);
+    @Select("select code from sys_dict where id = #{id}")
+    String selectCodeById(Long id);
 }

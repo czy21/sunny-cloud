@@ -23,6 +23,7 @@ import com.sunny.cloud.system.core.model.vo.DictVO;
 import com.sunny.cloud.system.core.service.DictService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopContext;
@@ -149,6 +150,10 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public void delete(Long id) {
+        String code = dictMapper.selectCodeById(id);
+        if (StringUtils.isNotEmpty(code)) {
+            ((DictService) AopContext.currentProxy()).evictByCode(code);
+        }
         dictMapper.deleteById(id);
     }
 }
