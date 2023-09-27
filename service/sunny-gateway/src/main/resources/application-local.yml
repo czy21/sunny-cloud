@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+    gateway:
+      routes:
+        - id: sys
+          uri: http://localhost:8081
+          predicates:
+            - Path=/sys/**
+          filters:
+            - StripPrefix=1
+          metadata:
+            name: 系统服务
+        - id: auth
+          uri: http://localhost:8082
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+          metadata:
+            name: 认证服务
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
