@@ -1,0 +1,9 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "${springBootVersion}"
+    }
+}
+
+include "sunny-stock-api"
+include "sunny-stock-core"
+include "sunny-stock-portal"
