@@ -1,0 +1,10 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "${springBootVersion}"
+        id 'com.github.johnrengelman.shadow' version "${shadowVersion}"
+    }
+}
+
+include("sunny-flink-common")
+include("sunny-flink-task")
+

@@ -1,0 +1,3 @@
+dependencies {
+    flinkShadowJar project(path: ':sunny-flink-common', configuration: 'shadow')
+}
