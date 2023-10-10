@@ -2,6 +2,10 @@ plugins {
     id 'org.springframework.boot' apply false
 }
 
+def publish_modules = [
+        "sunny-system-api"
+]
+
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -22,6 +26,24 @@ subprojects {
         }
         imports {
             mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+        }
+    }
+
+    if (project.name in publish_modules) {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+                    versionMapping {
+                        usage('java-api') {
+                            fromResolutionOf('runtimeClasspath')
+                        }
+                        usage('java-runtime') {
+                            fromResolutionResult()
+                        }
+                    }
+                }
+            }
         }
     }
 
