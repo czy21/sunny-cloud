@@ -6,6 +6,9 @@ log/
 
 # Gradle #
 .gradle/
+gradle/
+gradlew
+gradlew.bat
 
 # Build #
 target/
