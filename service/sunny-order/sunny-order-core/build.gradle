@@ -4,5 +4,6 @@ dependencies {
     api "com.sunny:sunny-framework-db"
     api "com.sunny:sunny-framework-cache"
     api 'com.sunny:sunny-framework-doc'
+    api 'com.sunny:sunny-framework-job'
 //    api 'io.seata:seata-spring-boot-starter'
 }
