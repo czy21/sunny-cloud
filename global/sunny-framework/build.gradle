@@ -75,9 +75,9 @@ subprojects {
             manifest {
                 attributes 'Implementation-Title': archiveBaseName
                 attributes 'Implementation-Version': archiveVersion
-                attributes 'Built-Gradle': gradle.gradleVersion
+                attributes 'Build-Gradle': gradle.gradleVersion
                 attributes 'Build-OS': System.getProperty("os.name")
-                attributes 'Built-By': System.getProperty("user.name")
+                attributes 'Build-By': System.getProperty("user.name")
                 attributes 'Build-Jdk-Spec': System.getProperty("java.version")
                 attributes 'Build-SourceCompatibility': sourceCompatibility
                 attributes 'Build-TargetCompatibility': targetCompatibility
