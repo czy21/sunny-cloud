@@ -11,8 +11,8 @@ subprojects {
     group = 'com.sunny'
     version = '3.0.0-SNAPSHOT'
 
-    targetCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_21
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -36,7 +36,7 @@ subprojects {
             dependency 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.3.0'
             dependency 'com.github.xiaoymin:knife4j-openapi3-webflux-jakarta-spring-boot-starter:4.3.0'
             dependency "io.swagger.core.v3:swagger-annotations-jakarta:2.2.8"
-            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2"
+            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3"
             dependency "com.github.pagehelper:pagehelper:5.3.3"
             dependency 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 
