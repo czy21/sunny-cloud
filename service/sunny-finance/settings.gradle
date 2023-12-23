@@ -1,0 +1,9 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "3.2.0"
+    }
+}
+
+include "sunny-finance-api"
+include "sunny-finance-core"
+include "sunny-finance-portal"

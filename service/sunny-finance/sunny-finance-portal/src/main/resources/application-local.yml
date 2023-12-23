@@ -1,0 +1,11 @@
+server:
+  port: 8081
+spring:
+  config:
+    import:
+      - nacos:${spring.application.name}.yml
+xxl-job:
+  enabled: false
+logging:
+  level:
+    com.sunny.system.core.mapper: debug
