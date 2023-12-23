@@ -1,8 +1,4 @@
-server:
-  port: 8080
-spring:
-  application:
-    name: sunny-finance
+
 management:
   endpoints:
     web:
