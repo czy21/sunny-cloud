@@ -4,7 +4,7 @@ spring:
   application:
     name: sunny-finance
   config:
-    import: kubernetes
+    import: "kubernetes:"
 
 management:
   endpoints:
