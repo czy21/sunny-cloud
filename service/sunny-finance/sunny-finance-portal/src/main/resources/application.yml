@@ -3,7 +3,17 @@ server:
 spring:
   application:
     name: sunny-finance
-
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        sources:
+          - name: sunny-finance
+            namespace: stable
+      reload:
+        enabled: true
+        mode: event
+        strategy: refresh
 management:
   endpoints:
     web:
