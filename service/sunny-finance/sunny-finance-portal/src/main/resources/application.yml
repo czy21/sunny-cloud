@@ -3,9 +3,3 @@ server:
 spring:
   application:
     name: sunny-finance
----
-spring:
-  config:
-    import: optional:configserver:http://spring-config.czy21-internal.com
-    activate:
-      on-profile: default

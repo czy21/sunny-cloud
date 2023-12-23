@@ -12,7 +12,7 @@ import java.util.Map;
 @RequestMapping(path = "in")
 public class InController {
 
-    @Value("${name}")
+//    @Value("${name}")
     String name;
 
     @GetMapping(path = "a")
