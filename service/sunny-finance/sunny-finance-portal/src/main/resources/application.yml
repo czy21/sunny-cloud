@@ -3,3 +3,9 @@ server:
 spring:
   application:
     name: sunny-finance
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
