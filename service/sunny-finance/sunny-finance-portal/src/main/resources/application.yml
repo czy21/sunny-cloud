@@ -3,16 +3,9 @@ server:
 spring:
   application:
     name: sunny-finance
-  cloud:
-    nacos:
-      server-addr: nacos.czy21-internal.com:8848
-      config:
-        namespace: sunny
-
 ---
 spring:
   config:
-    import:
-      - nacos:${spring.application.name}.yml
+    import: optional:configserver:http://spring-config.czy21-internal.com
     activate:
       on-profile: default

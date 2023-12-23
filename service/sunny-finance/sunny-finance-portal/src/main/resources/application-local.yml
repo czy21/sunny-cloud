@@ -2,8 +2,7 @@ server:
   port: 8081
 spring:
   config:
-    import:
-      - nacos:${spring.application.name}.yml
+    import: optional:configserver:http://spring-config.czy21-internal.com
 xxl-job:
   enabled: false
 logging:

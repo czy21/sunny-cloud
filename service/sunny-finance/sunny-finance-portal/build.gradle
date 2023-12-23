@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     api project(":sunny-finance-core")
+    api "org.springframework.cloud:spring-cloud-starter-config"
 }
