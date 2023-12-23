@@ -5,6 +5,10 @@ spring:
     name: sunny-finance
   config:
     import: "kubernetes:"
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
 
 management:
   endpoints:
