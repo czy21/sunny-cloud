@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api project(":sunny-finance-core")
     api "org.springframework.boot:spring-boot-starter-actuator"
-    api "org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all"
+    api "org.springframework.cloud:spring-cloud-starter-kubernetes-client-all"
 }
