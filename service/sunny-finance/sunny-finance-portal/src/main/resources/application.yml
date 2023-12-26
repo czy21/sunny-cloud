@@ -5,6 +5,9 @@ spring:
     name: sunny-finance
 ---
 spring:
+  cloud:
+    config:
+      enabled: false
   config:
     activate:
       on-cloud-platform: kubernetes
