@@ -3,10 +3,5 @@ server:
 spring:
   application:
     name: sunny-finance
-
----
-spring:
   config:
     import: 'kubernetes:'
-    activate:
-      on-profile: default
