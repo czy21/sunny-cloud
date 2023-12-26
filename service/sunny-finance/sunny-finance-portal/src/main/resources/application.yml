@@ -3,18 +3,3 @@ server:
 spring:
   application:
     name: sunny-finance
-  config:
-    import: "kubernetes:"
-  cloud:
-    kubernetes:
-      reload:
-        enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    env:
-      show-values: always
