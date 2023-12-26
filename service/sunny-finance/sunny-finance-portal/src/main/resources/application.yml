@@ -3,10 +3,9 @@ server:
 spring:
   application:
     name: sunny-finance
-
 ---
 spring:
   config:
-    import: 'kubernetes:'
     activate:
       on-cloud-platform: kubernetes
+    import: "optional:kubernetes:"
