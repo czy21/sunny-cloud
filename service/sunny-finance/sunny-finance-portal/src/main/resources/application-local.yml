@@ -3,6 +3,9 @@ server:
 spring:
   config:
     import: optional:configserver:http://spring-config.czy21-internal.com
+  cloud:
+    config:
+      enabled: true
 xxl-job:
   enabled: false
 logging:
