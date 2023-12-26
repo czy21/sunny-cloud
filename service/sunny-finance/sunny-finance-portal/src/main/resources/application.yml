@@ -3,6 +3,3 @@ server:
 spring:
   application:
     name: sunny-finance
-  cloud:
-    config:
-      enabled: false

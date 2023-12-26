@@ -17,7 +17,7 @@ public class InController {
 
     @GetMapping(path = "a")
     public CommonResult<Map<String, Object>> a() {
-        return CommonResult.ok(Map.of("name", name));
+        return CommonResult.ok(Map.of("name", ""));
     }
 
 
