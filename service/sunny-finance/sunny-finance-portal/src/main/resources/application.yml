@@ -3,5 +3,3 @@ server:
 spring:
   application:
     name: sunny-finance
-  config:
-    import: 'kubernetes:'
