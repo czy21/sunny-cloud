@@ -5,7 +5,9 @@ spring:
     name: sunny-finance
 ---
 spring:
+  cloud:
+    config:
+      enabled: false
   config:
-    import: 'kubernetes:'
     activate:
       on-profile: default
