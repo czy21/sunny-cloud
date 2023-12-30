@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: sunny-product
+---
+spring:
+  cloud:
+    config:
+      enabled: false
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+    import: "optional:kubernetes:"

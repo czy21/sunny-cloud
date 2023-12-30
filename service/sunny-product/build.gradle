@@ -1,0 +1,60 @@
+plugins {
+    id 'org.springframework.boot' apply false
+}
+
+def publish_modules = [
+        "sunny-product-api"
+]
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'io.spring.dependency-management'
+    group = 'com.sunny'
+    version = '0.1.0-SNAPSHOT'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    tasks.withType(JavaCompile) {
+        options.encoding('UTF-8')
+    }
+
+    dependencyManagement {
+        generatedPomCustomization {
+            enabled = false
+        }
+        imports {
+            mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+        }
+    }
+
+    if (project.name in publish_modules) {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+                    versionMapping {
+                        usage('java-api') {
+                            fromResolutionOf('runtimeClasspath')
+                        }
+                        usage('java-runtime') {
+                            fromResolutionResult()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+    dependencies {
+        implementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
+        annotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
+        testImplementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
+        testAnnotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
+}

@@ -1,0 +1,9 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "3.2.0"
+    }
+}
+
+include "sunny-product-api"
+include "sunny-product-core"
+include "sunny-product-portal"
