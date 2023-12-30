@@ -8,3 +8,9 @@ xxl-job:
 logging:
   level:
     com.sunny.system.core.mapper: debug
+
+sunny:
+  feign:
+    product:
+      url: 127.0.0.1:8082
+#      url: http://sunny-cloud.czy21-internal.com/api/product/

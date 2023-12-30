@@ -2,6 +2,7 @@ package com.sunny.finance.portal.controller;
 
 import com.sunny.finance.core.client.ProductClient;
 import com.sunny.framework.core.model.CommonResult;
+import com.sunny.product.api.entity.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class FinanceController {
     ProductClient productClient;
 
     @GetMapping(path = "f1")
-    public CommonResult<Map<String, Object>> f1() {
-        return CommonResult.ok(productClient.p1().getData());
+    public CommonResult<ProductDTO> f1() {
+        return productClient.p1();
     }
 }

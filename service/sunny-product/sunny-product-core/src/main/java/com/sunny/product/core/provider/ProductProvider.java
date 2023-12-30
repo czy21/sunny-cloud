@@ -10,7 +10,7 @@ import java.util.Map;
 public class ProductProvider implements ProductApi {
 
     @Override
-    public CommonResult<Map<String, Object>> p1() {
-        return CommonResult.ok(Map.of("name", "p2"));
+    public CommonResult<Map<String,Object>> p1() {
+        return CommonResult.ok(Map.of("name","产品一"));
     }
 }

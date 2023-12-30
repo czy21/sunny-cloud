@@ -11,8 +11,7 @@ public class CommonResult<T> {
     private T data;
     private Long timestamp;
 
-    public CommonResult(Integer code, String message, T data) {
-        this(code, message, data, DateUtil.toTimeStamp(LocalDateTime.now()));
+    public CommonResult() {
     }
 
     public CommonResult(Integer code, String message, T data, Long timestamp) {
@@ -22,6 +21,9 @@ public class CommonResult<T> {
         this.timestamp = timestamp;
     }
 
+    public CommonResult(Integer code, String message, T data) {
+        this(code, message, data, DateUtil.toTimeStamp(LocalDateTime.now()));
+    }
 
     public Integer getCode() {
         return code;
