@@ -18,6 +18,6 @@ public class FinanceController {
 
     @GetMapping(path = "f1")
     public CommonResult<Map<String, Object>> f1() {
-        return productClient.p1();
+        return CommonResult.ok(productClient.p1().getData());
     }
 }
