@@ -6,4 +6,5 @@ dependencies {
     }
     api 'com.sunny:sunny-framework-doc'
     api 'com.sunny:sunny-framework-job'
+    api 'com.sunny:sunny-product-api'
 }
