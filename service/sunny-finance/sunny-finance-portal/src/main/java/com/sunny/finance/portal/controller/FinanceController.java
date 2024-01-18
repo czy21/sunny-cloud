@@ -18,7 +18,7 @@ public class FinanceController {
     ProductClient productClient;
 
     @GetMapping(path = "f1")
-    public CommonResult<ProductDTO> f1() {
+    public CommonResult<Map<String,Object>> f1() {
         return productClient.p1();
     }
 }
