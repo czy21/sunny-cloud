@@ -29,6 +29,7 @@ subprojects {
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAliVersion}"
         }
         dependencies {
+            dependency "com.alibaba.nacos:nacos-client:2.3.0"
             dependency "commons-io:commons-io:2.11.0"
             dependency "org.apache.commons:commons-collections4:4.4"
             dependency "commons-validator:commons-validator:1.7"
