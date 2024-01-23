@@ -36,10 +36,9 @@ jobs:
         working-directory: doc
         run: yarn --ignore-engines build
       - name: Upload artifact
-        working-directory: doc
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./build
+          path: ./doc/build
   deploy:
     environment:
       name: github-pages
