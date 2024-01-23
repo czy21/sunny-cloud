@@ -25,6 +25,7 @@ jobs:
         with:
           sparse-checkout: doc
           fetch-depth: 0
+      - run: ls -al
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
