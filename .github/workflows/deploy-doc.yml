@@ -15,7 +15,6 @@ permissions:
 defaults:
   run:
     shell: bash
-    working-directory: doc
 
 jobs:
   build:
@@ -24,11 +23,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          sparse-checkout: doc
           fetch-depth: 0
-      - name: Install Node.js dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build
-        run: npm run build
+        run: npm run build;ls -al
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
