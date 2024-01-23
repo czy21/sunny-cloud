@@ -25,19 +25,20 @@ jobs:
         with:
           sparse-checkout: doc
           fetch-depth: 0
-      - run: ls -al
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install dependencies
+        working-directory: doc
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build
+        working-directory: doc
         run: npm run build;ls -al
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./build
+          path: ./doc/build
   deploy:
     environment:
       name: github-pages
