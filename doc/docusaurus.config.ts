@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'SunnyCloud',
-  tagline: 'Micro Service',
+  tagline: '一个关于电商业务的微服务架构',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
