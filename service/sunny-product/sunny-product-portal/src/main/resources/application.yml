@@ -3,12 +3,16 @@ server:
 spring:
   application:
     name: sunny-product
+  cloud:
+    nacos:
+      server-addr: nacos.czy21-internal.com:8848
+      config:
+        namespace: sunny
+
 ---
 spring:
-  cloud:
-    config:
-      enabled: false
   config:
+    import:
+      - nacos:${spring.application.name}.yml
     activate:
-      on-cloud-platform: kubernetes
-    import: "optional:kubernetes:"
+      on-profile: default
