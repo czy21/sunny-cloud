@@ -48,6 +48,10 @@ subprojects {
         }
     }
 
+    java {
+        withSourcesJar()
+    }
+
     test {
         useJUnitPlatform()
     }
