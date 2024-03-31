@@ -1,9 +1,6 @@
 dependencies {
     api project(":sunny-finance-api")
-    api ("com.sunny:sunny-framework-web") {
-        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-config"
-        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-discovery"
-    }
+    api "com.sunny:sunny-framework-web"
     api 'com.sunny:sunny-framework-doc'
     api 'com.sunny:sunny-framework-job'
     api 'com.sunny:sunny-product-api'
