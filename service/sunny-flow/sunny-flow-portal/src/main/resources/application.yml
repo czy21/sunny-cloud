@@ -2,15 +2,13 @@ server:
   port: 8080
 spring:
   application:
-    name: sunny-system
+    name: sunny-flow
   cloud:
     nacos:
       server-addr: nacos.czy21-internal.com:8848
       config:
         namespace: sunny
-    loadbalancer:
-      nacos:
-        enabled:
+
 ---
 spring:
   config:
