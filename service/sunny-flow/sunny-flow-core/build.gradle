@@ -3,4 +3,5 @@ dependencies {
     api "com.sunny:sunny-framework-web"
     api 'com.sunny:sunny-framework-doc'
     api 'com.sunny:sunny-framework-job'
+    api 'org.springframework.statemachine:spring-statemachine-starter'
 }
