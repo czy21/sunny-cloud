@@ -27,6 +27,7 @@ subprojects {
             mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAliVersion}"
+            mavenBom "org.springframework.statemachine:spring-statemachine-bom:${springStatemachineVersion}"
         }
         dependencies {
             dependency "com.alibaba.nacos:nacos-client:2.3.0"
