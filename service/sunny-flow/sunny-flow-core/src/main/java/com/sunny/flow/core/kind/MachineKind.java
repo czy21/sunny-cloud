@@ -1,19 +1,25 @@
 package com.sunny.flow.core.kind;
 
-import lombok.Data;
+import lombok.Getter;
 
 public class MachineKind {
 
-
+    @Getter
     public enum State {
-        S1,
-        S2,
-        S3
+        WAIT_PAY("待支付"),
+        WAIT_DELIVER("待发货"),
+        WAIT_RECEIVE("待收货"),
+        FINISHED("已完成");
+        final String label;
+
+        State(String label) {
+            this.label = label;
+        }
     }
 
-    public enum Event{
-        E1,
-        E2,
-        E3
+    public enum Event {
+        PAY,
+        DELIVER,
+        RECEIVE
     }
 }

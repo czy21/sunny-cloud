@@ -67,7 +67,7 @@ public class StateMachineConfigure {
         public void configure(StateMachineStateConfigurer<MachineKind.State, MachineKind.Event> states) throws Exception {
             states
                     .withStates()
-                    .initial(MachineKind.State.S1)
+                    .initial(MachineKind.State.WAIT_PAY)
                     .states(EnumSet.allOf(MachineKind.State.class));
         }
 
@@ -75,16 +75,23 @@ public class StateMachineConfigure {
         public void configure(StateMachineTransitionConfigurer<MachineKind.State, MachineKind.Event> transitions) throws Exception {
             transitions
                     .withExternal()
-                    .source(MachineKind.State.S1).target(MachineKind.State.S2).event(MachineKind.Event.E1)
+                    .source(MachineKind.State.WAIT_PAY).target(MachineKind.State.WAIT_DELIVER).event(MachineKind.Event.PAY)
                     .action(context -> {
                         System.out.println();
                     })
                     .and()
                     .withExternal()
-                    .source(MachineKind.State.S2).target(MachineKind.State.S3).event(MachineKind.Event.E2)
+                    .source(MachineKind.State.WAIT_DELIVER).target(MachineKind.State.WAIT_RECEIVE).event(MachineKind.Event.DELIVER)
                     .action(context -> {
                         System.out.println();
-                    });
+                    })
+                    .and()
+                    .withExternal()
+                    .source(MachineKind.State.WAIT_RECEIVE).target(MachineKind.State.FINISHED).event(MachineKind.Event.RECEIVE)
+                    .action(context -> {
+                        System.out.println();
+                    })
+            ;
         }
     }
 }
