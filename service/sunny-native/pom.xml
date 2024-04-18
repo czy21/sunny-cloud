@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.1</version>
     </parent>
     <groupId>com.sunny</groupId>
     <artifactId>sunny-native</artifactId>
@@ -40,10 +40,6 @@
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
                 <version>0.9.24</version>
-                <configuration>
-                    <imageName>${project.artifactId}</imageName>
-                    <mainClass>com.sunny.cloud.demo.NativeApplication</mainClass>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
