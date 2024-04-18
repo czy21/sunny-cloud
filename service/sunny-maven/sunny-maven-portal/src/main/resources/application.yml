@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: sunny-order
+    name: sunny-maven
   cloud:
     nacos:
       server-addr: nacos.czy21-internal.com:8848
