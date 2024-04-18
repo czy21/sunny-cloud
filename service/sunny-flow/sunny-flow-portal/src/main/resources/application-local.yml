@@ -1,6 +1,0 @@
-server:
-  port: 8081
-spring:
-  config:
-    import:
-      - nacos:${spring.application.name}.yml

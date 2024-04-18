@@ -1,8 +1,8 @@
-package com.sunny.flow.core.kind;
+package com.sunny.order.core.kind;
 
 import lombok.Getter;
 
-public class MachineKind {
+public class OrderStateMachineKind {
 
     @Getter
     public enum State {

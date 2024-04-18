@@ -1,6 +1,6 @@
-package com.sunny.flow.portal.controller;
+package com.sunny.order.portal.controller;
 
-import com.sunny.flow.core.kind.MachineKind;
+import com.sunny.order.core.kind.OrderStateMachineKind;
 import com.sunny.framework.core.model.CommonResult;
 import com.sunny.framework.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,12 @@ import java.util.Map;
 public class StatemachineController extends BaseController {
 
     @Autowired
-    StateMachineService<MachineKind.State, MachineKind.Event> machineService;
+    StateMachineService<OrderStateMachineKind.State, OrderStateMachineKind.Event> machineService;
 
     @GetMapping(path = "t1")
     public CommonResult<Map<String, Object>> t1(@RequestParam String machineId, @RequestParam String event) {
-        StateMachine<MachineKind.State, MachineKind.Event> machine = machineService.acquireStateMachine(machineId);
-        StateMachineEventResult<MachineKind.State, MachineKind.Event> stateEventStateMachineEventResult = machine.sendEvent(Mono.just(MessageBuilder.withPayload(MachineKind.Event.valueOf(event)).build())).blockLast();
+        StateMachine<OrderStateMachineKind.State, OrderStateMachineKind.Event> machine = machineService.acquireStateMachine(machineId);
+        StateMachineEventResult<OrderStateMachineKind.State, OrderStateMachineKind.Event> stateEventStateMachineEventResult = machine.sendEvent(Mono.just(MessageBuilder.withPayload(OrderStateMachineKind.Event.valueOf(event)).build())).blockLast();
         machineService.releaseStateMachine(machineId);
         return CommonResult.ok();
     }
