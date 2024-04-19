@@ -42,8 +42,10 @@ subprojects {
             dependency "com.github.pagehelper:pagehelper:5.3.3"
             dependency 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 
-            dependency "org.redisson:redisson-spring-boot-starter:3.20.0"
-
+            dependency ("org.redisson:redisson-spring-boot-starter:3.28.0") {
+                exclude 'com.esotericsoftware:kryo'
+            }
+            
             dependency "io.minio:minio:8.5.2"
             dependency "com.xuxueli:xxl-job-core:2.4.0"
             dependency "org.mapstruct:mapstruct:1.5.3.Final"

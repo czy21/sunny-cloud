@@ -4,3 +4,7 @@ spring:
   config:
     import:
       - nacos:${spring.application.name}.yml
+  cloud:
+    nacos:
+      discovery:
+        namespace: sunny
