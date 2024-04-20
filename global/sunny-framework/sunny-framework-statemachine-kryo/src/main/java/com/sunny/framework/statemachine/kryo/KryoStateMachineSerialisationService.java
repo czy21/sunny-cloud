@@ -47,7 +47,6 @@ public class KryoStateMachineSerialisationService<S, E> extends AbstractKryoStat
 	@Override
 	protected void configureKryoInstance(Kryo kryo) {
 		kryo.setRegistrationRequired(false);
-		kryo.setReferences(true);
 		kryo.addDefaultSerializer(StateMachineContext.class, new StateMachineContextSerializer<S, E>());
 		kryo.addDefaultSerializer(MessageHeaders.class, new MessageHeadersSerializer());
 		kryo.addDefaultSerializer(UUID.class, new UUIDSerializer());
