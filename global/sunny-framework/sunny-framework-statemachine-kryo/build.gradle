@@ -1,0 +1,10 @@
+dependencies {
+    api 'org.springframework.statemachine:spring-statemachine-starter'
+    api('org.springframework.statemachine:spring-statemachine-data-redis') {
+        exclude group: 'com.esotericsoftware', module: 'kryo-shaded'
+    }
+    api('org.springframework.statemachine:spring-statemachine-data-jpa') {
+        exclude group: 'com.esotericsoftware', module: 'kryo-shaded'
+    }
+    api 'com.esotericsoftware:kryo'
+}
