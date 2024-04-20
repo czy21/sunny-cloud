@@ -14,12 +14,12 @@ import org.springframework.context.annotation.PropertySource;
 @ConditionalOnProperty(prefix = XxlJobProperties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(XxlJobProperties.class)
 @Configuration
-public class XxlJobConfigure {
+public class XxlJobAutoConfigure {
     private static final Logger logger = LoggerFactory.getLogger(XxlJobProperties.class);
 
     private XxlJobProperties properties;
 
-    public XxlJobConfigure(XxlJobProperties properties) {
+    public XxlJobAutoConfigure(XxlJobProperties properties) {
         this.properties = properties;
     }
 

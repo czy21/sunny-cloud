@@ -11,5 +11,6 @@ dependencyManagement {
         dependency "com.sunny:sunny-framework-job:${project.version}"
         dependency "com.sunny:sunny-framework-log:${project.version}"
         dependency "com.sunny:sunny-framework-web:${project.version}"
+        dependency "com.sunny:sunny-framework-statemachine-kryo:${project.version}"
     }
 }

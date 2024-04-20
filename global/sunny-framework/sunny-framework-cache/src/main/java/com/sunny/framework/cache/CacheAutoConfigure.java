@@ -8,7 +8,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.CacheKeyPrefix;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,10 +21,10 @@ import java.util.Optional;
 
 @EnableCaching
 @Configuration
-public class CacheConfigure {
+public class CacheAutoConfigure {
     ObjectMapper objectMapper;
 
-    public CacheConfigure(ObjectProvider<ObjectMapper> objectMapper) {
+    public CacheAutoConfigure(ObjectProvider<ObjectMapper> objectMapper) {
         this.objectMapper = Optional.ofNullable(objectMapper.getIfAvailable()).map(ObjectMapper::copy).orElse(new ObjectMapper());
         this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         this.objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY);

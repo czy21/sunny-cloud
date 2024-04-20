@@ -10,9 +10,6 @@ dependencies {
     api ('org.springframework.statemachine:spring-statemachine-data-jpa'){
         exclude group:'com.esotericsoftware',module:'kryo-shaded'
     }
-    api ('org.springframework.statemachine:spring-statemachine-data-redis'){
-        exclude group:'com.esotericsoftware',module:'kryo-shaded'
-    }
     api 'com.sunny:sunny-framework-statemachine-kryo'
 //    api 'io.seata:seata-spring-boot-starter'
 }
