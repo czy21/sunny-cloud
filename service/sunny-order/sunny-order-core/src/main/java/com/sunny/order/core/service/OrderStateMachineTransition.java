@@ -6,7 +6,7 @@ import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.annotation.WithStateMachine;
 
-@WithStateMachine
+//@WithStateMachine
 public class OrderStateMachineTransition {
 
     @OrderStateOnTransition(source = OrderStateMachineKind.State.WAIT_PAY, target = OrderStateMachineKind.State.WAIT_DELIVER)

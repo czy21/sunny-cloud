@@ -3,6 +3,8 @@ package com.sunny.order.core.config;
 import com.sunny.order.core.kind.OrderStateMachineKind;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.EnableStateMachine;
@@ -23,11 +25,9 @@ import java.util.EnumSet;
 import java.util.function.Function;
 
 
-@EnableStateMachineFactory(name = "orderStateMachineFactory")
+//@EnableStateMachineFactory(name = "orderStateMachineFactory")
+@Scope(scopeName="session", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class OrderStateMachineConfigure extends EnumStateMachineConfigurerAdapter<OrderStateMachineKind.State, OrderStateMachineKind.Event> {
-
-    @Autowired
-    private StateMachineRuntimePersister<OrderStateMachineKind.State, OrderStateMachineKind.Event, String> orderStateMachineRuntimePersister;
 
     @Bean
     public StateMachineService<OrderStateMachineKind.State, OrderStateMachineKind.Event> orderStateMachineService(
@@ -39,7 +39,6 @@ public class OrderStateMachineConfigure extends EnumStateMachineConfigurerAdapte
     @Override
     public void configure(StateMachineConfigurationConfigurer<OrderStateMachineKind.State, OrderStateMachineKind.Event> config)
             throws Exception {
-        config.withPersistence().runtimePersister(orderStateMachineRuntimePersister);
         config.withMonitoring().monitor(new StateMachineMonitor<>() {
             @Override
             public void transition(StateMachine<OrderStateMachineKind.State, OrderStateMachineKind.Event> stateMachine, Transition<OrderStateMachineKind.State, OrderStateMachineKind.Event> transition, long duration) {

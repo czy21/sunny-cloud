@@ -11,7 +11,7 @@ import static org.springframework.statemachine.StateMachineSystemConstants.DEFAU
 import static org.springframework.statemachine.StateMachineSystemConstants.DEFAULT_ID_STATEMACHINEFACTORY;
 
 
-@WithStateMachine
+//@WithStateMachine
 public class ExampleStateMachineTransition {
 
     @ExampleStateOnTransition(source = ExampleStateMachineKind.State.WAIT_PAY, target = ExampleStateMachineKind.State.WAIT_DELIVER)

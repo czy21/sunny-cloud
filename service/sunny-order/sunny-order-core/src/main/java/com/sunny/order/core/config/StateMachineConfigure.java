@@ -2,6 +2,7 @@ package com.sunny.order.core.config;
 
 import com.sunny.framework.statemachine.kryo.KryoStateMachineSerialisationService;
 import com.sunny.order.core.kind.ExampleStateMachineKind;
+import com.sunny.order.core.kind.Order2StateMachineKind;
 import com.sunny.order.core.kind.OrderStateMachineKind;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
