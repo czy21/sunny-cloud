@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunny.order.core.mapper.OrderMapper">
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.order.core.model.po.OrderPO" useGeneratedKeys="true">
+        insert into order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="orderNo != null">order_no,</if>
+                <if test="customerId != null">customer_id,</if>
+                <if test="receiverName != null">receiver_name,</if>
+                <if test="receiverPhone != null">receiver_phone,</if>
+                <if test="provinceCode != null">province_code,</if>
+                <if test="provinceName != null">province_name,</if>
+                <if test="cityCode != null">city_code,</if>
+                <if test="cityName != null">city_name,</if>
+                <if test="districtCode != null">district_code,</if>
+                <if test="districtName != null">district_name,</if>
+                <if test="address != null">address,</if>
+                <if test="orderAmount != null">order_amount,</if>
+                <if test="orderStatus != null">order_status,</if>
+                <if test="paymentAmount != null">payment_amount,</if>
+                <if test="paymentStatus != null">payment_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=BIGINT},</if>
+                <if test="orderNo != null">#{orderNo,jdbcType=VARCHAR},</if>
+                <if test="customerId != null">#{customerId,jdbcType=BIGINT},</if>
+                <if test="receiverName != null">#{receiverName,jdbcType=VARCHAR},</if>
+                <if test="receiverPhone != null">#{receiverPhone,jdbcType=VARCHAR},</if>
+                <if test="provinceCode != null">#{provinceCode,jdbcType=VARCHAR},</if>
+                <if test="provinceName != null">#{provinceName,jdbcType=VARCHAR},</if>
+                <if test="cityCode != null">#{cityCode,jdbcType=VARCHAR},</if>
+                <if test="cityName != null">#{cityName,jdbcType=VARCHAR},</if>
+                <if test="districtCode != null">#{districtCode,jdbcType=VARCHAR},</if>
+                <if test="districtName != null">#{districtName,jdbcType=VARCHAR},</if>
+                <if test="address != null">#{address,jdbcType=VARCHAR},</if>
+                <if test="orderAmount != null">#{orderAmount,jdbcType=DECIMAL},</if>
+                <if test="orderStatus != null">#{orderStatus,jdbcType=TINYINT},</if>
+                <if test="paymentAmount != null">#{paymentAmount,jdbcType=DECIMAL},</if>
+                <if test="paymentStatus != null">#{paymentStatus,jdbcType=TINYINT},</if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.sunny.order.core.model.po.OrderPO">
+        update order
+        <set>
+                <if test="orderNo != null">
+                    order_no = #{orderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="customerId != null">
+                    customer_id = #{customerId,jdbcType=BIGINT},
+                </if>
+                <if test="receiverName != null">
+                    receiver_name = #{receiverName,jdbcType=VARCHAR},
+                </if>
+                <if test="receiverPhone != null">
+                    receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+                </if>
+                <if test="provinceCode != null">
+                    province_code = #{provinceCode,jdbcType=VARCHAR},
+                </if>
+                <if test="provinceName != null">
+                    province_name = #{provinceName,jdbcType=VARCHAR},
+                </if>
+                <if test="cityCode != null">
+                    city_code = #{cityCode,jdbcType=VARCHAR},
+                </if>
+                <if test="cityName != null">
+                    city_name = #{cityName,jdbcType=VARCHAR},
+                </if>
+                <if test="districtCode != null">
+                    district_code = #{districtCode,jdbcType=VARCHAR},
+                </if>
+                <if test="districtName != null">
+                    district_name = #{districtName,jdbcType=VARCHAR},
+                </if>
+                <if test="address != null">
+                    address = #{address,jdbcType=VARCHAR},
+                </if>
+                <if test="orderAmount != null">
+                    order_amount = #{orderAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="orderStatus != null">
+                    order_status = #{orderStatus,jdbcType=TINYINT},
+                </if>
+                <if test="paymentAmount != null">
+                    payment_amount = #{paymentAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="paymentStatus != null">
+                    payment_status = #{paymentStatus,jdbcType=TINYINT},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=BIGINT} 
+    </update>
+</mapper>

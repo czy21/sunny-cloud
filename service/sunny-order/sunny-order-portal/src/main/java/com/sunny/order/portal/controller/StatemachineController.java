@@ -1,5 +1,6 @@
 package com.sunny.order.portal.controller;
 
+import com.sunny.order.core.config.Persist;
 import com.sunny.order.core.kind.Order2StateMachineKind;
 import com.sunny.order.core.kind.OrderStateMachineKind;
 import com.sunny.framework.core.model.CommonResult;
@@ -26,6 +27,8 @@ public class StatemachineController extends BaseController {
     StateMachineService<OrderStateMachineKind.State, OrderStateMachineKind.Event> machineService;
     @Autowired
     StateMachine<Order2StateMachineKind.State, Order2StateMachineKind.Event> order2StateMachine;
+    @Autowired
+    Persist persist;
 
     @GetMapping(path = "t1")
     public CommonResult<Map<String, Object>> t1(@RequestParam String machineId, @RequestParam String event) {
@@ -37,11 +40,14 @@ public class StatemachineController extends BaseController {
 
     @GetMapping(path = "t2")
     public CommonResult<Map<String, Object>> t1(@RequestParam String event) {
-        order2StateMachine.startReactively().block();
-        StateMachineEventResult<Order2StateMachineKind.State, Order2StateMachineKind.Event> stateEventStateMachineEventResult =
-                order2StateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Order2StateMachineKind.Event.valueOf(event)).build()))
-                        .blockLast();
-        order2StateMachine.stopReactively().block();
+        order2StateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Order2StateMachineKind.Event.valueOf(event)).build()))
+                        .subscribe();
+        return CommonResult.ok();
+    }
+
+    @GetMapping(path = "t3")
+    public CommonResult<Map<String, Object>> t3(@RequestParam Long id,@RequestParam String event) {
+        persist.change(id,event);
         return CommonResult.ok();
     }
 }

@@ -25,8 +25,7 @@ import java.util.EnumSet;
 import java.util.function.Function;
 
 
-//@EnableStateMachineFactory(name = "orderStateMachineFactory")
-@Scope(scopeName="session", proxyMode= ScopedProxyMode.TARGET_CLASS)
+@EnableStateMachineFactory(name = "orderStateMachineFactory")
 public class OrderStateMachineConfigure extends EnumStateMachineConfigurerAdapter<OrderStateMachineKind.State, OrderStateMachineKind.Event> {
 
     @Bean

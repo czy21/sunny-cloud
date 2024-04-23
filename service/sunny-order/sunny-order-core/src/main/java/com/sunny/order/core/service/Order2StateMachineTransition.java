@@ -15,12 +15,12 @@ public class Order2StateMachineTransition {
     }
 
     @Order2StateOnTransition(source = Order2StateMachineKind.State.WAIT_DELIVER, target = Order2StateMachineKind.State.WAIT_RECEIVE)
-    public void deliver(Message<Order2StateMachineKind> message) {
+    public void deliver(StateMachine<Order2StateMachineKind.State, Order2StateMachineKind.Event> machine,Message<Order2StateMachineKind> message) {
 
     }
 
     @Order2StateOnTransition(source = Order2StateMachineKind.State.WAIT_RECEIVE, target = Order2StateMachineKind.State.FINISHED)
-    public void receive(Message<Order2StateMachineKind> message) {
+    public void receive(StateMachine<Order2StateMachineKind.State, Order2StateMachineKind.Event> machine,Message<Order2StateMachineKind> message) {
 
     }
 }
