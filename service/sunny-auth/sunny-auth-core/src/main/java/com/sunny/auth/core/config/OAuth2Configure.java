@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class OAuth2Configure {
 
     JdbcTemplate jdbcTemplate;
-//    RedisOperations<String, Object> redisOperations;
 
     @Bean
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
