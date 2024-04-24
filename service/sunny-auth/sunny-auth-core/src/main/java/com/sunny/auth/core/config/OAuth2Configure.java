@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -16,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class OAuth2Configure {
 
     JdbcTemplate jdbcTemplate;
+//    RedisOperations<String, Object> redisOperations;
 
     @Bean
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
@@ -27,9 +27,8 @@ public class OAuth2Configure {
         http.authorizeHttpRequests(t ->
                 t.anyRequest().permitAll()
         );
-//        http.sessionManagement(t->{
-//            t.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        });
+        http.sessionManagement(t -> {
+        });
         http.oauth2Login(t -> {
         });
         http.oauth2Client(t -> {
