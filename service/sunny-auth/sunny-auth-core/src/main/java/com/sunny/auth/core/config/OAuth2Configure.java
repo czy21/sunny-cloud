@@ -1,5 +1,6 @@
 package com.sunny.auth.core.config;
 
+import com.sunny.auth.core.filter.JsonTokenAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import java.util.UUID;
 
@@ -78,9 +82,7 @@ public class OAuth2Configure {
         http.authorizeHttpRequests(t ->
                 t.anyRequest().authenticated()
         );
-        http.formLogin(t -> {
-
-        });
+//        http.addFilterAt(new JsonTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
@@ -96,6 +98,10 @@ public class OAuth2Configure {
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(userDetails);
+    }
 
+    @Bean
+    public HttpSessionIdResolver httpSessionIdResolver() {
+        return HeaderHttpSessionIdResolver.xAuthToken();
     }
 }
