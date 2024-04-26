@@ -1,8 +1,12 @@
+
 dependencies {
     api project(":sunny-auth-api")
     api "com.sunny:sunny-framework-web"
     api "com.sunny:sunny-framework-db"
     api "com.sunny:sunny-framework-cache"
     api 'com.sunny:sunny-framework-doc'
+    api 'org.springframework.session:spring-session-core'
     api 'org.springframework.boot:spring-boot-starter-security'
+    api 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
+    api 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
