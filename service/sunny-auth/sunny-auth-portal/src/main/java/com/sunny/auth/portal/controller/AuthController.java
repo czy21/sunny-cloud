@@ -19,4 +19,11 @@ public class AuthController  {
 
         return "test";
     }
+
+
+    @GetMapping("/testAuth")
+    public String testAuth() {
+
+        return "testAuth";
+    }
 }

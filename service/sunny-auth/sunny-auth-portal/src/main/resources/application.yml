@@ -16,3 +16,6 @@ spring:
       - nacos:${spring.application.name}.yml
     activate:
       on-profile: default
+logging:
+  level:
+    org.springframework.security: debug

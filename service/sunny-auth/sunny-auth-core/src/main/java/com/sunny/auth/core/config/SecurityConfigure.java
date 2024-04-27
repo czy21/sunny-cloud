@@ -1,37 +1,24 @@
 package com.sunny.auth.core.config;
 
-import com.sunny.auth.core.filter.JsonTokenAuthenticationFilter;
+import com.sunny.auth.core.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.sunny.auth.core.provider.JsonUsernamePasswordAuthenticationProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
-import org.springframework.session.web.http.HttpSessionIdResolver;
-
-import java.util.UUID;
 
 @Configuration
 @AllArgsConstructor
-public class OAuth2Configure {
+public class SecurityConfigure {
 
     JdbcTemplate jdbcTemplate;
 
@@ -82,26 +69,20 @@ public class OAuth2Configure {
         http.authorizeHttpRequests(t ->
                 t.anyRequest().authenticated()
         );
-//        http.addFilterAt(new JsonTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.requestCache(RequestCacheConfigurer::disable);
+        http.exceptionHandling(t -> {
+            t.authenticationEntryPoint((request, response, authException) -> {
+
+            });
+        });
+        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter();
+        http.addFilterAt(jsonUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.with(new JsonLoginConfigurer<>(jsonUsernamePasswordAuthenticationFilter), t -> {
+        });
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
-    @Bean
-    public HttpSessionIdResolver httpSessionIdResolver() {
-        return HeaderHttpSessionIdResolver.xAuthToken();
-    }
 }
