@@ -18,20 +18,17 @@ package com.sunny.auth.core.config;
 
 import com.sunny.auth.core.filter.JsonUsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-public final class JsonLoginConfigurer<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, JsonLoginConfigurer<H>, JsonUsernamePasswordAuthenticationFilter> {
+public final class JsonLoginConfigure<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, JsonLoginConfigure<H>, JsonUsernamePasswordAuthenticationFilter> {
 
-	public JsonLoginConfigurer(JsonUsernamePasswordAuthenticationFilter filter) {
+	public JsonLoginConfigure(JsonUsernamePasswordAuthenticationFilter filter) {
 		super(filter, null);
 	}
 	@Override
-	public JsonLoginConfigurer<H> loginPage(String loginPage) {
+	public JsonLoginConfigure<H> loginPage(String loginPage) {
 		return super.loginPage(loginPage);
 	}
 
