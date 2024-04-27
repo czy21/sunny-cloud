@@ -1,7 +1,7 @@
 package com.sunny.auth.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunny.auth.core.provider.JsonAuthenticationEntryPoint;
+import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -23,8 +23,8 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    public JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint() {
-        return new JsonAuthenticationEntryPoint();
+    public JsonLoginAuthenticationEntryPoint jsonAuthenticationEntryPoint() {
+        return new JsonLoginAuthenticationEntryPoint();
     }
 
 }

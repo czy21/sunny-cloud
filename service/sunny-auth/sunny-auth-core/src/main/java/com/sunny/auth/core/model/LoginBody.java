@@ -7,4 +7,5 @@ public class LoginBody {
     private String username;
     private String password;
     private String validateCode;
+
 }

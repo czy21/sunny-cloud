@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 
-public class JsonUsernamePasswordAuthenticationToken extends AbstractAuthenticationToken {
+public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
@@ -31,32 +31,32 @@ public class JsonUsernamePasswordAuthenticationToken extends AbstractAuthenticat
 
     private Object credentials;
 
-    public JsonUsernamePasswordAuthenticationToken() {
+    public JsonLoginAuthenticationToken() {
         this(null, null);
     }
 
-    public JsonUsernamePasswordAuthenticationToken(Object principal, Object credentials) {
+    public JsonLoginAuthenticationToken(Object principal, Object credentials) {
         super(null);
         this.principal = principal;
         this.credentials = credentials;
         setAuthenticated(false);
     }
 
-    public JsonUsernamePasswordAuthenticationToken(Object principal, Object credentials,
-                                                   Collection<? extends GrantedAuthority> authorities) {
+    public JsonLoginAuthenticationToken(Object principal, Object credentials,
+                                        Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
         super.setAuthenticated(true); // must use super, as we override
     }
 
-    public static JsonUsernamePasswordAuthenticationToken unauthenticated(Object principal, Object credentials) {
-        return new JsonUsernamePasswordAuthenticationToken(principal, credentials);
+    public static JsonLoginAuthenticationToken unauthenticated(Object principal, Object credentials) {
+        return new JsonLoginAuthenticationToken(principal, credentials);
     }
 
-    public static JsonUsernamePasswordAuthenticationToken authenticated(Object principal, Object credentials,
-                                                                        Collection<? extends GrantedAuthority> authorities) {
-        return new JsonUsernamePasswordAuthenticationToken(principal, credentials, authorities);
+    public static JsonLoginAuthenticationToken authenticated(Object principal, Object credentials,
+                                                             Collection<? extends GrantedAuthority> authorities) {
+        return new JsonLoginAuthenticationToken(principal, credentials, authorities);
     }
 
     @Override

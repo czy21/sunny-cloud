@@ -14,13 +14,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 
-public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class JsonLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
     private final ObjectMapper objectMapper;
 
-    public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
+    public JsonLoginAuthenticationFilter(ObjectMapper objectMapper) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
         this.objectMapper = objectMapper;
     }
@@ -29,13 +29,13 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         try (ServletInputStream inputStream = request.getInputStream()) {
             LoginBody loginBody = objectMapper.readValue(inputStream, LoginBody.class);
-            JsonUsernamePasswordAuthenticationToken authRequest = JsonUsernamePasswordAuthenticationToken.unauthenticated(loginBody.getUsername(), loginBody.getPassword());
+            JsonLoginAuthenticationToken authRequest = JsonLoginAuthenticationToken.unauthenticated(loginBody.getUsername(), loginBody.getPassword());
             setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }
     }
 
-    protected void setDetails(HttpServletRequest request, JsonUsernamePasswordAuthenticationToken authRequest) {
+    protected void setDetails(HttpServletRequest request, JsonLoginAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 }

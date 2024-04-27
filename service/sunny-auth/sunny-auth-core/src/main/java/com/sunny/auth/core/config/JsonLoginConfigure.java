@@ -16,15 +16,15 @@
 
 package com.sunny.auth.core.config;
 
-import com.sunny.auth.core.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-public final class JsonLoginConfigure<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, JsonLoginConfigure<H>, JsonUsernamePasswordAuthenticationFilter> {
+public final class JsonLoginConfigure<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, JsonLoginConfigure<H>, JsonLoginAuthenticationFilter> {
 
-	public JsonLoginConfigure(JsonUsernamePasswordAuthenticationFilter filter) {
+	public JsonLoginConfigure(JsonLoginAuthenticationFilter filter) {
 		super(filter, null);
 	}
 	@Override
