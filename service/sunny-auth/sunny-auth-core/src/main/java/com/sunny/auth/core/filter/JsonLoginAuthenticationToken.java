@@ -25,8 +25,6 @@ import java.util.Collection;
 
 public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
 
-    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-
     private Object principal;
 
     private Object credentials;
@@ -42,8 +40,7 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(false);
     }
 
-    public JsonLoginAuthenticationToken(Object principal, Object credentials,
-                                        Collection<? extends GrantedAuthority> authorities) {
+    public JsonLoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
@@ -54,8 +51,7 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
         return new JsonLoginAuthenticationToken(principal, credentials);
     }
 
-    public static JsonLoginAuthenticationToken authenticated(Object principal, Object credentials,
-                                                             Collection<? extends GrantedAuthority> authorities) {
+    public static JsonLoginAuthenticationToken authenticated(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         return new JsonLoginAuthenticationToken(principal, credentials, authorities);
     }
 
