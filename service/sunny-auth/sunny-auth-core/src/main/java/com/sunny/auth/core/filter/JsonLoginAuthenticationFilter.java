@@ -29,7 +29,7 @@ public class JsonLoginAuthenticationFilter extends AbstractAuthenticationProcess
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         try (ServletInputStream inputStream = request.getInputStream()) {
             LoginBody loginBody = objectMapper.readValue(inputStream, LoginBody.class);
-            JsonLoginAuthenticationToken authRequest = JsonLoginAuthenticationToken.unauthenticated(loginBody.getUsername(), loginBody.getPassword());
+            JsonLoginAuthenticationToken authRequest = JsonLoginAuthenticationToken.unauthenticated(loginBody.getUsername(), loginBody);
             setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }

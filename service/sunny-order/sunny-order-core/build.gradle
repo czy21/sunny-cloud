@@ -13,4 +13,6 @@ dependencies {
     api 'org.springframework.statemachine:spring-statemachine-recipes-common'
     api 'com.sunny:sunny-framework-statemachine-kryo'
 //    api 'io.seata:seata-spring-boot-starter'
+    implementation 'com.alibaba.cola:cola-component-statemachine:4.3.2'
+
 }

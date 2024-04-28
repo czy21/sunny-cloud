@@ -1,6 +1,7 @@
 package com.sunny.auth.core.provider;
 
 import com.sunny.auth.core.filter.JsonLoginAuthenticationToken;
+import com.sunny.auth.core.model.LoginBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ public class JsonLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        LoginBody loginBody = (LoginBody) authentication.getCredentials();
         //TODO 校验密码
         //TODO 加载用户
         return JsonLoginAuthenticationToken.authenticated("user", "password", null);
