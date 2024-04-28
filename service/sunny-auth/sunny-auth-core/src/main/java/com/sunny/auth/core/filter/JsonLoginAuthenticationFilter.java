@@ -3,7 +3,7 @@
 package com.sunny.auth.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunny.auth.core.model.LoginJson;
+import com.sunny.auth.core.model.LoginBody;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,8 +28,8 @@ public class JsonLoginAuthenticationFilter extends AbstractAuthenticationProcess
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         try (ServletInputStream inputStream = request.getInputStream()) {
-            LoginJson loginJson = objectMapper.readValue(inputStream, LoginJson.class);
-            JsonLoginAuthenticationToken authRequest = JsonLoginAuthenticationToken.unauthenticated(loginJson.getUsername(), loginJson);
+            LoginBody loginBody = objectMapper.readValue(inputStream, LoginBody.class);
+            JsonLoginAuthenticationToken authRequest = JsonLoginAuthenticationToken.unauthenticated(loginBody.getUsername(), loginBody);
             setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }
