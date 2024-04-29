@@ -3,14 +3,14 @@ package com.sunny.auth.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
-public class JsonAuthority implements GrantedAuthority {
+public class JsonGrantedAuthority implements GrantedAuthority {
 
     private String role;
 
-    public JsonAuthority() {
+    public JsonGrantedAuthority() {
     }
 
-    public JsonAuthority(String role) {
+    public JsonGrantedAuthority(String role) {
         this.role = role;
     }
 

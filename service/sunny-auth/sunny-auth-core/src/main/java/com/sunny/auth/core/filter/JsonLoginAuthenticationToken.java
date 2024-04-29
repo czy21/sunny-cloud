@@ -19,17 +19,12 @@ package com.sunny.auth.core.filter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.SpringSecurityCoreVersion;
-import org.springframework.util.Assert;
 
 import java.util.Collection;
 
 public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
-
     private Object principal;
-
     private Object credentials;
-
     private Collection<GrantedAuthority> authorities;
 
     public JsonLoginAuthenticationToken() {
@@ -47,7 +42,7 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
-        super.setAuthenticated(true); // must use super, as we override
+        super.setAuthenticated(true);
     }
 
     public static JsonLoginAuthenticationToken unauthenticated(Object principal, Object credentials) {
