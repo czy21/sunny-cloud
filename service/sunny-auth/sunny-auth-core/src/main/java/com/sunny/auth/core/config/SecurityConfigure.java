@@ -2,11 +2,8 @@ package com.sunny.auth.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
-import com.sunny.auth.core.model.JsonAuthenticationDetails;
 import com.sunny.auth.core.model.JsonAuthenticationDetailsSource;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
-import com.sunny.auth.core.provider.JsonLoginAuthenticationProvider;
-import com.sunny.auth.core.service.JsonLoginUserDetailServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -86,6 +82,12 @@ public class SecurityConfigure {
         http.addFilterAt(jsonLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {
             t.authenticationDetailsSource(jsonAuthenticationDetailsSource);
+            t.successHandler(((request, response, authentication) -> {
+
+            }));
+            t.failureHandler((request, response, exception) -> {
+
+            });
         });
         return http.build();
     }
