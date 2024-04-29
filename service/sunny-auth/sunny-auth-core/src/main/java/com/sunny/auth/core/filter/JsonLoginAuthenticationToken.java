@@ -16,6 +16,7 @@
 
 package com.sunny.auth.core.filter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
@@ -28,6 +29,8 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
     private Object principal;
 
     private Object credentials;
+
+    private Collection<GrantedAuthority> authorities;
 
     public JsonLoginAuthenticationToken() {
         this(null, null);
@@ -74,9 +77,23 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        Assert.isTrue(!isAuthenticated, "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
-        super.setAuthenticated(false);
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) {
+        super.setAuthenticated(isAuthenticated);
     }
 
     @Override

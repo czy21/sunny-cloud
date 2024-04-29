@@ -33,11 +33,6 @@ public final class JsonLoginConfigure<H extends HttpSecurityBuilder<H>> extends 
 	}
 
 	@Override
-	public void init(H http) throws Exception {
-		super.init(http);
-	}
-
-	@Override
 	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
 		return new AntPathRequestMatcher(loginProcessingUrl, "POST");
 	}

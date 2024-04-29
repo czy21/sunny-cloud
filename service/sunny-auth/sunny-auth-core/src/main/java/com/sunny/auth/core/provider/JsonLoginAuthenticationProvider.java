@@ -19,7 +19,7 @@ public class JsonLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        LoginBody loginBody = (LoginBody) authentication.getCredentials();
+        LoginBody loginBody = (LoginBody) authentication.getPrincipal();
         if (StringUtils.isAnyEmpty(loginBody.getUsername(), loginBody.getPassword())) {
             throw new BadCredentialsException("用户名或密码不能为空");
         }
@@ -27,7 +27,7 @@ public class JsonLoginAuthenticationProvider implements AuthenticationProvider {
         if (userDetails == null || !loginBody.getPassword().equals(userDetails.getPassword())) {
             throw new BadCredentialsException("用户名或密码错误");
         }
-        return JsonLoginAuthenticationToken.authenticated(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+        return JsonLoginAuthenticationToken.authenticated(userDetails.getUsername(), null, userDetails.getAuthorities());
     }
 
     @Override

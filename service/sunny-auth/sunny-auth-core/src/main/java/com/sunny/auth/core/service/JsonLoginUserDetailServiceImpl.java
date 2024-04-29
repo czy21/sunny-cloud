@@ -1,5 +1,6 @@
 package com.sunny.auth.core.service;
 
+import com.sunny.auth.core.model.JsonAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,6 @@ public class JsonLoginUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return User.withUsername(username).password("password").roles().authorities(List.of(new SimpleGrantedAuthority("list"))).build();
+        return User.withUsername(username).password("password").roles().authorities(List.of(new JsonAuthority("list"),new JsonAuthority("edit"))).build();
     }
 }

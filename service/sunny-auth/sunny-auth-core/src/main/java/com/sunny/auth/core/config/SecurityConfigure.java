@@ -2,6 +2,8 @@ package com.sunny.auth.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
+import com.sunny.auth.core.model.JsonAuthenticationDetails;
+import com.sunny.auth.core.model.JsonAuthenticationDetailsSource;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationProvider;
 import com.sunny.auth.core.service.JsonLoginUserDetailServiceImpl;
@@ -26,6 +28,7 @@ public class SecurityConfigure {
     JdbcTemplate jdbcTemplate;
     ObjectMapper objectMapper;
     JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint;
+    JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource;
 
     @Bean
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
@@ -82,18 +85,9 @@ public class SecurityConfigure {
         JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = new JsonLoginAuthenticationFilter(objectMapper);
         http.addFilterAt(jsonLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {
+            t.authenticationDetailsSource(jsonAuthenticationDetailsSource);
         });
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new JsonLoginUserDetailServiceImpl();
-    }
-
-    @Bean
-    JsonLoginAuthenticationProvider jsonUsernamePasswordAuthenticationProvider() {
-        return new JsonLoginAuthenticationProvider();
     }
 
 }
