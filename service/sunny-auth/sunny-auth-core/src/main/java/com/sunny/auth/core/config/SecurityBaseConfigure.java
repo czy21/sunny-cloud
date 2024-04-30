@@ -31,13 +31,13 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    public JsonLoginAuthenticationEntryPoint jsonAuthenticationEntryPoint() {
-        return new JsonLoginAuthenticationEntryPoint();
+    public SessionRepositoryCustomizer<RedisSessionRepository> redisSessionRepositorySessionRepositoryCustomizer() {
+        return t -> t.setRedisKeyNamespace("u");
     }
 
     @Bean
-    public SessionRepositoryCustomizer<RedisSessionRepository> redisSessionRepositorySessionRepositoryCustomizer() {
-        return t -> t.setRedisKeyNamespace("u");
+    public JsonLoginAuthenticationEntryPoint jsonAuthenticationEntryPoint() {
+        return new JsonLoginAuthenticationEntryPoint();
     }
 
     @Bean
@@ -46,17 +46,17 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    public UserDetailsService jsonUserDetailsService() {
+    public UserDetailsService jsonLoginUserDetailService() {
         return new JsonLoginUserDetailServiceImpl();
     }
 
     @Bean
-    public JsonLoginAuthenticationProvider jsonUsernamePasswordAuthenticationProvider() {
+    public JsonLoginAuthenticationProvider jsonLoginAuthenticationProvider() {
         return new JsonLoginAuthenticationProvider();
     }
 
     @Bean
-    public JsonAuthenticationSuccessHandler jsonLoginSuccessHandler() {
+    public JsonAuthenticationSuccessHandler jsonAuthenticationSuccessHandler() {
         return new JsonAuthenticationSuccessHandler();
     }
 
