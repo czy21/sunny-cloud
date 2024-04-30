@@ -1,6 +1,8 @@
 package com.sunny.auth.portal.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +26,7 @@ public class AuthController  {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('list')")
     @GetMapping("/testAuth")
     public String testAuth() {
         Authentication authentication=SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();

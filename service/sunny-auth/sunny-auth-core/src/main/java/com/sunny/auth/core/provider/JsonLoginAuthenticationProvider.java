@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class JsonLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    @Qualifier("jsonUserDetailsService")
+    @Qualifier("jsonLoginUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Override

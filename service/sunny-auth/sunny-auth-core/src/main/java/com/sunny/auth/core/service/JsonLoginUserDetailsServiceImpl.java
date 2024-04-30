@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Set;
 
-public class JsonLoginUserDetailServiceImpl implements UserDetailsService {
+public class JsonLoginUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

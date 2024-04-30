@@ -19,8 +19,10 @@ package com.sunny.auth.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
     private Object principal;
@@ -38,10 +40,11 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(false);
     }
 
-    public JsonLoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
+    public JsonLoginAuthenticationToken(Object principal, Object credentials, Collection<GrantedAuthority> authorities) {
+        super(null);
         this.principal = principal;
         this.credentials = credentials;
+        this.authorities = Optional.ofNullable(authorities).orElse(AuthorityUtils.NO_AUTHORITIES);
         super.setAuthenticated(true);
     }
 
@@ -49,7 +52,7 @@ public class JsonLoginAuthenticationToken extends AbstractAuthenticationToken {
         return new JsonLoginAuthenticationToken(principal, credentials);
     }
 
-    public static JsonLoginAuthenticationToken authenticated(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public static JsonLoginAuthenticationToken authenticated(Object principal, Object credentials, Collection<GrantedAuthority> authorities) {
         return new JsonLoginAuthenticationToken(principal, credentials, authorities);
     }
 

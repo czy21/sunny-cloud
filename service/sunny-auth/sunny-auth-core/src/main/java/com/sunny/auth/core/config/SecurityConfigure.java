@@ -77,6 +77,7 @@ public class SecurityConfigure {
         http.authorizeHttpRequests(t ->
                 t.anyRequest().authenticated()
         );
+        http.anonymous(AbstractHttpConfigurer::disable);
         http.sessionManagement(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);

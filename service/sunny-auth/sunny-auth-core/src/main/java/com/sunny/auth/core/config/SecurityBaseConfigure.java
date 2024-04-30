@@ -6,7 +6,7 @@ import com.sunny.auth.core.handler.JsonAuthenticationSuccessHandler;
 import com.sunny.auth.core.model.JsonAuthenticationDetailsSource;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationProvider;
-import com.sunny.auth.core.service.JsonLoginUserDetailServiceImpl;
+import com.sunny.auth.core.service.JsonLoginUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -46,8 +46,8 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    public UserDetailsService jsonLoginUserDetailService() {
-        return new JsonLoginUserDetailServiceImpl();
+    public UserDetailsService jsonLoginUserDetailsService() {
+        return new JsonLoginUserDetailsServiceImpl();
     }
 
     @Bean
