@@ -17,16 +17,19 @@
 package com.sunny.auth.core.config;
 
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
+import com.sunny.auth.core.model.JsonAuthenticationDetails;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
-public final class JsonLoginConfigure<B extends HttpSecurityBuilder<B>, T extends JsonLoginConfigure<B, T, F>, F extends AbstractAuthenticationProcessingFilter> extends AbstractHttpConfigurer<T, B> {
+public final class JsonLoginConfigure<B extends HttpSecurityBuilder<B>> extends AbstractHttpConfigurer<HttpBasicConfigurer<B>, B> {
 
     JsonLoginAuthenticationFilter authFilter;
 
@@ -40,4 +43,20 @@ public final class JsonLoginConfigure<B extends HttpSecurityBuilder<B>, T extend
         authFilter = postProcess(authFilter);
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+	public void successHandler(AuthenticationSuccessHandler successHandler) {
+		authFilter.setAuthenticationSuccessHandler(successHandler);
+	}
+
+	public void failureHandler(AuthenticationFailureHandler failureHandler) {
+		authFilter.setAuthenticationFailureHandler(failureHandler);
+	}
+
+	public void detailsSource(AuthenticationDetailsSource<HttpServletRequest, JsonAuthenticationDetails> detailsSource) {
+		authFilter.setAuthenticationDetailsSource(detailsSource);
+	}
+	public void securityContextRepository(SecurityContextRepository securityContextRepository) {
+		authFilter.setSecurityContextRepository(securityContextRepository);
+	}
+
 }

@@ -86,18 +86,13 @@ public class SecurityConfigure {
         http.csrf(AbstractHttpConfigurer::disable);
         http.requestCache(RequestCacheConfigurer::disable);
         http.exceptionHandling(t -> t.authenticationEntryPoint(jsonLoginAuthenticationEntryPoint));
-        JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = getJsonLoginAuthenticationFilter();
-        http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {});
+        http.with(new JsonLoginConfigure<>(new JsonLoginAuthenticationFilter(objectMapper)), t -> {
+            t.detailsSource(jsonAuthenticationDetailsSource);
+            t.successHandler(jsonAuthenticationSuccessHandler);
+            t.failureHandler(jsonAuthenticationFailureHandler);
+            t.securityContextRepository(new DelegatingSecurityContextRepository(new RequestAttributeSecurityContextRepository(), new HttpSessionSecurityContextRepository()));
+        });
         return http.build();
-    }
-
-    private JsonLoginAuthenticationFilter getJsonLoginAuthenticationFilter() {
-        JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = new JsonLoginAuthenticationFilter(objectMapper);
-        jsonLoginAuthenticationFilter.setAuthenticationDetailsSource(jsonAuthenticationDetailsSource);
-        jsonLoginAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler);
-        jsonLoginAuthenticationFilter.setAuthenticationFailureHandler(jsonAuthenticationFailureHandler);
-        jsonLoginAuthenticationFilter.setSecurityContextRepository(new DelegatingSecurityContextRepository(new RequestAttributeSecurityContextRepository(), new HttpSessionSecurityContextRepository()));
-        return jsonLoginAuthenticationFilter;
     }
 
 }
