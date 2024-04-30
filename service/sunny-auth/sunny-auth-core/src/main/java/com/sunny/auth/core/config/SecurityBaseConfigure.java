@@ -1,6 +1,8 @@
 package com.sunny.auth.core.config;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sunny.auth.core.handler.JsonAuthenticationFailureHandler;
+import com.sunny.auth.core.handler.JsonAuthenticationSuccessHandler;
 import com.sunny.auth.core.model.JsonAuthenticationDetailsSource;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationProvider;
@@ -39,7 +41,7 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource() {
+    public JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource() {
         return new JsonAuthenticationDetailsSource();
     }
 
@@ -49,7 +51,17 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    JsonLoginAuthenticationProvider jsonUsernamePasswordAuthenticationProvider() {
+    public JsonLoginAuthenticationProvider jsonUsernamePasswordAuthenticationProvider() {
         return new JsonLoginAuthenticationProvider();
+    }
+
+    @Bean
+    public JsonAuthenticationSuccessHandler jsonLoginSuccessHandler() {
+        return new JsonAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler () {
+        return new JsonAuthenticationFailureHandler();
     }
 }

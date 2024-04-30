@@ -2,6 +2,8 @@ package com.sunny.auth.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
+import com.sunny.auth.core.handler.JsonAuthenticationFailureHandler;
+import com.sunny.auth.core.handler.JsonAuthenticationSuccessHandler;
 import com.sunny.auth.core.model.JsonAuthenticationDetailsSource;
 import com.sunny.auth.core.provider.JsonLoginAuthenticationEntryPoint;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,8 @@ public class SecurityConfigure {
     ObjectMapper objectMapper;
     JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint;
     JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource;
+    JsonAuthenticationSuccessHandler jsonAuthenticationSuccessHandler;
+    JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler;
 
     @Bean
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
@@ -82,12 +86,8 @@ public class SecurityConfigure {
         http.addFilterAt(jsonLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {
             t.authenticationDetailsSource(jsonAuthenticationDetailsSource);
-            t.successHandler(((request, response, authentication) -> {
-
-            }));
-            t.failureHandler((request, response, exception) -> {
-
-            });
+            t.successHandler(jsonAuthenticationSuccessHandler);
+            t.failureHandler(jsonAuthenticationFailureHandler);
         });
         return http.build();
     }
