@@ -10,15 +10,6 @@ import java.nio.charset.StandardCharsets;
 
 public class SecurityUtil {
 
-//    public static void writeJsonToResponse(HttpServletResponse response, CommonResult<?> result) throws IOException {
-//        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-//        response.setContentType("application/json");
-//        PrintWriter printWriter = response.getWriter();
-//        String json = JacksonUtil.toJson(result);
-//        printWriter.append(json);
-//    }
-
-
     public static void writeJsonToResponse(HttpServletResponse response, CommonResult<?> result, ObjectMapper mapper) throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType("application/json");

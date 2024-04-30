@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sunny.auth.core.filter;
+package com.sunny.auth.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

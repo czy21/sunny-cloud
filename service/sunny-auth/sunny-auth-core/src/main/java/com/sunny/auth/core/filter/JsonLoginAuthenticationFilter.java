@@ -3,6 +3,7 @@
 package com.sunny.auth.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunny.auth.api.model.JsonLoginAuthenticationToken;
 import com.sunny.auth.core.model.LoginBody;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
