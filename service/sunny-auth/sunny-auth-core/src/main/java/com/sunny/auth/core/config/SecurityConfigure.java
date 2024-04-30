@@ -18,6 +18,9 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
 @AllArgsConstructor
@@ -83,14 +86,18 @@ public class SecurityConfigure {
         http.csrf(AbstractHttpConfigurer::disable);
         http.requestCache(RequestCacheConfigurer::disable);
         http.exceptionHandling(t -> t.authenticationEntryPoint(jsonLoginAuthenticationEntryPoint));
-        JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = new JsonLoginAuthenticationFilter(objectMapper);
-        http.addFilterAt(jsonLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {
-            t.authenticationDetailsSource(jsonAuthenticationDetailsSource);
-            t.successHandler(jsonAuthenticationSuccessHandler);
-            t.failureHandler(jsonAuthenticationFailureHandler);
-        });
+        JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = getJsonLoginAuthenticationFilter();
+        http.with(new JsonLoginConfigure<>(jsonLoginAuthenticationFilter), t -> {});
         return http.build();
+    }
+
+    private JsonLoginAuthenticationFilter getJsonLoginAuthenticationFilter() {
+        JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter = new JsonLoginAuthenticationFilter(objectMapper);
+        jsonLoginAuthenticationFilter.setAuthenticationDetailsSource(jsonAuthenticationDetailsSource);
+        jsonLoginAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler);
+        jsonLoginAuthenticationFilter.setAuthenticationFailureHandler(jsonAuthenticationFailureHandler);
+        jsonLoginAuthenticationFilter.setSecurityContextRepository(new DelegatingSecurityContextRepository(new RequestAttributeSecurityContextRepository(), new HttpSessionSecurityContextRepository()));
+        return jsonLoginAuthenticationFilter;
     }
 
 }

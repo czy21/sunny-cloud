@@ -17,24 +17,27 @@
 package com.sunny.auth.core.config;
 
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
-public final class JsonLoginConfigure<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, JsonLoginConfigure<H>, JsonLoginAuthenticationFilter> {
+public final class JsonLoginConfigure<B extends HttpSecurityBuilder<B>, T extends JsonLoginConfigure<B, T, F>, F extends AbstractAuthenticationProcessingFilter> extends AbstractHttpConfigurer<T, B> {
 
-	public JsonLoginConfigure(JsonLoginAuthenticationFilter filter) {
-		super(filter, null);
-	}
-	@Override
-	public JsonLoginConfigure<H> loginPage(String loginPage) {
-		return super.loginPage(loginPage);
-	}
+    JsonLoginAuthenticationFilter authFilter;
 
-	@Override
-	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
-		return new AntPathRequestMatcher(loginProcessingUrl, "POST");
-	}
+    public JsonLoginConfigure(JsonLoginAuthenticationFilter filter) {
+        this.authFilter = filter;
+    }
 
+    @Override
+    public void configure(B http) {
+        this.authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+        authFilter = postProcess(authFilter);
+        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 }
