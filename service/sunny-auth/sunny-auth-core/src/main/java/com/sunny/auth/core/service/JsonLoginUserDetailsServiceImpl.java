@@ -12,6 +12,7 @@ public class JsonLoginUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         JsonUserDetails jsonUserDetails= new JsonUserDetails();
         jsonUserDetails.setUsername("user");
         jsonUserDetails.setPassword("password");
