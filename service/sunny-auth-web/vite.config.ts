@@ -16,12 +16,12 @@ export default defineConfig({
         alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: resolve(alias[c])}), {})
     },
     server: {
-        port: 5174,
+        port: 5173,
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:8081/api/',
+                target: 'http://127.0.0.1:8081',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, ''),
+                rewrite: (path) => path.replace(/^\/api\/auth/, ''),
             },
         }
     }

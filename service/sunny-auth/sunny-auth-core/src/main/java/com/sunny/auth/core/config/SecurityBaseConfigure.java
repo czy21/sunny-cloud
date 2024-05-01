@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.session.config.SessionRepositoryCustomizer;
 import org.springframework.session.data.redis.RedisSessionRepository;
@@ -27,7 +28,7 @@ public class SecurityBaseConfigure {
 
     @Bean
     public HttpSessionIdResolver httpSessionIdResolver() {
-        return HeaderHttpSessionIdResolver.xAuthToken();
+        return new HeaderHttpSessionIdResolver(HttpHeaders.AUTHORIZATION);
     }
 
     @Bean
@@ -61,7 +62,7 @@ public class SecurityBaseConfigure {
     }
 
     @Bean
-    public JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler () {
+    public JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler() {
         return new JsonAuthenticationFailureHandler();
     }
 }

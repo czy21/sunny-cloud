@@ -7,6 +7,4 @@ dependencies {
     api 'com.sunny:sunny-framework-doc'
     api 'org.springframework.session:spring-session-data-redis'
     api 'org.springframework.boot:spring-boot-starter-security'
-    api 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
-    api 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
