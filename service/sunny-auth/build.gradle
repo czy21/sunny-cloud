@@ -3,7 +3,9 @@ plugins {
 }
 
 def publish_modules = [
-        "sunny-auth-api"
+        "sunny-auth-api",
+        "sunny-auth-common",
+        "sunny-auth-security"
 ]
 
 subprojects {

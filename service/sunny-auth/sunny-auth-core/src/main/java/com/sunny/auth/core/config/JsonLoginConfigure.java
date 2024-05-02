@@ -55,6 +55,7 @@ public final class JsonLoginConfigure<B extends HttpSecurityBuilder<B>> extends 
 	public void detailsSource(AuthenticationDetailsSource<HttpServletRequest, JsonAuthenticationDetails> detailsSource) {
 		authFilter.setAuthenticationDetailsSource(detailsSource);
 	}
+
 	public void securityContextRepository(SecurityContextRepository securityContextRepository) {
 		authFilter.setSecurityContextRepository(securityContextRepository);
 	}

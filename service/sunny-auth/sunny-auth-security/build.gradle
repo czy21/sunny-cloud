@@ -1,8 +1,4 @@
-
-
 dependencies {
     api project(":sunny-auth-common")
-    api 'org.springframework.session:spring-session-data-redis'
     api 'org.springframework.boot:spring-boot-starter-security'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

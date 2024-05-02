@@ -6,5 +6,4 @@ dependencies {
     api "com.sunny:sunny-framework-cache"
     api 'com.sunny:sunny-framework-doc'
     api 'org.springframework.boot:spring-boot-starter-security'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

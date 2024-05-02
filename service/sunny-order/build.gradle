@@ -28,6 +28,9 @@ subprojects {
         imports {
             mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
         }
+        dependencies {
+            dependency 'com.sunny:sunny-auth-security:0.1.0-SNAPSHOT'
+        }
     }
 
     if (project.name in publish_modules) {

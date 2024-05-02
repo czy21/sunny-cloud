@@ -1,7 +1,8 @@
 package com.sunny.auth.core.provider;
 
-import com.sunny.auth.api.model.JsonLoginAuthenticationToken;
-import com.sunny.auth.api.model.JsonUserDetails;
+
+import com.sunny.auth.common.model.JsonLoginAuthenticationToken;
+import com.sunny.auth.common.model.JsonUserDetails;
 import com.sunny.auth.core.model.LoginBody;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

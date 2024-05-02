@@ -7,6 +7,9 @@ import com.sunny.framework.core.model.CommonResult;
 import com.sunny.framework.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineEventResult;
 import org.springframework.statemachine.config.StateMachineFactory;
@@ -41,13 +44,25 @@ public class StatemachineController extends BaseController {
     @GetMapping(path = "t2")
     public CommonResult<Map<String, Object>> t1(@RequestParam String event) {
         order2StateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Order2StateMachineKind.Event.valueOf(event)).build()))
-                        .subscribe();
+                .subscribe();
         return CommonResult.ok();
     }
 
     @GetMapping(path = "t3")
-    public CommonResult<Map<String, Object>> t3(@RequestParam Long id,@RequestParam String event) {
-        persist.change(id,event);
+    public CommonResult<Map<String, Object>> t3(@RequestParam Long id, @RequestParam String event) {
+        persist.change(id, event);
         return CommonResult.ok();
+    }
+
+    @GetMapping(path = "testAuth")
+    public CommonResult<Map<String, Object>> testAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return CommonResult.ok(Map.of());
+    }
+    @PreAuthorize("hasAnyAuthority('list1')")
+    @GetMapping(path = "testAuthorize")
+    public CommonResult<Map<String, Object>> testAuthorize() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return CommonResult.ok(Map.of());
     }
 }

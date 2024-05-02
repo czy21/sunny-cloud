@@ -5,4 +5,5 @@ dependencies {
     api 'com.fasterxml.jackson.core:jackson-annotations'
     api "org.springframework.security:spring-security-web"
     api 'org.springframework.session:spring-session-data-redis'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

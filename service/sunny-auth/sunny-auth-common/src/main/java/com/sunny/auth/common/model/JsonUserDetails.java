@@ -9,34 +9,71 @@ import java.util.Set;
 
 public class JsonUserDetails implements UserDetails, CredentialsContainer {
 
-    private String password;
-
+    private Long id;
+    private String name;
+    private String phone;
+    private String email;
+    private String address;
     private String username;
-
-    private String phoneNo;
-
+    private String password;
     private Set<GrantedAuthority> authorities;
-
     private boolean accountNonExpired;
-
     private boolean accountNonLocked;
-
     private boolean credentialsNonExpired;
-
     private boolean enabled;
 
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return this.authorities;
+    public Long getId() {
+        return id;
     }
 
-    public void setAuthorities(Set<GrantedAuthority> authorities) {
-        this.authorities = authorities;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -44,34 +81,17 @@ public class JsonUserDetails implements UserDetails, CredentialsContainer {
     }
 
     @Override
-    public String getUsername() {
-        return this.username;
+    public Set<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setAuthorities(Set<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
+        return accountNonExpired;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {
@@ -80,7 +100,7 @@ public class JsonUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return accountNonLocked;
     }
 
     public void setAccountNonLocked(boolean accountNonLocked) {
@@ -89,11 +109,20 @@ public class JsonUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
+        return credentialsNonExpired;
     }
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

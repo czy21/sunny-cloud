@@ -18,10 +18,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 @Configuration
-@EnableMethodSecurity
 @EnableConfigurationProperties(SecurityProperties.class)
+@EnableMethodSecurity
+@Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 public class SecurityConfigure {
 
     ObjectMapper objectMapper;

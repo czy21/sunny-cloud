@@ -5,6 +5,7 @@ dependencies {
     api "com.sunny:sunny-framework-cache"
     api 'com.sunny:sunny-framework-doc'
     api 'com.sunny:sunny-framework-job'
+    api 'com.sunny:sunny-auth-security'
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.statemachine:spring-statemachine-starter'
     api ('org.springframework.statemachine:spring-statemachine-data-jpa'){

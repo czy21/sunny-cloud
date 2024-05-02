@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class SecurityBaseConfigure {
 
     @Bean
-    public JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource() {
-        return new JsonAuthenticationDetailsSource();
+    public UserDetailsService jsonLoginUserDetailsService() {
+        return new JsonLoginUserDetailsServiceImpl();
     }
 
     @Bean
-    public UserDetailsService jsonLoginUserDetailsService() {
-        return new JsonLoginUserDetailsServiceImpl();
+    public JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource() {
+        return new JsonAuthenticationDetailsSource();
     }
 
     @Bean
