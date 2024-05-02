@@ -1,4 +1,4 @@
-package com.sunny.auth.api.model;
+package com.sunny.auth.common.model;
 
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;

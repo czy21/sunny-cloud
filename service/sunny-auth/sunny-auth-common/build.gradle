@@ -1,0 +1,8 @@
+dependencies {
+    api "com.sunny:sunny-framework-core"
+    api "org.slf4j:slf4j-api"
+    api 'jakarta.servlet:jakarta.servlet-api'
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+    api "org.springframework.security:spring-security-web"
+    api 'org.springframework.session:spring-session-data-redis'
+}

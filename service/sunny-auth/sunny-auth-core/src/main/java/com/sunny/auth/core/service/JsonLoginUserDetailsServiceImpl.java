@@ -1,7 +1,8 @@
 package com.sunny.auth.core.service;
 
-import com.sunny.auth.api.model.JsonGrantedAuthority;
-import com.sunny.auth.api.model.JsonUserDetails;
+
+import com.sunny.auth.common.model.JsonGrantedAuthority;
+import com.sunny.auth.common.model.JsonUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

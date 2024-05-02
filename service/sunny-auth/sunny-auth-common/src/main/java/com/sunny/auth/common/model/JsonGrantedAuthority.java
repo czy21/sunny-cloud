@@ -1,4 +1,4 @@
-package com.sunny.auth.api.model;
+package com.sunny.auth.common.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

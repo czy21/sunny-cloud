@@ -1,4 +1,4 @@
-package com.sunny.auth.core.kind;
+package com.sunny.auth.common.kind;
 
 public enum AuthenticationStatusKind {
     LOGIN_FAIL(400100, "用户名或密码错误"),

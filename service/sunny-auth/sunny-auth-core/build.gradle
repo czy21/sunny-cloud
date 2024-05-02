@@ -1,10 +1,10 @@
-
 dependencies {
     api project(":sunny-auth-api")
+    api project(":sunny-auth-common")
     api "com.sunny:sunny-framework-web"
     api "com.sunny:sunny-framework-db"
     api "com.sunny:sunny-framework-cache"
     api 'com.sunny:sunny-framework-doc'
-    api 'org.springframework.session:spring-session-data-redis'
     api 'org.springframework.boot:spring-boot-starter-security'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

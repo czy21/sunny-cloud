@@ -1,8 +1,8 @@
-package com.sunny.auth.core.provider;
+package com.sunny.auth.common.provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunny.auth.core.kind.AuthenticationStatusKind;
-import com.sunny.auth.core.util.SecurityUtil;
+import com.sunny.auth.common.kind.AuthenticationStatusKind;
+import com.sunny.auth.common.util.SecurityUtil;
 import com.sunny.framework.core.model.CommonResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.sunny.auth.core.util;
+package com.sunny.auth.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.core.model.CommonResult;

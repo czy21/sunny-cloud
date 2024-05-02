@@ -5,6 +5,7 @@ pluginManagement {
 }
 
 include "sunny-auth-api"
+include "sunny-auth-common"
 include "sunny-auth-core"
 include "sunny-auth-portal"
 include "sunny-auth-security"

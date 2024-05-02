@@ -1,4 +1,4 @@
-package com.sunny.auth.core.config;
+package com.sunny.auth.common.handler;
 
 import com.sunny.framework.core.model.CommonResult;
 import org.springframework.http.HttpStatus;
