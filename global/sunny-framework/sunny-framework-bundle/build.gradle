@@ -1,0 +1,9 @@
+dependencies {
+    api project(":gh-cloud-common-domain")
+    api project(":gh-cloud-common-core")
+    api project(":gh-cloud-common-cache")
+    api project(":gh-cloud-common-db")
+    api project(":gh-cloud-common-doc")
+    api project(":gh-cloud-common-web")
+    api project(":gh-cloud-common-file")
+}

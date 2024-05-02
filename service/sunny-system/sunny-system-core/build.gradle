@@ -1,11 +1,7 @@
 dependencies {
     api project(":sunny-system-api")
-    api "com.sunny:sunny-framework-web"
-    api "com.sunny:sunny-framework-db"
-    api "com.sunny:sunny-framework-cache"
-    api 'com.sunny:sunny-framework-doc'
+    api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
-
-
+    api 'com.sunny:sunny-auth-security'
 
 }

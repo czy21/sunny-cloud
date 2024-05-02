@@ -1,0 +1,8 @@
+includeBuild("sunny-auth")
+includeBuild("sunny-finance")
+includeBuild("sunny-flink")
+includeBuild("sunny-gateway")
+includeBuild("sunny-order")
+includeBuild("sunny-product")
+includeBuild("sunny-stock")
+includeBuild("sunny-system")
