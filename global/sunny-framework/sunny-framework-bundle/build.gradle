@@ -1,9 +1,8 @@
 dependencies {
-    api project(":gh-cloud-common-domain")
-    api project(":gh-cloud-common-core")
-    api project(":gh-cloud-common-cache")
-    api project(":gh-cloud-common-db")
-    api project(":gh-cloud-common-doc")
-    api project(":gh-cloud-common-web")
-    api project(":gh-cloud-common-file")
+    api project(":sunny-framework-cache")
+    api project(":sunny-framework-core")
+    api project(":sunny-framework-db")
+    api project(":sunny-framework-doc")
+    api project(":sunny-framework-file")
+    api project(":sunny-framework-web")
 }

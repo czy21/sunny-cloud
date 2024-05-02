@@ -3,6 +3,7 @@ dependencyManagement {
         enabled = true
     }
     dependencies {
+        dependency "com.sunny:sunny-framework-bundle:${project.version}"
         dependency "com.sunny:sunny-framework-core:${project.version}"
         dependency "com.sunny:sunny-framework-cache:${project.version}"
         dependency "com.sunny:sunny-framework-db:${project.version}"
