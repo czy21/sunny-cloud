@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   application:
     name: sunny-auth
@@ -16,6 +16,3 @@ spring:
       - nacos:${spring.application.name}.yml
     activate:
       on-profile: default
-logging:
-  level:
-    org.springframework.security: debug

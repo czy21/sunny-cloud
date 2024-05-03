@@ -1,3 +1,0 @@
-file("${settingsDir}").list().findAll{file("${it}/settings.gradle").exists()}.each {
-    includeBuild "${it}"
-}

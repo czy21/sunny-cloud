@@ -36,4 +36,5 @@ public class SecurityBaseConfigure {
     public JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler() {
         return new JsonAuthenticationFailureHandler();
     }
+
 }

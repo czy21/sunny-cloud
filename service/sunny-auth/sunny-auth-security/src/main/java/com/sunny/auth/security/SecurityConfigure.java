@@ -26,15 +26,19 @@ public class SecurityConfigure {
 
     ObjectMapper objectMapper;
     JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint;
+    SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager;
 
-    public SecurityConfigure(ObjectProvider<ObjectMapper> objectMapper, JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint) {
+    public SecurityConfigure(ObjectProvider<ObjectMapper> objectMapper,
+                             JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint,
+                             SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager) {
         this.objectMapper = objectMapper.getIfAvailable(ObjectMapper::new);
         this.jsonLoginAuthenticationEntryPoint = jsonLoginAuthenticationEntryPoint;
+        this.securityPolicyRequestAuthorizationManager = securityPolicyRequestAuthorizationManager;
     }
 
     @Bean
     @Order(2)
-    public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http, SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager) throws Exception {
+    public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(t ->
                 t.anyRequest().access(securityPolicyRequestAuthorizationManager)
         );

@@ -26,7 +26,7 @@ import org.springframework.security.web.context.RequestAttributeSecurityContextR
 
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = false)
 @Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 public class SecurityConfigure {
 
@@ -35,22 +35,25 @@ public class SecurityConfigure {
     JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource;
     JsonAuthenticationSuccessHandler jsonAuthenticationSuccessHandler;
     JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler;
+    SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager;
 
     public SecurityConfigure(ObjectMapper objectMapper,
                              JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint,
                              JsonAuthenticationDetailsSource jsonAuthenticationDetailsSource,
                              JsonAuthenticationSuccessHandler jsonAuthenticationSuccessHandler,
-                             JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler) {
+                             JsonAuthenticationFailureHandler jsonAuthenticationFailureHandler,
+                             SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager) {
         this.objectMapper = objectMapper;
         this.jsonLoginAuthenticationEntryPoint = jsonLoginAuthenticationEntryPoint;
         this.jsonAuthenticationDetailsSource = jsonAuthenticationDetailsSource;
         this.jsonAuthenticationSuccessHandler = jsonAuthenticationSuccessHandler;
         this.jsonAuthenticationFailureHandler = jsonAuthenticationFailureHandler;
+        this.securityPolicyRequestAuthorizationManager = securityPolicyRequestAuthorizationManager;
     }
 
     @Bean
     @Order(2)
-    public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http, SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager) throws Exception {
+    public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(t -> t.anyRequest().access(securityPolicyRequestAuthorizationManager));
         http.anonymous(AbstractHttpConfigurer::disable);
         http.sessionManagement(AbstractHttpConfigurer::disable);

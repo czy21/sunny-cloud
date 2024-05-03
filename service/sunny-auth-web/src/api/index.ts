@@ -11,7 +11,7 @@ const service = axios.create({
 });
 service.interceptors.request.use(
     config => {
-        config.headers.Authorization = util.auth.getToken()
+        config.headers.Authorization = !config.url?.includes("login") && util.auth.getToken()
         return config;
     },
     error => {
