@@ -1,0 +1,17 @@
+tasks.register('build') {
+    rootDir.eachDir {
+        if (file("${it.name}/settings.gradle").exists() && file("${it.name}/${it.name}-portal").exists()) {
+            dependsOn gradle.includedBuild("${it.name}").task(":${it.name}-portal:build")
+        }
+    }
+    dependsOn gradle.includedBuild("sunny-gateway").task(":build")
+}
+
+tasks.register('clean') {
+    rootDir.eachDir {
+        if (file("${it.name}/settings.gradle").exists() && file("${it.name}/${it.name}-portal").exists()) {
+            dependsOn gradle.includedBuild("${it.name}").task(":${it.name}-portal:clean")
+        }
+    }
+    dependsOn gradle.includedBuild("sunny-gateway").task(":clean")
+}
