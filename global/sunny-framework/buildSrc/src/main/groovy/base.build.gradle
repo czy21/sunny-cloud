@@ -1,0 +1,15 @@
+jar {
+    afterEvaluate {
+        manifest {
+            attributes 'Implementation-Title': archiveBaseName
+            attributes 'Implementation-Version': archiveVersion
+            attributes 'Build-Gradle': gradle.gradleVersion
+            attributes 'Build-OS': System.getProperty("os.name")
+            attributes 'Build-By': System.getProperty("user.name")
+            attributes 'Build-Jdk-Spec': System.getProperty("java.version")
+            attributes 'Build-SourceCompatibility': sourceCompatibility
+            attributes 'Build-TargetCompatibility': targetCompatibility
+            attributes 'Build-Time': LocalDateTime.now().format("yyyy-MM-dd HH:mm:ss")
+        }
+    }
+}
