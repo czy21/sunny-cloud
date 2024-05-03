@@ -4,6 +4,7 @@ import com.sunny.auth.common.SecurityProperties;
 import com.sunny.auth.common.util.SecurityUtil;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.method.PreAuthorizeAuthorizationManager;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 public final class SecurityPolicyMethodAuthorizationManager implements AuthorizationManager<MethodInvocation> {
 
     @Autowired
+    @Lazy //TODO 解决配置不能热更新
     SecurityProperties securityProperties;
     PreAuthorizeAuthorizationManager preAuthorizeAuthorizationManager = new PreAuthorizeAuthorizationManager();
 
