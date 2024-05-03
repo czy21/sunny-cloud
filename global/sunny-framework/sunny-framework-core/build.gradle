@@ -1,5 +1,5 @@
 plugins {
-    id "common.build"
+    id "lombok.build"
 }
 dependencies {
     api "org.apache.commons:commons-lang3"

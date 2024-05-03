@@ -6,7 +6,7 @@ plugins {
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
-    apply from: '../../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle'
+    apply from: '../../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle'
     apply plugin: 'flink.build'
 
     group = 'com.sunny'
