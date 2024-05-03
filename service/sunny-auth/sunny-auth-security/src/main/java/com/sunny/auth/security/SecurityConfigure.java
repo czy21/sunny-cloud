@@ -7,6 +7,9 @@ import com.sunny.auth.common.handler.SecurityExceptionHandler;
 import com.sunny.auth.common.manager.SecurityPolicyRequestAuthorizationManager;
 import com.sunny.auth.common.provider.JsonLoginAuthenticationEntryPoint;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +21,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+
+@ConditionalOnProperty(prefix = SecurityProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = false)
 @Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 public class SecurityConfigure {
 
