@@ -1,6 +1,7 @@
 package com.sunny.auth.common.provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunny.auth.common.SecurityProperties;
 import com.sunny.auth.common.kind.AuthenticationStatusKind;
 import com.sunny.auth.common.util.SecurityUtil;
 import com.sunny.framework.core.model.CommonResult;

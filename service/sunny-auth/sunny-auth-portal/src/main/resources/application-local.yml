@@ -8,6 +8,7 @@ spring:
     nacos:
       discovery:
         namespace: sunny
+
 logging:
   level:
     com.sunny.system.core.mapper: debug

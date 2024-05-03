@@ -24,7 +24,7 @@ public final class SecurityPolicyMethodAuthorizationManager implements Authoriza
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, MethodInvocation object) {
         if (RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes servletRequestAttributes) {
-            boolean isIgnorePath = SecurityUtil.isIgnorePath(securityProperties.getIgnorePaths(), servletRequestAttributes.getRequest().getContextPath());
+            boolean isIgnorePath = SecurityUtil.isIgnorePath(securityProperties.getIgnorePaths(), servletRequestAttributes.getRequest().getServletPath());
             if (isIgnorePath) {
                 return new AuthorizationDecision(true);
             }
