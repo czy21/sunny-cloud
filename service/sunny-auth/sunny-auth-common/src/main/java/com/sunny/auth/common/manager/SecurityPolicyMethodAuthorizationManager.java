@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 
 public final class SecurityPolicyMethodAuthorizationManager implements AuthorizationManager<MethodInvocation> {
 
-    @Autowired
     @Lazy //TODO 解决配置不能热更新
+    @Autowired
     SecurityProperties securityProperties;
     PreAuthorizeAuthorizationManager preAuthorizeAuthorizationManager = new PreAuthorizeAuthorizationManager();
 
