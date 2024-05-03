@@ -1,3 +1,12 @@
+
+targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_17
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add("-parameters")
+}
+
 jar {
     afterEvaluate {
         manifest {
@@ -12,4 +21,12 @@ jar {
             attributes 'Build-Time': LocalDateTime.now().format("yyyy-MM-dd HH:mm:ss")
         }
     }
+}
+
+java {
+    withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }

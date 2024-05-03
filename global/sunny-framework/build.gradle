@@ -11,14 +11,6 @@ subprojects {
     group = 'com.sunny'
     version = '3.0.0-SNAPSHOT'
 
-    targetCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_17
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        options.compilerArgs.add("-parameters")
-    }
-
     dependencyManagement {
         generatedPomCustomization {
             enabled = false
@@ -64,50 +56,15 @@ subprojects {
         }
     }
 
-    test {
-        useJUnitPlatform()
-    }
-
     jar {
         into("META-INF/maven/${project.group}/${project.name}") {
             from { generatePomFileForMavenJavaPublication }
             rename "pom-default.xml", "pom.xml"
         }
-
-        afterEvaluate {
-            manifest {
-                attributes 'Implementation-Title': archiveBaseName
-                attributes 'Implementation-Version': archiveVersion
-                attributes 'Build-Gradle': gradle.gradleVersion
-                attributes 'Build-OS': System.getProperty("os.name")
-                attributes 'Build-By': System.getProperty("user.name")
-                attributes 'Build-Jdk-Spec': System.getProperty("java.version")
-                attributes 'Build-SourceCompatibility': sourceCompatibility
-                attributes 'Build-TargetCompatibility': targetCompatibility
-                attributes 'Build-Time': LocalDateTime.now().format("yyyy-MM-dd HH:mm:ss")
-            }
-        }
     }
 
-    java {
-        withSourcesJar()
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                versionMapping {
-                    usage('java-api') {
-                        fromResolutionOf('runtimeClasspath')
-                    }
-                    usage('java-runtime') {
-                        fromResolutionResult()
-                    }
-                }
-            }
-        }
-    }
+    apply plugin: 'base.build'
+    apply plugin: 'publish.build'
 
     List<String> applyPlugins = []
     if (bomName != name) {

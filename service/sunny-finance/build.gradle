@@ -13,14 +13,6 @@ subprojects {
     group = 'com.sunny'
     version = '0.1.0-SNAPSHOT'
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        options.compilerArgs.add("-parameters")
-    }
-
     dependencyManagement {
         generatedPomCustomization {
             enabled = false
@@ -34,35 +26,8 @@ subprojects {
     }
 
     if (project.name in publish_modules) {
-        publishing {
-            publications {
-                mavenJava(MavenPublication) {
-                    from components.java
-                    versionMapping {
-                        usage('java-api') {
-                            fromResolutionOf('runtimeClasspath')
-                        }
-                        usage('java-runtime') {
-                            fromResolutionResult()
-                        }
-                    }
-                }
-            }
-        }
+        apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/publish.build.gradle"
     }
-
-    java {
-        withSourcesJar()
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-    dependencies {
-        implementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
-        annotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
-        testImplementation "org.mapstruct:mapstruct", "org.projectlombok:lombok"
-        testAnnotationProcessor "org.mapstruct:mapstruct-processor", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding"
-        testImplementation "org.springframework.boot:spring-boot-starter-test"
-    }
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/base.build.gradle"
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
 }
