@@ -21,8 +21,10 @@ const routes = [
         ],
         beforeEnter: (to: any, from: any, next: any) => {
             const token = util.auth.getToken()
-            if (token) {
+            if (!token) {
                 next()
+            } else {
+                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
             }
         }
     },
