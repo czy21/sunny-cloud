@@ -1,4 +1,5 @@
 import axios, {Method} from 'axios'
+import util from "@/util";
 
 //配置API接口地址
 const root = 'api'
@@ -10,6 +11,7 @@ const service = axios.create({
 });
 service.interceptors.request.use(
     config => {
+        config.headers.Authorization = util.auth.getToken()
         return config;
     },
     error => {

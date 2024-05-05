@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '@/layout/Home.vue'
+import util from "@/util";
 
 const routes = [
     {
@@ -17,7 +18,11 @@ const routes = [
                 path: "menu",
                 component: () => import('@v/menu/index.vue')
             },
-        ]
+        ],
+        beforeEnter: (to: any, from: any, next: any) => {
+            console.log(util.auth.getToken())
+            util.auth.getToken() && next()
+        }
     },
 ]
 const router = createRouter({

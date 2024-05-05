@@ -24,13 +24,18 @@ const form = reactive({
 })
 
 const onSubmit = () => {
-  console.log(router.currentRoute)
-  // api.post("auth/login", {"username": "user", "password": "password"}).then((res: any) => {
-  //   const token = res.data.data?.token
-  //   if (token) {
-  //     util.auth.setToken(token)
-  //     router.push("/")
-  //   }
-  // })
+  const queryMap = router.currentRoute.value.query
+  const redirectUri: any = queryMap.redirectUri
+  api.post("auth/login", {"username": "user", "password": "password"}).then((res: any) => {
+    const token = res.data.data?.token
+    if (token) {
+      util.auth.setToken(token)
+      if (redirectUri) {
+        window.location.href = redirectUri + "?token=" + token
+      } else {
+        router.push("/")
+      }
+    }
+  })
 }
 </script>
