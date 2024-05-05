@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import api from "@/api"
 const onOk = () => {
-  api.post("sys/user/page").then(t=>{
+  api.get("auth/test").then(t=>{
     // console.log(t.data)
   })
 }

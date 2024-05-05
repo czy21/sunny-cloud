@@ -7,6 +7,13 @@ const routes = [
     {
         path: '/',
         component: Home,
+        children: [
+            {
+                name: "Dashboard",
+                path: "dashboard",
+                component: () => import('@v/Dashboard.vue')
+            },
+        ],
         beforeEnter(to: any, from: any, next: any) {
             let token = util.auth.getToken()
             if (!token) {
@@ -18,6 +25,7 @@ const routes = [
     },
     {
         path: '/login',
+        name: "login",
         component: Login
     },
 ]

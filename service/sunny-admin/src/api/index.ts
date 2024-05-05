@@ -1,64 +1,88 @@
-import axios, {Method} from 'axios'
+import axios, {AxiosRequestConfig} from 'axios'
 import util from "@/util";
+import router from "@/router";
+import {ElMessage} from "element-plus";
 
-//配置API接口地址
-const root = 'api'
+
+enum Method {
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE"
+}
 
 const service = axios.create({
-    baseURL: root,
-    timeout: 5000, //请求超时
+    baseURL: '/api',
     withCredentials: true
 });
+
 service.interceptors.request.use(
     config => {
-        config.headers.Authorization = util.auth.getToken()
+        config.headers.Authorization = !config.url?.includes("login") && util.auth.getToken()
         return config;
     },
     error => {
-        Promise.reject(error)
+        return Promise.reject(error)
     });
-
 service.interceptors.response.use(
     response => {
+        const {code, message} = response.data
+        switch (code) {
+            case 400100:
+                ElMessage.error(message)
+                break
+            case 400401:
+                // router.push({path: "/login"})
+                window.location.href = "https://sunny-auth.czy21.com?redirectUri=" + window.location
+                break
+        }
         return response
     },
     error => {
-        Promise.reject(error)
+        const {status} = error.response || {};
+        switch (status) {
+            case 401:
+                window.location.href = "https://sunny-auth.czy21.com?redirectUri=" + window.location
+                break
+            case 500:
+                ElMessage.error("服务器异常")
+                break
+            case 504:
+                ElMessage.error("网络超时")
+                break
+        }
+        return Promise.reject(error)
     });
 
-function apiAxios(method: Method, url: string, params: any): Promise<any> {
+function apiAxios(method: Method, url: string, params: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) {
     return new Promise((resolve, reject) => {
         service({
-            method,
+            method: method,
             url: url,
             data: method === 'POST' || method === 'PUT' ? params : null,
-            params: method === 'GET' || method === 'DELETE' ? params : null
-        }).then(res => resolve(res), error => reject(error)).catch(error => reject(error))
+            params: method === 'GET' || method === 'DELETE' ? params : null,
+            ...config
+        })
+            .then(res => resolve(res))
+            .catch(error => {
+                if (errorCallBack) {
+                    errorCallBack(error)
+                }
+            })
     })
 }
 
 export default {
-    get: function (url: string, params: any) {
-        return apiAxios('GET', url, params)
+    get: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+        return apiAxios(Method.GET, url, params, config, errorCallBack)
     },
-    post: function (url: string, params: any) {
-        return apiAxios('POST', url, params)
+    post: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+        return apiAxios(Method.POST, url, params, config, errorCallBack)
     },
-    put: function (url: string, params: any) {
-        return apiAxios('PUT', url, params)
+    put: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+        return apiAxios(Method.PUT, url, params, config, errorCallBack)
     },
-    delete: function (url: string, params: any) {
-        return apiAxios('DELETE', url, params)
+    delete: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+        return apiAxios(Method.DELETE, url, params, config, errorCallBack)
     }
-}
-
-
-export interface API {
-    get(url: string, param?: any): Promise<any>
-
-    post(url: string, param?: any): Promise<any>
-
-    put(url: string, param?: any): Promise<any>
-
-    delete(url: string, param?: any): Promise<any>
-}
+};
