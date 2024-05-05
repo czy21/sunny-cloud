@@ -33,7 +33,7 @@ service.interceptors.response.use(
                 break
             case 400401:
                 // router.push({path: "/login"})
-                window.location.href = "https://sunny-auth.czy21.com?redirectUri=" + window.location
+                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
                 break
         }
         return response
@@ -42,7 +42,7 @@ service.interceptors.response.use(
         const {status} = error.response || {};
         switch (status) {
             case 401:
-                window.location.href = "https://sunny-auth.czy21.com?redirectUri=" + window.location
+                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
                 break
             case 500:
                 ElMessage.error("服务器异常")
