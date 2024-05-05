@@ -16,6 +16,7 @@ export default defineConfig({
         alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: resolve(alias[c])}), {})
     },
     server: {
+        host: '0.0.0.0',
         port: 5173,
         proxy: {
             '/api': {
