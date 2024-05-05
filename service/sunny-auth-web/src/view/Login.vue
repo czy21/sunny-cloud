@@ -31,7 +31,7 @@ const onSubmit = () => {
     if (token) {
       util.auth.setToken(token)
       if (redirectUri) {
-        window.location.href = redirectUri + "?token=" + token
+        window.location.href = redirectUri
       } else {
         router.push("/")
       }
