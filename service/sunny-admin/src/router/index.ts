@@ -20,8 +20,10 @@ const routes = [
             },
         ],
         beforeEnter: (to: any, from: any, next: any) => {
-            console.log(util.auth.getToken())
-            util.auth.getToken() && next()
+            const token = util.auth.getToken()
+            if (token) {
+                next()
+            }
         }
     },
 ]

@@ -9,8 +9,11 @@ const routes = [
         component: Home,
         beforeEnter(to: any, from: any, next: any) {
             let token = util.auth.getToken()
-            !token && next({path: 'login'})
-            next()
+            if (!token) {
+                next({path: 'login'})
+            } else {
+                next()
+            }
         }
     },
     {
