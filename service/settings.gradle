@@ -1,3 +1,5 @@
-file("${settingsDir}").list().findAll{file("${it}/settings.gradle").exists()}.each {
-    includeBuild "${it}"
+def exclude = ["sunny-flink", "sunny-native"]
+
+file("${settingsDir}").list().findAll { file("${it}/settings.gradle").exists() && !exclude.contains(it) }.each {
+    includeBuild("${it}")
 }
