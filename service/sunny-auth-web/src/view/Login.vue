@@ -29,6 +29,7 @@ const onSubmit = () => {
   api.post("auth/login", {"username": "user", "password": "password"}).then((res: any) => {
     const token = res.data.data?.token
     if (token) {
+      document.domain="https://czy21.com"
       util.auth.setToken(token)
       if (redirectUri) {
         window.location.href = redirectUri + "?token=" + token
