@@ -2,7 +2,9 @@
     tasks.register("${t}") {
         gradle.getIncludedBuilds().each {
             if (file("${it.name}/${it.name}-portal").exists()) {
-                dependsOn gradle.includedBuild("${it.name}").task(":${it.name}-portal:${t}")
+                file("${it.name}").list().findAll(m -> m.startsWith(it.name)).each { m ->
+                    dependsOn gradle.includedBuild("${it.name}").task(":${m}:${t}")
+                }
             } else {
                 dependsOn gradle.includedBuild("${it.name}").task(":${t}")
             }

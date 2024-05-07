@@ -21,10 +21,10 @@ subprojects {
             mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
         }
     }
-
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/base.build.gradle"
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
+    
     if (project.name in publish_modules) {
         apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/publish.build.gradle"
     }
-    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/base.build.gradle"
-    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
 }
