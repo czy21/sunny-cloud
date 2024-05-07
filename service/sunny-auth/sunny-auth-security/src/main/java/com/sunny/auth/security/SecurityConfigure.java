@@ -28,15 +28,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(prePostEnabled = false)
 @Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 public class SecurityConfigure {
-
-    ObjectMapper objectMapper;
+    
     JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint;
     SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager;
 
     public SecurityConfigure(ObjectProvider<ObjectMapper> objectMapper,
                              JsonLoginAuthenticationEntryPoint jsonLoginAuthenticationEntryPoint,
                              SecurityPolicyRequestAuthorizationManager securityPolicyRequestAuthorizationManager) {
-        this.objectMapper = objectMapper.getIfAvailable(ObjectMapper::new);
         this.jsonLoginAuthenticationEntryPoint = jsonLoginAuthenticationEntryPoint;
         this.securityPolicyRequestAuthorizationManager = securityPolicyRequestAuthorizationManager;
     }
