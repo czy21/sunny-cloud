@@ -1,0 +1,17 @@
+settingsEvaluated { settings ->
+    settings.pluginManagement {
+        plugins {}
+        resolutionStrategy {
+        }
+        repositories {
+            gradlePluginPortal()
+        }
+    }
+}
+allprojects {
+    apply plugin: 'maven-publish'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
