@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
@@ -20,4 +20,4 @@ jobs:
         run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
       - name: Build service
         working-directory: service
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle clean build
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
