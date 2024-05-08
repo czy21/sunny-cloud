@@ -1,12 +1,11 @@
 ["clean", "build"].forEach { t ->
     tasks.register("${t}") {
-        gradle.getIncludedBuilds().each {
-            if (file("${it.name}/${it.name}-portal").exists()) {
-                file("${it.name}").list().findAll(m -> m.startsWith(it.name)).each { m ->
-                    dependsOn gradle.includedBuild("${it.name}").task(":${m}:${t}")
-                }
-            } else {
-                dependsOn gradle.includedBuild("${it.name}").task(":${t}")
+        gradle.getIncludedBuilds().each {p->
+            file("${p.name}").eachDirMatch(~/${p.name}-.*/) { m ->
+                dependsOn gradle.includedBuild("${p.name}").task(":${m.name}:${t}")
+            }
+            if (file("${p.name}/src").exists()) {
+                dependsOn gradle.includedBuild("${p.name}").task(":${t}")
             }
         }
     }
