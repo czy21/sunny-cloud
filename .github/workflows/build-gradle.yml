@@ -1,0 +1,23 @@
+name: Build Gradle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Build framework
+        working-directory: global/sunny-framework
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
+      - name: Build service
+        working-directory: service
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
