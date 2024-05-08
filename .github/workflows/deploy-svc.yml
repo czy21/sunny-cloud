@@ -13,12 +13,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
   build-framework:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
       - name: Run build
         working-directory: global/sunny-framework
         run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup,build-framework]
     steps:
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
       - name: Run build
         working-directory: service
         run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle clean build
