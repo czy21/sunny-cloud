@@ -25,7 +25,7 @@ subprojects {
         }
     }
 
-    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/base.build.gradle"
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
     apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
     
     if (project.name in publish_modules) {

@@ -33,4 +33,4 @@ dependencies {
     api "io.github.mweirauch:micrometer-jvm-extras"
 }
 
-apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/base.build.gradle"
+apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"

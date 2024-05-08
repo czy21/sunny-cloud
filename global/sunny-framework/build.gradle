@@ -63,7 +63,7 @@ subprojects {
         }
     }
 
-    apply plugin: 'base.build'
+    apply plugin: 'common.build'
     apply plugin: 'publish.build'
 
     List<String> applyPlugins = []
