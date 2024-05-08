@@ -1,0 +1,12 @@
+tasks.register("clean"){
+
+}
+
+npm_install {
+  args = ['--no-package-lock']
+}
+
+task build(type: NpmTask) {
+  dependsOn npm_install
+  args = ['run','build','--no-package-lock']
+}
