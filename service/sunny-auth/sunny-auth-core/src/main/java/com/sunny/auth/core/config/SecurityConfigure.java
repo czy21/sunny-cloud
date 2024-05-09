@@ -6,6 +6,7 @@ import com.sunny.auth.common.SecurityProperties;
 import com.sunny.auth.common.handler.SecurityExceptionHandler;
 import com.sunny.auth.common.manager.SecurityPolicyRequestAuthorizationManager;
 import com.sunny.auth.common.provider.JsonLoginAuthenticationEntryPoint;
+import com.sunny.auth.core.AuthProperties;
 import com.sunny.auth.core.filter.JsonLoginAuthenticationFilter;
 import com.sunny.auth.core.handler.JsonAuthenticationFailureHandler;
 import com.sunny.auth.core.handler.JsonAuthenticationSuccessHandler;
@@ -25,7 +26,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
-@EnableConfigurationProperties(SecurityProperties.class)
+@EnableConfigurationProperties({SecurityProperties.class, AuthProperties.class})
 @EnableMethodSecurity(prePostEnabled = false)
 @Import({SecurityCommonConfigure.class, SecurityExceptionHandler.class})
 public class SecurityConfigure {

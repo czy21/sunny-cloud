@@ -1,7 +1,9 @@
 package com.sunny.auth.portal.controller;
 
+import com.sunny.auth.core.AuthProperties;
 import com.sunny.framework.core.model.CommonResult;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -13,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-    @Value("${sunny.auth.login-uri:}")
-    private String loginUri;
+    @Autowired
+    AuthProperties authProperties;
 
     @GetMapping("/login-uri")
     public CommonResult<String> loginUri() {
-        return CommonResult.ok(loginUri);
+        return CommonResult.ok(authProperties.getLoginUri());
     }
 
 
