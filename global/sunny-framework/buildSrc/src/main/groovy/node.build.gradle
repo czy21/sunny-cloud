@@ -1,14 +1,13 @@
 tasks.register("clean"){
 
 }
-node {
-    version = "20.12.0"
-}
+
 npm_install {
   args = ['--no-package-lock']
 }
 
 task build(type: NpmTask) {
+  dependsOn npm_version
   dependsOn npm_install
   args = ['run','build','--no-package-lock']
 }
