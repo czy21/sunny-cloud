@@ -1,0 +1,7 @@
+{
+    "name":"sunny-web",
+    "workspaces":[
+        "sunny-admin",
+        "sunny-auth-web"
+    ]
+}
