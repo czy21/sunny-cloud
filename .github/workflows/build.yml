@@ -28,7 +28,7 @@ jobs:
       - id: find
         run: |
           projects=$(find service -maxdepth 2 ! -path service/package.json -name "package.json" -exec dirname {} \; | paste -sd ',')
-          echo "projects=${projects}" >> "$GITHUB_OUTPUT"
+          echo "projects=[${projects}]" >> "$GITHUB_OUTPUT"
   build_frontend:
     runs-on: ubuntu-latest
     needs: [find_frontend]
