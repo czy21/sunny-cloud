@@ -34,7 +34,7 @@ jobs:
     needs: [find_frontend]
     strategy:
       matrix:
-        project: ${{needs.find_frontend.outputs.projects}}
+        project: ${{fromJson(needs.find_frontend.outputs.projects)}}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
