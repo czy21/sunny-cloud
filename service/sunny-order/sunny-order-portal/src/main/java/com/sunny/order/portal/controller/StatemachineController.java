@@ -5,6 +5,7 @@ import com.sunny.order.core.kind.Order2StateMachineKind;
 import com.sunny.order.core.kind.OrderStateMachineKind;
 import com.sunny.framework.core.model.CommonResult;
 import com.sunny.framework.web.controller.BaseController;
+import com.sunny.order.core.model.dto.TestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,5 +65,13 @@ public class StatemachineController extends BaseController {
     public CommonResult<Map<String, Object>> testAuthorize() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return CommonResult.ok(Map.of());
+    }
+
+
+    @GetMapping(path = "testSensitive")
+    public CommonResult<TestDTO> testSensitive(){
+        TestDTO d=new TestDTO();
+        d.setName("haha");
+        return CommonResult.ok();
     }
 }
