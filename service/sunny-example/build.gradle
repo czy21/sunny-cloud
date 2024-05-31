@@ -1,0 +1,35 @@
+plugins {
+    id 'org.springframework.boot' apply false
+}
+
+def publish_modules = [
+        "sunny-example-api"
+]
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'io.spring.dependency-management'
+    group = 'com.sunny'
+    version = '0.1.0-SNAPSHOT'
+
+    dependencyManagement {
+        generatedPomCustomization {
+            enabled = false
+        }
+        imports {
+            mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+        }
+    }
+
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
+    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
+    
+    if (project.name in publish_modules) {
+        apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/publish.build.gradle"
+    }
+
+    dependencies {
+        
+    }
+}

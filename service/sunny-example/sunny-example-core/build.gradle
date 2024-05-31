@@ -1,0 +1,5 @@
+dependencies {
+    api project(":sunny-example-api")
+    api "com.sunny:sunny-framework-web"
+    api 'com.sunny:sunny-framework-doc'
+}
