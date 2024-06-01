@@ -3,16 +3,12 @@ server:
 spring:
   application:
     name: sunny-example
-  cloud:
-    nacos:
-      server-addr: nacos.czy21-internal.com:8848
-      config:
-        namespace: sunny
+test:
+  name: ${spring.application.name}
+management:
+  endpoint:
+    env:
+      show-values: always
 
----
-spring:
-  config:
-    import:
-      - nacos:${spring.application.name}.yml
-    activate:
-      on-profile: default
+people:
+  name: ha1
