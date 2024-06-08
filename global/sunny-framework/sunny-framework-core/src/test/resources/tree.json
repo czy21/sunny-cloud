@@ -2,31 +2,43 @@
   {
     "label": "a",
     "value": "a",
-    "parentValue": null
+    "parentValue": null,
+    "sort": 10
   },
   {
     "label": "b",
     "value": "b",
-    "parentValue": "a"
+    "parentValue": null,
+    "sort": 5
   },
   {
     "label": "c",
     "value": "c",
-    "parentValue": "a"
+    "parentValue": null,
+    "sort": 4
   },
   {
     "label": "d",
     "value": "d",
-    "parentValue": "b"
+    "parentValue": null,
+    "sort": 9
   },
   {
-    "label": "e",
-    "value": "e",
-    "parentValue": "d"
+    "label": "a1",
+    "value": "a1",
+    "parentValue": "a",
+    "sort": 9
   },
   {
-    "label": "e1",
-    "value": "e1",
-    "parentValue": "e"
+    "label": "a2",
+    "value": "a2",
+    "parentValue": "a",
+    "sort": 20
+  },
+  {
+    "label": "a3",
+    "value": "a3",
+    "parentValue": "a",
+    "sort": 16
   }
 ]

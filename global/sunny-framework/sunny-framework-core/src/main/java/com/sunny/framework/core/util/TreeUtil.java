@@ -40,48 +40,35 @@ public class TreeUtil {
     public static <V, T extends TreeNode<V>> List<T> getTree(List<T> all,
                                                              Predicate<T> rootPredicate,
                                                              Consumer<T> decoNodeFunc) {
-        return getTree(all, rootPredicate, decoNodeFunc, TreeNode::getSort, SortKind.ASC);
+        return getTree(all, rootPredicate, decoNodeFunc, SortKind.ASC);
     }
 
     public static <V, T extends TreeNode<V>> List<T> getTree(List<T> all,
                                                              Predicate<T> rootPredicate,
                                                              Consumer<T> decoNodeFunc,
-                                                             Function<TreeNode<V>, Integer> sortFunc,
                                                              SortKind sortKind) {
         if (decoNodeFunc != null) {
             all.forEach(decoNodeFunc);
         }
-        List<T> tree = all.stream().filter(rootPredicate).map(t -> buildChildren(all, t)).collect(Collectors.toList());
-        if (sortFunc != null) {
-            tree.forEach(t -> sortBy(t, sortFunc, sortKind));
-            tree = tree.stream()
-                    .sorted(sortKind == SortKind.ASC ? Comparator.comparing(sortFunc) : Comparator.comparing(sortFunc).reversed())
-                    .collect(Collectors.toList());
-        }
-        return tree;
+        Comparator<TreeNode<V>> sortComparator = sortKind == SortKind.ASC
+                ? Comparator.comparing(TreeNode::getSort)
+                : Comparator.comparing(TreeNode<V>::getSort).reversed();
+        return all.stream()
+                .filter(rootPredicate)
+                .map(t -> buildChildren(all, t, sortComparator))
+                .sorted(sortComparator)
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> T buildChildren(List<T> items, T node) {
-        List<T> children = new ArrayList<>();
-        items.forEach(t -> {
-            if (node.getId().equals(t.getParentId())) {
-                children.add(buildChildren(items, t));
-            }
-        });
-        if (!children.isEmpty()) {
-            Optional.ofNullable(node.getChildren())
-                    .ifPresentOrElse(t -> t.addAll((List) children), () -> node.setChildren(children));
-        }
+    public static <V, T extends TreeNode<V>> T buildChildren(List<T> items, T node, Comparator<TreeNode<V>> sortComparator) {
+        List<T> children = items.stream()
+                .filter(t -> node.getId().equals(t.getParentId()))
+                .map(t -> buildChildren(items, t, sortComparator))
+                .collect(Collectors.toList());
+        Optional.ofNullable(node.getChildren())
+                .ifPresentOrElse(t -> t.addAll((List) children), () -> node.setChildren(children));
+        node.getChildren().sort(sortComparator);
         return node;
     }
-
-    @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> void sortBy(T item, Function<TreeNode<V>, Integer> sortFunc, SortKind sortKind) {
-        if (CollectionUtils.isNotEmpty(item.getChildren())) {
-            item.setChildren(item.getChildren().stream().sorted(sortKind == SortKind.ASC ? Comparator.comparing(sortFunc) : Comparator.comparing(sortFunc).reversed()).collect(Collectors.toList()));
-            item.getChildren().forEach(t -> sortBy((T) t, sortFunc, sortKind));
-        }
-    }
-
 }
