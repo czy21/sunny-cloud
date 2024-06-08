@@ -23,6 +23,7 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     private T value;
     private String parentLabel;
     private T parentValue;
+    private List<T> parentValues;
     private Map<String, Object> extra;
     private List<SimpleItemModel<T>> children;
 
@@ -62,6 +63,17 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     @Override
     public void setParentId(T parentId) {
         this.parentValue = parentId;
+    }
+
+    @JsonIgnore
+    @Override
+    public List<T> getParentIds() {
+        return this.parentValues;
+    }
+
+    @Override
+    public void setParentIds(List<T> parentIds) {
+        this.parentValues = parentIds;
     }
 
     @Override

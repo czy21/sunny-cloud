@@ -12,6 +12,10 @@ public interface TreeNode<T> {
 
     void setParentId(T parentId);
 
+    List<T> getParentIds();
+
+    void setParentIds(List<T> parentIds);
+
     List<? extends TreeNode<T>> getChildren();
 
     void setChildren(List<? extends TreeNode<T>> children);
