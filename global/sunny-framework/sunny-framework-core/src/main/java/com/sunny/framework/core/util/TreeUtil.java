@@ -1,7 +1,6 @@
 package com.sunny.framework.core.util;
 
 
-import com.sunny.framework.core.model.SimpleItemModel;
 import com.sunny.framework.core.model.TreeNode;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -50,13 +49,13 @@ public class TreeUtil {
 
     @SuppressWarnings("unchecked")
     public static <V, T extends TreeNode<V>> T buildChildren(List<T> items, T node) {
-        List<TreeNode<V>> children = new ArrayList<>();
+        List<T> children = new ArrayList<>();
         items.forEach(t -> {
             if (node.getId().equals(t.getParentId())) {
                 children.add(buildChildren(items, t));
             }
         });
-        if (children.size() > 0) {
+        if (!children.isEmpty()) {
             if (CollectionUtils.isNotEmpty(node.getChildren())) {
                 node.getChildren().addAll((List) children);
             } else {
@@ -72,24 +71,6 @@ public class TreeUtil {
             item.setChildren(item.getChildren().stream().sorted(sortKind == SortKind.ASC ? Comparator.comparing(sortFunc) : Comparator.comparing(sortFunc).reversed()).collect(Collectors.toList()));
             item.getChildren().forEach(t -> sortBy((T) t, sortFunc, sortKind));
         }
-    }
-
-    public static void main(String[] args) {
-        List<SimpleItemModel<String>> list = new ArrayList<>();
-        SimpleItemModel<String> t1 = SimpleItemModel.of("a", "a");
-        t1.setParentValue(null);
-        t1.setSort(1);
-        SimpleItemModel<String> t2 = SimpleItemModel.of("b", "b");
-        t2.setParentValue("a");
-        t2.setSort(3);
-        SimpleItemModel<String> t3 = SimpleItemModel.of("c", "c");
-        t3.setParentValue("a");
-        t3.setSort(2);
-        list.add(t1);
-        list.add(t2);
-        list.add(t3);
-        List<SimpleItemModel<String>> tree = TreeUtil.getTree(list, t -> t.getParentValue() == null);
-        System.out.println("aaa");
     }
 
 }

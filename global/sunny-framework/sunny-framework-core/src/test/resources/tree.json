@@ -1,0 +1,22 @@
+[
+  {
+    "label": "a",
+    "value": "a",
+    "parentValue": null
+  },
+  {
+    "label": "b",
+    "value": "b",
+    "parentValue": "a"
+  },
+  {
+    "label": "c",
+    "value": "c",
+    "parentValue": "a"
+  },
+  {
+    "label": "d",
+    "value": "d",
+    "parentValue": "b"
+  }
+]
