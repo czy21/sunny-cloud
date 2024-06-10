@@ -8,8 +8,7 @@
   {
     "label": "b",
     "value": "b",
-    "parentValue": null,
-    "sort": 5
+    "parentValue": null
   },
   {
     "label": "c",
@@ -40,5 +39,10 @@
     "value": "a3",
     "parentValue": "a",
     "sort": 16
+  },
+  {
+    "label": "a3-1",
+    "value": "a3-1",
+    "parentValue": "a3"
   }
 ]

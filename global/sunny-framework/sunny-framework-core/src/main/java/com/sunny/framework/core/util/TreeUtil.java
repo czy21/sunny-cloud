@@ -2,24 +2,16 @@ package com.sunny.framework.core.util;
 
 
 import com.sunny.framework.core.model.TreeNode;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TreeUtil {
-
-    public enum SortKind {
-        ASC,
-        DESC
-    }
 
     public static <V, T extends TreeNode<V>> void assemble(List<T> all) {
         all.forEach(t -> t.setParentIds(getParentIds(all, t)));
@@ -33,26 +25,24 @@ public class TreeUtil {
     }
 
 
-    public static <V, T extends TreeNode<V>> List<T> getTree(List<T> all, Predicate<T> rootPredicate) {
-        return getTree(all, rootPredicate, null);
+    public static <V, T extends TreeNode<V>> List<T> build(List<T> all, Predicate<T> rootPredicate) {
+        return build(all, rootPredicate, null);
     }
 
-    public static <V, T extends TreeNode<V>> List<T> getTree(List<T> all,
-                                                             Predicate<T> rootPredicate,
-                                                             Consumer<T> decoNodeFunc) {
-        return getTree(all, rootPredicate, decoNodeFunc, SortKind.ASC);
+    public static <V, T extends TreeNode<V>> List<T> build(List<T> all,
+                                                           Predicate<T> rootPredicate,
+                                                           Consumer<T> decoNodeFunc) {
+        return build(all, rootPredicate, decoNodeFunc, false);
     }
 
-    public static <V, T extends TreeNode<V>> List<T> getTree(List<T> all,
-                                                             Predicate<T> rootPredicate,
-                                                             Consumer<T> decoNodeFunc,
-                                                             SortKind sortKind) {
+    public static <V, T extends TreeNode<V>> List<T> build(List<T> all,
+                                                           Predicate<T> rootPredicate,
+                                                           Consumer<T> decoNodeFunc,
+                                                           boolean isDesc) {
         if (decoNodeFunc != null) {
             all.forEach(decoNodeFunc);
         }
-        Comparator<TreeNode<V>> sortComparator = sortKind == SortKind.ASC
-                ? Comparator.comparing(TreeNode::getSort)
-                : Comparator.comparing(TreeNode<V>::getSort).reversed();
+        Comparator<TreeNode<V>> sortComparator = !isDesc ? Comparator.naturalOrder() : Comparator.reverseOrder();
         return all.stream()
                 .filter(rootPredicate)
                 .map(t -> buildChildren(all, t, sortComparator))

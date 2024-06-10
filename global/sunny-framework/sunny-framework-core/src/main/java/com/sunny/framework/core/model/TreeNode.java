@@ -1,8 +1,10 @@
 package com.sunny.framework.core.model;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.List;
 
-public interface TreeNode<T> {
+public interface TreeNode<T> extends Comparable<TreeNode<T>> {
 
     T getId();
 
@@ -22,5 +24,10 @@ public interface TreeNode<T> {
 
     default Integer getSort() {
         return 0;
+    }
+
+    @Override
+    default int compareTo(TreeNode<T> o) {
+        return ObjectUtils.compare(this.getSort(), o.getSort());
     }
 }

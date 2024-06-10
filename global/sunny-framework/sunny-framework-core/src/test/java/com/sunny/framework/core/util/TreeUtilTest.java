@@ -18,7 +18,7 @@ public class TreeUtilTest {
         URL url = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX + "tree.json");
         List<SimpleItemModel<String>> items = objectMapper.readValue(url, new TypeReference<List<SimpleItemModel<String>>>() {
         });
-        List<SimpleItemModel<String>> tree = TreeUtil.getTree(items,
+        List<SimpleItemModel<String>> tree = TreeUtil.build(items,
                 t -> t.getParentValue() == null,
                 t -> {
                     t.setParentIds(TreeUtil.getParentIds(items, t));
