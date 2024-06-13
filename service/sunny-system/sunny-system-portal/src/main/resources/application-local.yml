@@ -13,3 +13,8 @@ xxl-job:
 logging:
   level:
     com.sunny.system.core.mapper: debug
+    org.jooq.tools.LoggerListener: debug
+sunny:
+  security:
+    ignore-paths:
+      - "/api/jooq/**"

@@ -2,6 +2,7 @@ dependencies {
     api project(":sunny-system-api")
     api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
-    api 'com.sunny:sunny-auth-security'
+//    api 'com.sunny:sunny-auth-security'
+    api "org.springframework.boot:spring-boot-starter-jooq"
 
 }
