@@ -41,17 +41,17 @@ public class JooqDispatcher {
         }
     }
 
-    public List<Map> list(String tableCode, Map<String, Object> query) {
+    public List<Map<String, Object>> list(String tableCode, Map<String, Object> query) {
         TableMetaDTO tableMeta = getTableMeta(tableCode);
         String tableName = String.join("_", tableMeta.getSchemaPrefix(), SchemaTypeEnum.BASE.name().toLowerCase());
         List<Field<?>> fields = tableMeta.getFields().stream()
                 .filter(t -> t.getList() != null && t.getList())
                 .map(t -> DSL.field(SNAKE_CASE_STRATEGY.translate(t.getName())).as(t.getName()))
                 .collect(Collectors.toList());
-        return DSL.select(fields).from(tableName).groupBy(fields).fetchInto(Map.class);
+        return DSL.select(fields).from(tableName).groupBy(fields).fetchMaps();
     }
 
-    public List<Map> detail(String tableCode, Map<String, Object> query) {
+    public List<Map<String, Object>> detail(String tableCode, Map<String, Object> query) {
         TableMetaDTO tableMeta = getTableMeta(tableCode);
         String baseTableName = String.join("_", tableMeta.getSchemaPrefix(), SchemaTypeEnum.BASE.name().toLowerCase());
         String detailTableName = String.join("_", tableMeta.getSchemaPrefix(), SchemaTypeEnum.DETAIL.name().toLowerCase());
@@ -71,12 +71,11 @@ public class JooqDispatcher {
             condition = condition.and(DSL.field(String.join(".", "b", SNAKE_CASE_STRATEGY.translate(t.getName())), Object.class).eq(value));
         }
         List<Field<?>> selectFields = Stream.concat(baseFields.stream(), detailFields.stream()).toList();
-        SelectConditionStep<Record> b = DSL
+        return DSL
                 .select(selectFields)
                 .from(detailTable)
                 .innerJoin(baseTable).on("b.id = d.base_id")
-                .where(condition);
-        return b.fetchInto(Map.class);
+                .where(condition).fetchMaps();
     }
 
     public static void main(String[] args) {

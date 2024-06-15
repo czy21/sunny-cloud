@@ -33,7 +33,7 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
     private final ObjectMapper objectMapper;
 
     private int expireMinutes = 30;
-    public final static String EXCEL_STORAGE_KEY_PREDIX = "gh:excel:import";
+    public final static String EXCEL_STORAGE_KEY_PREDIX = "sunny:excel:import";
     public final static Function<String, String> DATA_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "data");
     public final static Function<String, String> ERROR_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "error");
 

@@ -31,4 +31,8 @@ subprojects {
     if (project.name in publish_modules) {
         apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/publish.build.gradle"
     }
+
+    dependencies {
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
 }
