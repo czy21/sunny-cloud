@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     @GetMapping(path = "download/error")
     public CompletableFuture<ResponseEntity<byte[]>> downloadError(@RequestParam String token) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        new EasyExcelWriter<UserImport>(token, outputStream, UserImport.class, stringRedisTemplate, objectMapper).doWrite();
+        new EasyExcelWriter<UserImport>(token, outputStream, UserImport.class, objectMapper, stringRedisTemplate).doWrite();
         String fileName = "user.xlsx";
         return CompletableFuture.supplyAsync(() -> downloadExcel(outputStream.toByteArray(), fileName));
     }

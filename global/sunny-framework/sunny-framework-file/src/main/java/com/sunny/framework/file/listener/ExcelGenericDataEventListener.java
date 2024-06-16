@@ -37,9 +37,12 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
     public final static Function<String, String> DATA_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "data");
     public final static Function<String, String> ERROR_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "error");
 
-    public ExcelGenericDataEventListener(Consumer<Context<T>> processConsumer, ObjectMapper objectMapper) {
+    public ExcelGenericDataEventListener(Consumer<Context<T>> processConsumer,
+                                         ObjectMapper objectMapper,
+                                         StringRedisTemplate redisTemplate) {
         this.processConsumer = processConsumer;
         this.objectMapper = objectMapper;
+        this.redisTemplate = redisTemplate;
     }
 
     public int getBatch() {
@@ -56,14 +59,6 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
 
     public void setProcessConsumer(Consumer<Context<T>> processConsumer) {
         this.processConsumer = processConsumer;
-    }
-
-    public StringRedisTemplate getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
     }
 
     public String getToken() {

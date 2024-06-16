@@ -51,11 +51,10 @@ public class EasyExcelReader<T extends BaseExcelDataModel> {
                                       ObjectMapper objectMapper,
                                       StringRedisTemplate redisTemplate) {
         this.token = UUID.randomUUID().toString().replace("-", "");
-        this.excelGenericDataEventListener = new ExcelGenericDataEventListener<>(consumer, objectMapper);
+        this.excelGenericDataEventListener = new ExcelGenericDataEventListener<>(consumer, objectMapper, redisTemplate);
         this.excelGenericDataEventListener.setToken(token);
         this.excelGenericDataEventListener.setBatch(batch);
         this.excelGenericDataEventListener.setExpireMinutes(expireMinutes);
-        this.excelGenericDataEventListener.setRedisTemplate(redisTemplate);
         return this;
     }
 

@@ -22,7 +22,7 @@ public class EasyExcelWriter<T extends BaseExcelDataModel> {
     private StringRedisTemplate redisTemplate;
     private ObjectMapper objectMapper;
 
-    public EasyExcelWriter(String token, OutputStream outputStream, Class<?> templateClass, StringRedisTemplate redisTemplate, ObjectMapper objectMapper) {
+    public EasyExcelWriter(String token, OutputStream outputStream, Class<?> templateClass, ObjectMapper objectMapper, StringRedisTemplate redisTemplate) {
         this.token = token;
         this.outputStream = outputStream;
         this.templateClass = templateClass;
