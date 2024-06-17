@@ -5,7 +5,6 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.file.excel.BaseExcelDataModel;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +19,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends AnalysisEventListener<T> {
+public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
     private final Logger logger = LoggerFactory.getLogger(ExcelGenericDataEventListener.class);
-    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private final Validator validator;
     private int batch = 2000;
     private int total = 0;
     private final List<T> rows = new ArrayList<>();
@@ -33,16 +32,18 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
     private final ObjectMapper objectMapper;
 
     private int expireMinutes = 30;
-    public final static String EXCEL_STORAGE_KEY_PREDIX = "sunny:excel:import";
+    public final static String EXCEL_STORAGE_KEY_PREDIX = "generic:excel:import";
     public final static Function<String, String> DATA_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "data");
     public final static Function<String, String> ERROR_KEY_PREFIX_FUNC = t -> String.join(":", EXCEL_STORAGE_KEY_PREDIX, t, "error");
 
     public ExcelGenericDataEventListener(Consumer<Context<T>> processConsumer,
                                          ObjectMapper objectMapper,
-                                         StringRedisTemplate redisTemplate) {
+                                         StringRedisTemplate redisTemplate,
+                                         Validator validator) {
         this.processConsumer = processConsumer;
         this.objectMapper = objectMapper;
         this.redisTemplate = redisTemplate;
+        this.validator = validator;
     }
 
     public int getBatch() {
@@ -86,7 +87,10 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
         total++;
         int rowIndex = analysisContext.readRowHolder().getRowIndex() + 1;
         error.put(rowIndex, new ArrayList<>());
-        t.setRowIndex(rowIndex);
+        if (t instanceof BaseExcelDataModel a) {
+            a.setRowIndex(rowIndex);
+            validator.validate(t).forEach(e -> error.get(a.getRowIndex()).add(e.getMessage()));
+        }
         rows.add(t);
         if (rows.size() >= batch) {
             processRows();
@@ -101,8 +105,6 @@ public class ExcelGenericDataEventListener<T extends BaseExcelDataModel> extends
     }
 
     private void processRows() {
-        // 字段校验
-        rows.forEach(t -> validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage())));
         // 数据处理
         processConsumer.accept(new Context<>(rows, Collections.unmodifiableMap(error), total));
         String errorKey = ERROR_KEY_PREFIX_FUNC.apply(token);

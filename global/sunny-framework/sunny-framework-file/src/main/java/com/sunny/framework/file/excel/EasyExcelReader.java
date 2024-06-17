@@ -4,23 +4,28 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.file.listener.ExcelGenericDataEventListener;
+import jakarta.validation.Validator;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class EasyExcelReader<T extends BaseExcelDataModel> {
+public class EasyExcelReader<T> {
 
-    private InputStream inputStream;
     private String token;
     private int batch = 2000;
     private int expireMinutes = 30;
+    private ObjectMapper objectMapper;
+    private StringRedisTemplate redisTemplate;
+    private Validator validator;
     private ExcelGenericDataEventListener<T> excelGenericDataEventListener;
 
-    public EasyExcelReader<T> file(InputStream inputStream) {
-        this.inputStream = inputStream;
-        return this;
+    public EasyExcelReader(ObjectMapper objectMapper, StringRedisTemplate redisTemplate, Validator validator) {
+        this.objectMapper = objectMapper;
+        this.redisTemplate = redisTemplate;
+        this.validator = validator;
     }
 
     public EasyExcelReader<T> batch(int batch) {
@@ -30,12 +35,6 @@ public class EasyExcelReader<T extends BaseExcelDataModel> {
         return this;
     }
 
-    /**
-     * 过期时间(分钟)
-     *
-     * @param minutes
-     * @return
-     */
     public EasyExcelReader<T> expire(int minutes) {
         if (minutes > expireMinutes) {
             this.expireMinutes = minutes;
@@ -43,26 +42,28 @@ public class EasyExcelReader<T extends BaseExcelDataModel> {
         return this;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public EasyExcelReader<T> process(Consumer<ExcelGenericDataEventListener.Context<T>> consumer,
-                                      ObjectMapper objectMapper,
-                                      StringRedisTemplate redisTemplate) {
+    public EasyExcelReader<T> process(Consumer<ExcelGenericDataEventListener.Context<T>> consumer) {
         this.token = UUID.randomUUID().toString().replace("-", "");
-        this.excelGenericDataEventListener = new ExcelGenericDataEventListener<>(consumer, objectMapper, redisTemplate);
+        this.excelGenericDataEventListener = new ExcelGenericDataEventListener<>(consumer, objectMapper, redisTemplate, validator);
         this.excelGenericDataEventListener.setToken(token);
         this.excelGenericDataEventListener.setBatch(batch);
         this.excelGenericDataEventListener.setExpireMinutes(expireMinutes);
         return this;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     public int getTotal() {
         return excelGenericDataEventListener.getTotal();
     }
 
-    public ExcelReaderBuilder head(Class<T> clazz) {
-        return EasyExcel.read(inputStream, clazz, excelGenericDataEventListener);
+    public ExcelReaderBuilder read(InputStream inputStream, Class<?> head) {
+        return EasyExcel.read(inputStream,excelGenericDataEventListener).head(head);
+    }
+
+    public ExcelReaderBuilder read(InputStream inputStream, List<List<String>> head) {
+        return EasyExcel.read(inputStream,excelGenericDataEventListener).head(head);
     }
 }
