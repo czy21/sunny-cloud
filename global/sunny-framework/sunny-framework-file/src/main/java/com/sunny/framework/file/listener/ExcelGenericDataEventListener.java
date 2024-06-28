@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunny.framework.file.excel.BaseExcelDataModel;
+import com.sunny.framework.file.excel.BaseExcelModel;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,17 +19,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
+public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends AnalysisEventListener<T> {
     private final Logger logger = LoggerFactory.getLogger(ExcelGenericDataEventListener.class);
     private final Validator validator;
-    private int batch = 2000;
-    private int total = 0;
     private final List<T> rows = new ArrayList<>();
     private final Map<Integer, List<String>> error = new TreeMap<>();
-    private Consumer<Context<T>> processConsumer;
-    private StringRedisTemplate redisTemplate;
-    private String token;
+    private final Context<T> processContext = new Context<>();
     private final ObjectMapper objectMapper;
+    private final StringRedisTemplate redisTemplate;
+    private int batch = 2000;
+    private int total = 0;
+    private Consumer<Context<T>> processConsumer;
+    private String token;
 
     private int expireMinutes = 30;
     public final static String EXCEL_STORAGE_KEY_PREDIX = "generic:excel:import";
@@ -87,10 +88,8 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
         total++;
         int rowIndex = analysisContext.readRowHolder().getRowIndex() + 1;
         error.put(rowIndex, new ArrayList<>());
-        if (t instanceof BaseExcelDataModel a) {
-            a.setRowIndex(rowIndex);
-            validator.validate(t).forEach(e -> error.get(a.getRowIndex()).add(e.getMessage()));
-        }
+        t.setRowIndex(rowIndex);
+        validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage()));
         rows.add(t);
         if (rows.size() >= batch) {
             processRows();
@@ -106,7 +105,10 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
 
     private void processRows() {
         // 数据处理
-        processConsumer.accept(new Context<>(rows, Collections.unmodifiableMap(error), total));
+        processContext.setRows(rows);
+        processContext.setError(error);
+        processContext.setTotal(total);
+        processConsumer.accept(processContext);
         String errorKey = ERROR_KEY_PREFIX_FUNC.apply(token);
         for (Map.Entry<Integer, List<String>> m : error.entrySet().stream().filter(t -> CollectionUtils.isNotEmpty(t.getValue())).toList()) {
             try {

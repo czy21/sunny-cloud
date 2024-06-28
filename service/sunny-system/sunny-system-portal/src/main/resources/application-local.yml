@@ -14,6 +14,7 @@ logging:
   level:
     com.sunny.system.core.mapper: debug
     org.jooq.tools.LoggerListener: debug
+    org.springframework.jdbc: debug
 sunny:
   security:
     ignore-paths:

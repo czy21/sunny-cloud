@@ -1,0 +1,83 @@
+{
+  "tableName": "人力预算表",
+  "schemaPrefix": "budget_cost_year_man",
+  "fields": [
+    {
+      "name": "domain",
+      "desc": "领域",
+      "javaType": "String",
+      "schemaSuffix": "base",
+      "list": true
+    },
+    {
+      "name": "year",
+      "desc": "年度",
+      "javaType": "Integer",
+      "schemaSuffix": "base",
+      "list": true
+    },
+    {
+      "name": "deptL1Code",
+      "desc": "一级部门",
+      "javaType": "String",
+      "schemaSuffix": "base",
+      "list": true
+    },
+    {
+      "name": "deptL2Code",
+      "desc": "二级部门",
+      "javaType": "String",
+      "schemaSuffix": "base"
+    },
+    {
+      "name": "deptL3Code",
+      "desc": "三级部门",
+      "javaType": "String",
+      "schemaSuffix": "base"
+    },
+    {
+      "name": "dataVersion",
+      "desc": "数据版本",
+      "javaType": "String",
+      "schemaSuffix": "base",
+      "list": true
+    },
+    {
+      "name": "dataStatus",
+      "desc": "数据版本",
+      "javaType": "Integer",
+      "schemaSuffix": "base",
+      "list": true
+    },
+    {
+      "name": "baseId",
+      "desc": "baseId",
+      "javaType": "String",
+      "schemaSuffix": "detail"
+    },
+    {
+      "name": "subjectType",
+      "desc": "科目分类",
+      "javaType": "String",
+      "schemaSuffix": "detail"
+    },
+    {
+      "name": "subjectCategory",
+      "desc": "科目大类",
+      "javaType": "String",
+      "schemaSuffix": "detail"
+    },
+    {
+      "name": "subjectCategoryL2Name",
+      "desc": "二级科目名称",
+      "javaType": "String",
+      "schemaSuffix": "detail"
+    },
+    {
+      "name": "subjectCategoryL3Name",
+      "desc": "三级科目名称",
+      "javaType": "String",
+      "schemaSuffix": "detail"
+    }
+  ]
+}

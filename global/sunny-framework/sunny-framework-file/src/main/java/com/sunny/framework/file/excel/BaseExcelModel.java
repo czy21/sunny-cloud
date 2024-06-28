@@ -4,7 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import lombok.Data;
 
 @Data
-public class BaseExcelDataModel {
+public class BaseExcelModel {
     @ExcelIgnore
     private Integer rowIndex;
     @ExcelIgnore

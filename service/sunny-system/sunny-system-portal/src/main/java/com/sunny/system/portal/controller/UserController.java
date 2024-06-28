@@ -4,23 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.core.model.CommonResult;
 import com.sunny.framework.file.excel.EasyExcelReader;
 import com.sunny.framework.file.excel.EasyExcelWriter;
-import com.sunny.framework.file.model.ExcelImportResult;
+import com.sunny.framework.file.model.ExcelResult;
 import com.sunny.framework.web.controller.BaseController;
 import com.sunny.system.core.model.excel.UserImport;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -46,13 +42,13 @@ public class UserController extends BaseController {
 
 
     @PostMapping(path = "import")
-    public CommonResult<ExcelImportResult> importData(@RequestPart MultipartFile file) throws IOException {
+    public CommonResult<ExcelResult> importData(@RequestPart MultipartFile file) throws IOException {
         EasyExcelReader<UserImport> reader = new EasyExcelReader<>(objectMapper, stringRedisTemplate, validator);
         reader.process(context -> {
 
         });
         reader.read(file.getInputStream(), UserImport.class).doReadAll();
-        ExcelImportResult result = new ExcelImportResult();
+        ExcelResult result = new ExcelResult();
         result.setToken(reader.getToken());
         return CommonResult.ok(result);
     }

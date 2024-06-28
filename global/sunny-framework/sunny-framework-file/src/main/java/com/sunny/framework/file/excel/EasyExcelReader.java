@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class EasyExcelReader<T> {
+public class EasyExcelReader<T extends BaseExcelModel> {
 
     private String token;
     private int batch = 2000;
@@ -60,10 +60,10 @@ public class EasyExcelReader<T> {
     }
 
     public ExcelReaderBuilder read(InputStream inputStream, Class<?> head) {
-        return EasyExcel.read(inputStream,excelGenericDataEventListener).head(head);
+        return EasyExcel.read(inputStream, excelGenericDataEventListener).head(head);
     }
 
     public ExcelReaderBuilder read(InputStream inputStream, List<List<String>> head) {
-        return EasyExcel.read(inputStream,excelGenericDataEventListener).head(head);
+        return EasyExcel.read(inputStream, excelGenericDataEventListener).head(head);
     }
 }

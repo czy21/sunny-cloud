@@ -6,7 +6,7 @@ import lombok.Data;
  * excel导入后响应体
  */
 @Data
-public class ExcelImportResult {
+public class ExcelResult {
     /**
      * 下载错误文件时入参
      */

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class EasyExcelWriter<T> {
+public class EasyExcelWriter<T extends BaseExcelModel> {
     private String token;
     private int batch = 2000;
     private final StringRedisTemplate redisTemplate;
@@ -57,12 +57,10 @@ public class EasyExcelWriter<T> {
                 List<T> targets = list.stream().map(t -> {
                     try {
                         T row = objectMapper.readValue(t, javaType);
-                        if (row instanceof BaseExcelDataModel a) {
-                            String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(a.getRowIndex()));
-                            List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
-                            });
-                            a.setMessage(String.join(";", errors));
-                        }
+                        String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(row.getRowIndex()));
+                        List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
+                        });
+                        row.setMessage(String.join(";", errors));
                         return row;
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
