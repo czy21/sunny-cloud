@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class EasyExcelWriter<T extends BaseExcelModel> {
     private String token;
-    private int batch = 2000;
+    private int batch = 200;
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
 

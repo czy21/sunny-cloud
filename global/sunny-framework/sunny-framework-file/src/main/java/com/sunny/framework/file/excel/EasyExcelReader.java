@@ -2,6 +2,7 @@ package com.sunny.framework.file.excel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.file.listener.ExcelGenericDataEventListener;
 import jakarta.validation.Validator;
@@ -10,12 +11,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class EasyExcelReader<T extends BaseExcelModel> {
 
     private String token;
-    private int batch = 2000;
+    private int batch = 200;
     private int expireMinutes = 30;
     private ObjectMapper objectMapper;
     private StringRedisTemplate redisTemplate;
@@ -59,11 +61,11 @@ public class EasyExcelReader<T extends BaseExcelModel> {
         return excelGenericDataEventListener.getTotal();
     }
 
-    public ExcelReaderBuilder read(InputStream inputStream, Class<?> head) {
-        return EasyExcel.read(inputStream, excelGenericDataEventListener).head(head);
+    public AtomicInteger getSuccess() {
+        return excelGenericDataEventListener.getSuccess();
     }
 
-    public ExcelReaderBuilder read(InputStream inputStream, List<List<String>> head) {
-        return EasyExcel.read(inputStream, excelGenericDataEventListener).head(head);
+    public ExcelReaderBuilder read(InputStream inputStream) {
+        return EasyExcel.read(inputStream, excelGenericDataEventListener);
     }
 }
