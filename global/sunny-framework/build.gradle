@@ -48,7 +48,7 @@ subprojects {
             dependency "io.micrometer:micrometer-registry-prometheus:1.10.4"
             dependency "io.github.mweirauch:micrometer-jvm-extras:0.2.2"
 
-            dependency "com.alibaba:easyexcel:3.2.0"
+            dependency "com.alibaba:easyexcel:4.0.1"
             dependency "org.apache.pulsar:pulsar-client:2.11.0"
 
             dependency "net.logstash.logback:logstash-logback-encoder:7.4"
