@@ -87,14 +87,18 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     public void invoke(T t, AnalysisContext analysisContext) {
         total++;
         int rowIndex = analysisContext.readRowHolder().getRowIndex() + 1;
-        error.put(rowIndex, new ArrayList<>());
-        t.setRowIndex(rowIndex);
-        validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage()));
-        rows.add(t);
-        if (rows.size() >= batch) {
-            processRows();
-            rows.clear();
-            error.clear();
+        if (rowIndex > total) {
+            error.put(rowIndex, new ArrayList<>());
+            t.setRowIndex(rowIndex);
+            validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage()));
+            rows.add(t);
+            if (rows.size() >= batch) {
+                processRows();
+                rows.clear();
+                error.clear();
+            }
+        } else {
+            total--;
         }
     }
 

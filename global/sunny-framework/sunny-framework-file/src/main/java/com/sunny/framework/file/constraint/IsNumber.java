@@ -2,7 +2,7 @@
 package com.sunny.framework.file.constraint;
 
 
-import com.sunny.framework.file.validator.MoneyValidator;
+import com.sunny.framework.file.validator.NumberValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -15,13 +15,13 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = {MoneyValidator.class})
+@Constraint(validatedBy = {NumberValidator.class})
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-@Repeatable(IsMoney.List.class)
-public @interface IsMoney {
+@Repeatable(IsNumber.List.class)
+public @interface IsNumber {
 
-    String message() default "{javax.validation.constraints.IsMoney.message}";
+    String message() default "{javax.validation.constraints.IsNumber.message}";
 
     Class<?>[] groups() default {};
 
@@ -31,6 +31,6 @@ public @interface IsMoney {
     @Retention(RUNTIME)
     @Documented
     public @interface List {
-        IsMoney[] value();
+        IsNumber[] value();
     }
 }

@@ -4,13 +4,21 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.sunny.framework.web.controller.BaseController;
+import com.sunny.system.api.model.UserDTO;
+import jakarta.annotation.Resource;
 import lombok.Data;
+import org.jooq.User;
+import org.redisson.api.RBucket;
+import org.redisson.api.RList;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "example")
@@ -19,19 +27,25 @@ public class ExampleController extends BaseController {
 
     /**
      * {
-     *   "name": "haode",
-     *   "email": "aaa",
-     *   "properties": {
-     *     "age": "10",
-     *     "phone": "1515454"
-     *   },
-     *   "extra":"{\"attr1\":\"a1\"}"
+     * "name": "haode",
+     * "email": "aaa",
+     * "properties": {
+     * "age": "10",
+     * "phone": "1515454"
+     * },
+     * "extra":"{\"attr1\":\"a1\"}"
      * }
+     *
      * @param param
      * @return
      */
+    @Autowired
+    RedissonClient redissonClient;
+
     @PostMapping(path = "jsonAnyGetter")
     public Model1 jsonAnyGetter(@RequestBody Model1 param) {
+        RList<UserDTO> bucket = redissonClient.getList("jsonAnyGetter");
+
         return param;
     }
 
@@ -41,7 +55,7 @@ public class ExampleController extends BaseController {
         private String name;
 
         @JsonAnyGetter
-        private Map<String, Object> properties=new HashMap<>();
+        private Map<String, Object> properties = new HashMap<>();
 
         @JsonAnySetter
         public void add(String key, String value) {
