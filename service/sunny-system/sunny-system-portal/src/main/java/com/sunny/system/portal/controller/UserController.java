@@ -47,7 +47,7 @@ public class UserController extends BaseController {
         reader.process(context -> {
 
         });
-        reader.read(file.getInputStream(), UserImport.class).doReadAll();
+        reader.read(file.getInputStream()).head(UserImport.class).doReadAll();
         ExcelResult result = new ExcelResult();
         result.setToken(reader.getToken());
         return CommonResult.ok(result);

@@ -40,7 +40,7 @@ public class MapController extends BaseController {
         reader.process(context -> {
 
         });
-        reader.read(file.getInputStream(), Stream.of(
+        reader.read(file.getInputStream()).head( Stream.of(
                 Stream.of("姓名").collect(Collectors.toList()),
                 Stream.of("年龄").collect(Collectors.toList()),
                 Stream.of("地址", "省份").collect(Collectors.toList()),
