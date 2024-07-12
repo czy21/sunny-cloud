@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -27,8 +28,9 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     private final Context<T> processContext = new Context<>();
     private final ObjectMapper objectMapper;
     private final StringRedisTemplate redisTemplate;
-    private int batch = 2000;
+    private int batch = 200;
     private int total = 0;
+    private AtomicInteger success = new AtomicInteger(0);
     private Consumer<Context<T>> processConsumer;
     private String token;
 
@@ -83,18 +85,25 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         return total;
     }
 
+    public AtomicInteger getSuccess() {
+        return success;
+    }
+
     @Override
     public void invoke(T t, AnalysisContext analysisContext) {
         total++;
         int rowIndex = analysisContext.readRowHolder().getRowIndex() + 1;
-        error.put(rowIndex, new ArrayList<>());
-        t.setRowIndex(rowIndex);
-        validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage()));
-        rows.add(t);
-        if (rows.size() >= batch) {
-            processRows();
-            rows.clear();
-            error.clear();
+        if (rowIndex > total) {
+            error.put(rowIndex, new ArrayList<>());
+            t.setRowIndex(rowIndex);
+            rows.add(t);
+            if (rows.size() >= batch) {
+                processRows();
+                rows.clear();
+                error.clear();
+            }
+        } else {
+            total--;
         }
     }
 
@@ -104,17 +113,18 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     }
 
     private void processRows() {
-        // 数据处理
+        rows.forEach(t -> validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage())));
         processContext.setRows(rows);
         processContext.setError(error);
         processContext.setTotal(total);
+        processContext.setSuccess(success);
         processConsumer.accept(processContext);
         String errorKey = ERROR_KEY_PREFIX_FUNC.apply(token);
         for (Map.Entry<Integer, List<String>> m : error.entrySet().stream().filter(t -> CollectionUtils.isNotEmpty(t.getValue())).toList()) {
             try {
                 redisTemplate.opsForHash().put(errorKey, String.valueOf(m.getKey()), objectMapper.writeValueAsString(m.getValue()));
             } catch (JsonProcessingException e) {
-                logger.error("excel存储错误信息失败", e);
+                logger.error("excel存储校验失败", e);
             }
         }
         redisTemplate.expire(errorKey, expireMinutes, TimeUnit.MINUTES);
@@ -141,5 +151,6 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         private List<T> rows;
         private Map<Integer, List<String>> error;
         private int total;
+        private AtomicInteger success;
     }
 }

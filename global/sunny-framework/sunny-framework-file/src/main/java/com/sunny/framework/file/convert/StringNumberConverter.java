@@ -7,9 +7,13 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.alibaba.excel.util.NumberUtils;
+import com.alibaba.excel.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 
+@Slf4j
 public class StringNumberConverter implements Converter<String> {
 
     @Override
@@ -25,7 +29,17 @@ public class StringNumberConverter implements Converter<String> {
     @Override
     public String convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty,
                                     GlobalConfiguration globalConfiguration) {
-        return cellData.getNumberValue() != null ? cellData.getNumberValue().toPlainString() : cellData.getStringValue();
+        if (cellData.getNumberValue() != null) {
+            return cellData.getNumberValue().toPlainString();
+        }
+        if (!StringUtils.isEmpty(cellData.getStringValue())) {
+            try {
+                return NumberUtils.parseBigDecimal(cellData.getStringValue(), contentProperty).toPlainString();
+            } catch (ParseException e) {
+                log.error("Number parse to BigDecimal error", e);
+            }
+        }
+        return cellData.getStringValue();
     }
 
     @Override
