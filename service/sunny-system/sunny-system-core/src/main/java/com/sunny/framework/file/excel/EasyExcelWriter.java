@@ -2,15 +2,18 @@ package com.sunny.framework.file.excel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.util.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunny.framework.core.model.PageIterator;
 import com.sunny.framework.file.listener.ExcelGenericDataEventListener;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +51,7 @@ public class EasyExcelWriter<T extends BaseExcelModel> {
                     try {
                         T row = objectMapper.readValue(t, head);
                         String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(row.getRowIndex()));
-                        if (!StringUtils.isEmpty(errorListStr)) {
+                        if (StringUtils.isNotEmpty(errorListStr)) {
                             List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
                             });
                             row.setMessage(String.join(";", errors));
@@ -61,7 +64,7 @@ public class EasyExcelWriter<T extends BaseExcelModel> {
                 writer.write(targets, EasyExcel.writerSheet().build());
                 start = end;
                 end = start + batch;
-            } while (CollectionUtils.isNotEmpty(list));
+            } while (list != null && !list.isEmpty());
             writer.finish();
         }
     }

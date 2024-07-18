@@ -59,7 +59,7 @@ public class UserController extends BaseController {
         EasyExcelWriter<UserImport> writer = new EasyExcelWriter<>(objectMapper, stringRedisTemplate);
         writer.token(token);
         writer.doWrite(outputStream, UserImport.class);
-        String fileName = URLEncoder.encode(MessageFormat.format("{0}-{1}", "user", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))), StandardCharsets.UTF_8);
+        String fileName = URLEncoder.encode(MessageFormat.format("{0}-{1}.xlsx", "user", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))), StandardCharsets.UTF_8);
         return CompletableFuture.supplyAsync(() -> downloadExcel(outputStream.toByteArray(), fileName));
     }
 }

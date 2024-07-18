@@ -14,4 +14,7 @@ public class UserImport extends BaseExcelModel {
     private String name;
     @ExcelProperty("年龄")
     private Integer age;
+
+    @ExcelProperty("错误信息")
+    private String message;
 }
