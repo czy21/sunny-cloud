@@ -39,13 +39,12 @@ subprojects {
             
             dependency "io.minio:minio:8.5.11"
             dependency "com.xuxueli:xxl-job-core:2.4.1"
-            dependency "org.mapstruct:mapstruct:1.5.3.Final"
-            dependency "org.mapstruct:mapstruct-processor:1.5.3.Final"
+            dependency "org.mapstruct:mapstruct:1.5.5.Final"
+            dependency "org.mapstruct:mapstruct-processor:1.5.5.Final"
             dependency "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 
             dependency "com.squareup.okhttp3:okhttp:4.12.0"
 
-            dependency "io.micrometer:micrometer-registry-prometheus:1.13.2"
             dependency "io.github.mweirauch:micrometer-jvm-extras:0.2.2"
 
             dependency "com.alibaba:easyexcel:4.0.1"

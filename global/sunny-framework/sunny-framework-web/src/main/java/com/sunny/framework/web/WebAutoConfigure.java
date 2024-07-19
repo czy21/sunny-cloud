@@ -31,7 +31,7 @@ import java.util.List;
 @Import({JacksonConfigure.class, FeignConfigure.class, GlobalExceptionHandler.class})
 public class WebAutoConfigure implements WebMvcConfigurer {
 
-    private final ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     public WebAutoConfigure(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -64,7 +64,7 @@ public class WebAutoConfigure implements WebMvcConfigurer {
     }
 
     @Bean
-    MeterRegistryCustomizer<MeterRegistry> meterRegistryCustomizer() {
+    public MeterRegistryCustomizer<MeterRegistry> meterRegistryCustomizer() {
         return (registry) -> {
             new ProcessMemoryMetrics().bindTo(registry);
             new ProcessThreadMetrics().bindTo(registry);
