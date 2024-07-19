@@ -30,7 +30,7 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     private final StringRedisTemplate redisTemplate;
     private int batch = 200;
     private int total = 0;
-    private AtomicInteger success = new AtomicInteger(0);
+    private AtomicInteger successTotal = new AtomicInteger(0);
     private Consumer<Context<T>> processConsumer;
     private String token;
 
@@ -85,8 +85,8 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         return total;
     }
 
-    public AtomicInteger getSuccess() {
-        return success;
+    public AtomicInteger getSuccessTotal() {
+        return successTotal;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         processContext.setRows(rows);
         processContext.setError(error);
         processContext.setTotal(total);
-        processContext.setSuccess(success);
+        processContext.setSuccessTotal(successTotal);
         processConsumer.accept(processContext);
         String errorKey = ERROR_KEY_PREFIX_FUNC.apply(token);
         for (Map.Entry<Integer, List<String>> m : error.entrySet().stream().filter(t -> CollectionUtils.isNotEmpty(t.getValue())).toList()) {
@@ -151,6 +151,6 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         private List<T> rows;
         private Map<Integer, List<String>> error;
         private int total;
-        private AtomicInteger success;
+        private AtomicInteger successTotal;
     }
 }
