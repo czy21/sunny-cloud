@@ -2,4 +2,4 @@ spring:
   data:
     redis:
       host: 192.168.2.2
-      password: Czy.190815
+      password: ${REDIS_PASSWORD}
