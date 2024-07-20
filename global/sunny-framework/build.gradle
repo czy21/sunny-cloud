@@ -59,13 +59,12 @@ subprojects {
 
     apply plugin: 'common.build'
 
-    if (!(project.name in unpublish_modules)) {
-        apply plugin: 'publish.build'
-    }
-
     List<String> applyPlugins = []
     if (bomName != name) {
         applyPlugins.add("spring.build")
+    }
+    if (!(project.name in unpublish_modules)) {
+        applyPlugins.add("publish.build")
     }
     logger.info("${project.name} apply plugins: ${applyPlugins}")
     applyPlugins.forEach { t -> project.plugins.apply(t) }
