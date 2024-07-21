@@ -1,4 +1,4 @@
-plugins{
+plugins {
     id "java-platform"
 }
 
@@ -14,16 +14,19 @@ dependencyManagement {
     generatedPomCustomization {
         enabled = true
     }
-    dependencies {
-        dependency "com.sunny:sunny-framework-bundle:${project.version}"
-        dependency "com.sunny:sunny-framework-core:${project.version}"
-        dependency "com.sunny:sunny-framework-cache:${project.version}"
-        dependency "com.sunny:sunny-framework-db:${project.version}"
-        dependency "com.sunny:sunny-framework-doc:${project.version}"
-        dependency "com.sunny:sunny-framework-file:${project.version}"
-        dependency "com.sunny:sunny-framework-job:${project.version}"
-        dependency "com.sunny:sunny-framework-log:${project.version}"
-        dependency "com.sunny:sunny-framework-web:${project.version}"
-        dependency "com.sunny:sunny-framework-statemachine-kryo:${project.version}"
+}
+
+dependencies {
+    constraints {
+        api project(":sunny-framework-bundle")
+        api project(":sunny-framework-core")
+        api project(":sunny-framework-cache")
+        api project(":sunny-framework-db")
+        api project(":sunny-framework-doc")
+        api project(":sunny-framework-file")
+        api project(":sunny-framework-job")
+        api project(":sunny-framework-log")
+        api project(":sunny-framework-web")
+        api project(":sunny-framework-statemachine-kryo")
     }
 }

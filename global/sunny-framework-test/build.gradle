@@ -1,6 +1,6 @@
 plugins {
-    id "org.springframework.boot"
     id 'java-library'
+    id "org.springframework.boot"
 }
 
 group = 'com.sunny'
@@ -10,34 +10,24 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencyManagement {
     imports {
-//        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
     }
-
 }
 
-//apply from: "../sunny-framework/dependency.gradle"
-//apply from: "../sunny-framework/sunny-framework-bom/build.gradle"
+apply from: "../sunny-framework/dependency.gradle"
 
-//apply from: "../sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
-//apply from: "../sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
-//apply from: "../sunny-framework/buildSrc/src/main/groovy/spring.build.gradle"
-
-bootJar {
-    enabled = false
-}
-
+apply from: "../sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
+apply from: "../sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
+apply from: "../sunny-framework/buildSrc/src/main/groovy/spring.build.gradle"
 
 dependencies {
 
-//    api platform(project(":sunny-framework-bom"))
+    implementation("com.sunny:sunny-framework-web") {
+        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-config"
+        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-discovery"
+    }
 
-//    api project(":sunny-framework-core")
-//    testImplementation("com.sunny:sunny-framework-web") {
-//        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-config"
-//        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-discovery"
-//    }
-//
-//    testImplementation "com.sunny:sunny-framework-cache"
-//    testImplementation "com.sunny:sunny-framework-file"
+    testImplementation "com.sunny:sunny-framework-cache"
+    testImplementation "com.sunny:sunny-framework-file"
 
 }
