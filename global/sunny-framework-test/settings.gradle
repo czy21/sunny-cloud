@@ -4,4 +4,11 @@ pluginManagement {
     }
 }
 
-includeBuild("../sunny-framework")
+includeBuild("../sunny-framework"){
+    dependencySubstitution {
+        substitute module('com.sunny:sunny-framework-core') using project(':sunny-framework-core')
+        substitute module('com.sunny:sunny-framework-web') using project(':sunny-framework-web')
+        substitute module('com.sunny:sunny-framework-cache') using project(':sunny-framework-cache')
+        substitute module('com.sunny:sunny-framework-file') using project(':sunny-framework-file')
+    }
+}

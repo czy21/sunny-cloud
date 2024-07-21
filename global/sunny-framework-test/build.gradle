@@ -31,3 +31,10 @@ dependencies {
     testImplementation "com.sunny:sunny-framework-file"
 
 }
+
+tasks.register("publishFramework") {
+    group "publishing"
+    gradle.includedBuild("sunny-framework").projectDir.eachDirMatch(~/sunny-framework-.*/) {
+        dependsOn gradle.includedBuild("sunny-framework").task(":${it.name}:publishAllPublicationsToHomeSnapshotsRepository")
+    }
+}
