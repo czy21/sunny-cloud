@@ -16,5 +16,3 @@ include("sunny-framework-job")
 include("sunny-framework-log")
 include("sunny-framework-web")
 include("sunny-framework-statemachine-kryo")
-
-include("sunny-framework-test")
