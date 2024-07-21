@@ -32,10 +32,13 @@ dependencies {
 
 }
 
+
 tasks.findAll { it -> it.name in ["build", "clean"] || it.name.startsWith("publishAllPublications") }.each { t ->
     "$t.name" {
-        gradle.includedBuild("sunny-framework").projectDir.eachDirMatch(~/sunny-framework-.*/) {
-            dependsOn gradle.includedBuild("sunny-framework").task(":${it.name}:${t.name}")
+        gradle.getIncludedBuilds().each { p ->
+            p.properties.get("target").availableModules.findAll { m -> m.right.projectPath != ":" }.each { m ->
+                dependsOn p.task(":${m.right.projectName}:${t.name}")
+            }
         }
     }
 }

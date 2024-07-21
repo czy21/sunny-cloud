@@ -1,11 +1,14 @@
-["clean", "build"].forEach { t ->
+["clean", "build"].each { t ->
     tasks.register("${t}") {
-        gradle.getIncludedBuilds().each {p->
-            file("${p.name}").eachDirMatch(~/${p.name}-.*/) { m ->
-                dependsOn gradle.includedBuild("${p.name}").task(":${m.name}:${t}")
-            }
-            if (file("${p.name}/src").exists()) {
-                dependsOn gradle.includedBuild("${p.name}").task(":${t}")
+        group = "build"
+        gradle.getIncludedBuilds().each { p ->
+            def modules = p.properties.get("target").availableModules
+            if (modules.size() == 1) {
+                dependsOn p.task(":${t}")
+            } else {
+                modules.findAll { m -> m.right.projectPath != ":" }.each { m ->
+                    dependsOn p.task(":${m.right.projectName}:${t}")
+                }
             }
         }
     }
