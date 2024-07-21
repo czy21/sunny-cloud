@@ -1,0 +1,8 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "3.2.7"
+    }
+}
+
+
+includeBuild("../sunny-framework")

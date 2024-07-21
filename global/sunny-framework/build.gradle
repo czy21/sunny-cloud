@@ -1,12 +1,11 @@
 plugins {
     id 'org.springframework.boot' apply false
 }
+
 def bomName = "sunny-framework-bom"
-def unpublish_modules = [
-        "sunny-framework-test"
-]
+def bundleName = "sunny-framework-bundle"
+
 subprojects {
-    apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'io.spring.dependency-management'
 
@@ -19,53 +18,17 @@ subprojects {
         }
         imports {
             mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAliVersion}"
-            mavenBom "org.springframework.statemachine:spring-statemachine-bom:${springStatemachineVersion}"
-        }
-        dependencies {
-            dependency "commons-io:commons-io:2.16.1"
-            dependency "org.apache.commons:commons-collections4:4.4"
-            dependency "commons-validator:commons-validator:1.9.0"
-
-            dependency 'com.clickhouse:clickhouse-jdbc:0.6.2'
-            dependency 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.3.0'
-            dependency 'com.github.xiaoymin:knife4j-openapi3-webflux-jakarta-spring-boot-starter:4.3.0'
-            dependency "io.swagger.core.v3:swagger-annotations-jakarta:2.2.22"
-            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3"
-            dependency "com.github.pagehelper:pagehelper:6.1.0"
-            dependency 'com.github.pagehelper:pagehelper-spring-boot-starter:2.1.0'
-
-            dependency "org.redisson:redisson-spring-boot-starter:3.32.0"
-            dependency "com.esotericsoftware:kryo:5.6.0"
-
-            dependency "io.minio:minio:8.5.11"
-            dependency "com.xuxueli:xxl-job-core:2.4.1"
-            dependency "org.mapstruct:mapstruct:1.5.5.Final"
-            dependency "org.mapstruct:mapstruct-processor:1.5.5.Final"
-            dependency "org.projectlombok:lombok-mapstruct-binding:0.2.0"
-
-            dependency "com.squareup.okhttp3:okhttp:4.12.0"
-
-            dependency "io.github.mweirauch:micrometer-jvm-extras:0.2.2"
-
-            dependency "com.alibaba:easyexcel:4.0.1"
-            dependency "org.apache.pulsar:pulsar-client:3.3.0"
-
-            dependency "net.logstash.logback:logstash-logback-encoder:7.4"
-            dependency 'org.codehaus.janino:janino:3.1.12'
         }
     }
 
-    apply plugin: 'common.build'
+    apply from: "${project.rootDir}/dependency.gradle"
 
-    List<String> applyPlugins = []
-    if (bomName != name) {
-        applyPlugins.add("spring.build")
+    if (name != bomName) {
+        apply plugin: 'java-library'
+        apply plugin: 'common.build'
+        apply plugin: "publish.build"
+        if (name != bundleName) {
+            apply plugin: "spring.build"
+        }
     }
-    if (!(project.name in unpublish_modules)) {
-        applyPlugins.add("publish.build")
-    }
-    logger.info("${project.name} apply plugins: ${applyPlugins}")
-    applyPlugins.forEach { t -> project.plugins.apply(t) }
 }
