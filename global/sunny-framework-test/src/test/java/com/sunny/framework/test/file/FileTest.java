@@ -3,7 +3,7 @@ package com.sunny.framework.test.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.file.excel.EasyExcelReader;
 import com.sunny.framework.file.model.ExcelResult;
-import com.sunny.framework.test.model.UserImport;
+import com.sunny.framework.test.model.excel.UserImport;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
