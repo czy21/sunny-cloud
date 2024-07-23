@@ -27,8 +27,12 @@ dependencies {
         exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-discovery"
     }
 
-    testImplementation "com.sunny:sunny-framework-cache"
-    testImplementation "com.sunny:sunny-framework-file"
+    testImplementation("com.sunny:sunny-framework-bundle") {
+        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-config"
+        exclude group: "com.alibaba.cloud", module: "spring-cloud-starter-alibaba-nacos-discovery"
+    }
+
+    testImplementation "org.springframework.data:spring-data-jdbc"
 
 }
 

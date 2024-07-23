@@ -1,4 +1,4 @@
-package com.sunny.framework.test.model;
+package com.sunny.framework.test.model.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.sunny.framework.file.excel.BaseExcelModel;
