@@ -26,6 +26,8 @@ public interface TreeNode<T> extends Comparable<TreeNode<T>> {
         return 0;
     }
 
+    default void setSort(Integer sort) {}
+
     @Override
     default int compareTo(TreeNode<T> o) {
         return ObjectUtils.compare(this.getSort(), o.getSort());

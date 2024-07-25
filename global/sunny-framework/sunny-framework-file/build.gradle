@@ -6,6 +6,4 @@ dependencies {
     api 'com.alibaba:easyexcel'
     api 'org.springframework.data:spring-data-redis'
     api "jakarta.validation:jakarta.validation-api"
-
-    testImplementation project(":sunny-framework-cache")
 }
