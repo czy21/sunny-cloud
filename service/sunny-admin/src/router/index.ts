@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '@/layout/Home.vue'
 import util from "@/util";
+import api from '@/api';
 
 const routes = [
     {
@@ -22,7 +23,10 @@ const routes = [
         beforeEnter: (to: any, from: any, next: any) => {
             const token = util.auth.getToken()
             if (!token) {
-                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
+                console.log(window.location)
+                api.get("auth/login-uri").then((t: any) => {
+                    window.location.href = t.data + window.location
+                })
             } else {
                 next()
             }
