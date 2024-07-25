@@ -1,5 +1,5 @@
 <template>
-  <el-button @click="onOk">确认</el-button>
+  <el-button @click="onOk">查询</el-button>
 </template>
 <script setup lang="ts">
 import api from "@/api"
