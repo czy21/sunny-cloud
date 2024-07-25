@@ -32,8 +32,9 @@ service.interceptors.response.use(
                 ElMessage.error(message)
                 break
             case 400401:
-                // router.push({path: "/login"})
-                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
+                ElMessage.error("登录信息过期，请重新登录")
+                // util.auth.delToken()
+                // window.location.reload()
                 break
         }
         return response
@@ -42,7 +43,9 @@ service.interceptors.response.use(
         const {status} = error.response || {};
         switch (status) {
             case 401:
-                window.location.href = "https://sunny-auth.czy21.com/login?redirectUri=" + window.location
+                ElMessage.error("登录信息过期，请重新登录")
+                // util.auth.delToken()
+                // window.location.reload()
                 break
             case 500:
                 ElMessage.error("服务器异常")
