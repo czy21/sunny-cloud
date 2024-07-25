@@ -1,6 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
 import util from "@/util";
-import router from "@/router";
 import {ElMessage} from "element-plus";
 
 
@@ -33,8 +32,8 @@ service.interceptors.response.use(
                 break
             case 400401:
                 ElMessage.error("登录信息过期，请重新登录")
-                // util.auth.delToken()
-                // window.location.reload()
+                util.auth.delToken()
+                window.location.reload()
                 break
         }
         return response
@@ -44,8 +43,8 @@ service.interceptors.response.use(
         switch (status) {
             case 401:
                 ElMessage.error("登录信息过期，请重新登录")
-                // util.auth.delToken()
-                // window.location.reload()
+                util.auth.delToken()
+                window.location.reload()
                 break
             case 500:
                 ElMessage.error("服务器异常")
