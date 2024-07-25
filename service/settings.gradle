@@ -1,4 +1,4 @@
-def exclude = ["sunny-flink", "sunny-native"]
+def exclude = ["sunny-native"]
 
 file("${settingsDir}").list().findAll { file("${it}/build.gradle").exists() && !exclude.contains(it) }.each {
     includeBuild("${it}")
