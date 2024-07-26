@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import util from "../util";
+import util from "@g/util";
 import {ElMessage} from "element-plus";
 
 
