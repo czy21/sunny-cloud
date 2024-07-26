@@ -6,17 +6,14 @@ import api from '@/api';
 const routes = [
     {
         path: '/',
-        name: 'Home',
         component: Home,
         children: [
             {
-                name: "用户管理",
-                path: "user",
+                path: "/sys/user",
                 component: () => import('@v/user/index.vue')
             },
             {
-                name: "菜单管理",
-                path: "menu",
+                path: "/sys/menu",
                 component: () => import('@v/menu/index.vue')
             },
         ],
