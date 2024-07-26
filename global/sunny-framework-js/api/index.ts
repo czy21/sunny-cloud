@@ -1,6 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import util from "@/util";
-import router from "@/router";
+import util from "../util";
 import {ElMessage} from "element-plus";
 
 
@@ -32,7 +31,15 @@ service.interceptors.response.use(
                 ElMessage.error(message)
                 break
             case 400401:
-                router.push({path: "/login"})
+                ElMessage({
+                    type: "error",
+                    message: "登录信息过期，请重新登录",
+                    duration: 2000,
+                    onClose() {
+                        util.auth.delToken()
+                        window.location.reload()
+                    },
+                })
                 break
         }
         return response
@@ -41,7 +48,15 @@ service.interceptors.response.use(
         const {status} = error.response || {};
         switch (status) {
             case 401:
-                router.push({path: "/login"})
+                ElMessage({
+                    type: "error",
+                    message: "登录信息过期，请重新登录",
+                    duration: 2000,
+                    onClose() {
+                        util.auth.delToken()
+                        window.location.reload()
+                    },
+                })
                 break
             case 500:
                 ElMessage.error("服务器异常")
