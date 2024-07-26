@@ -15,7 +15,7 @@
 import {reactive, ref} from 'vue'
 import router from "@/router";
 import api from '@/api';
-import util from "@g/util"
+import util from "@/util"
 import type {FormInstance, FormRules} from "element-plus";
 
 const form = reactive<FormRule>({
