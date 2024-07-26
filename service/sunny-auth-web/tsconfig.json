@@ -22,6 +22,9 @@
       ],
       "@v/*": [
         "src/view/*"
+      ],
+      "@g/*": [
+        "../../global/sunny-framework-js/*"
       ]
     }
   },
@@ -29,7 +32,11 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "../../global/sunny-framework-js/**/*.ts",
+    "../../global/sunny-framework-js/**/*.d.ts",
+    "../../global/sunny-framework-js/**/*.tsx",
+    "../../global/sunny-framework-js/**/*.vue"
   ],
   "references": [
     {

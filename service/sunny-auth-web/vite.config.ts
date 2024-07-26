@@ -4,7 +4,8 @@ import {resolve} from 'path'
 
 const alias = {
     "@": "src",
-    "@v": "src/view"
+    "@v": "src/view",
+    "@g": "../../global/sunny-framework-js"
 }
 // https://vitejs.dev/config/
 export default defineConfig({
