@@ -33,11 +33,6 @@ export default defineComponent({
       type: Boolean, default() {
         return false
       }
-    },
-    iconSize: {
-      type: String, default() {
-        return '16px'
-      }
     }
   }
 })
