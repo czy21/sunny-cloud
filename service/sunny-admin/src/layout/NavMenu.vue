@@ -2,20 +2,20 @@
   <div>
     <template v-for="t in menuTree">
       <el-sub-menu v-if="t.children" :data="t" :index="t.name">
-        <template #title>
           <el-icon>
             <component :is="t.icon"/>
           </el-icon>
-          <span slot="title" v-if="!collapse"> {{ t.name }}</span>
+        <template #title>
+          {{ t.name }}
         </template>
         <nav-menu :menuTree="t.children"/>
       </el-sub-menu>
       <el-menu-item v-if="!t.children" :data="t" :index="t.path" :route="t.path">
-        <template #title>
           <el-icon>
             <component :is="t.icon"/>
           </el-icon>
-          <span slot="title">{{ t.name }}</span>
+        <template #title>
+          {{ t.name }}
         </template>
       </el-menu-item>
     </template>
