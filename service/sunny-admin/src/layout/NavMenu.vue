@@ -2,11 +2,11 @@
   <div>
     <template v-for="t in menuTree">
       <el-sub-menu v-if="t.children" :data="t" :index="t.name">
+        <template #title>
           <el-icon>
             <component :is="t.icon"/>
           </el-icon>
-        <template #title>
-          {{ t.name }}
+          <span>{{ t.name }}</span>
         </template>
         <nav-menu :menuTree="t.children"/>
       </el-sub-menu>
@@ -15,7 +15,7 @@
             <component :is="t.icon"/>
           </el-icon>
         <template #title>
-          {{ t.name }}
+          <span>{{ t.name }}</span>
         </template>
       </el-menu-item>
     </template>
