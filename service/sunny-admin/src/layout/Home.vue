@@ -36,7 +36,7 @@ export default defineComponent({
       return this.$store.getters.aside.collapse
     },
     getCurrentRoute() {
-      return this.$route.path.replace('/', '');
+      return this.$route.path;
     },
     getMenuTree() {
       return menus
