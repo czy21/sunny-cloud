@@ -22,7 +22,7 @@ const routes = [
             if (!token) {
                 console.log(window.location)
                 api.get("auth/login-uri").then((t: any) => {
-                    window.location.href = t.data.data + window.location
+                    window.location.href = t.data.data + "?redirectUri" + window.location
                 })
             } else {
                 next()
