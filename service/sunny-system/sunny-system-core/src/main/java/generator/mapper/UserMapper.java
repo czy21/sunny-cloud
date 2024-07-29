@@ -1,16 +1,12 @@
-package com.sunny.system.core.mapper;
+package generator.mapper;
 
-import com.sunny.system.core.model.dto.UserDTO;
-import com.sunny.system.core.model.query.UserQuery;
-import com.sunny.system.core.model.po.UserPO;
-
-import java.util.List;
+import generator.domain.UserPO;
 
 /**
 * @author chenzhaoyu
 * @description 针对表【sys_user(用户)】的数据库操作Mapper
-* @createDate 2024-07-28 13:48:46
-* @Entity generator.model.po.UserPO
+* @createDate 2024-07-28 14:20:43
+* @Entity generator.domain.UserPO
 */
 public interface UserMapper {
 
@@ -25,7 +21,5 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(UserPO record);
 
     int updateByPrimaryKey(UserPO record);
-
-    List<UserDTO> selectListBy(UserQuery query);
 
 }

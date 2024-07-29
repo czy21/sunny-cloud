@@ -4,11 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.sunny.framework.web.controller.BaseController;
-import com.sunny.system.api.model.UserDTO;
-import jakarta.annotation.Resource;
+import com.sunny.system.core.model.dto.UserDTO;
 import lombok.Data;
-import org.jooq.User;
-import org.redisson.api.RBucket;
 import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "example")

@@ -2,11 +2,15 @@ package com.sunny.system.portal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.core.model.CommonResult;
+import com.sunny.framework.core.model.PagingResult;
 import com.sunny.framework.file.excel.EasyExcelReader;
 import com.sunny.framework.file.excel.EasyExcelWriter;
 import com.sunny.framework.file.model.ExcelResult;
 import com.sunny.framework.web.controller.BaseController;
+import com.sunny.system.core.model.dto.UserDTO;
 import com.sunny.system.core.model.excel.UserImport;
+import com.sunny.system.core.model.query.UserQuery;
+import com.sunny.system.core.service.UserService;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -34,10 +38,12 @@ public class UserController extends BaseController {
     StringRedisTemplate stringRedisTemplate;
     @Autowired
     Validator validator;
+    @Autowired
+    UserService userService;
 
     @PostMapping(path = "page")
-    public CommonResult<Map<String, Object>> page() {
-        return CommonResult.ok(Map.of());
+    public CommonResult<PagingResult<UserDTO>> page(@RequestBody UserQuery query) {
+        return CommonResult.ok(userService.paging(query));
     }
 
 

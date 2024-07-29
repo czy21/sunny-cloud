@@ -12,9 +12,13 @@ xxl-job:
   enabled: false
 logging:
   level:
-    com.sunny.system.core.mapper: debug
     org.jooq.tools.LoggerListener: debug
     org.springframework.jdbc: debug
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 sunny:
   security:
     ignore-paths:

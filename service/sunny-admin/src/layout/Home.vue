@@ -24,13 +24,6 @@ import NavMenu from "@/layout/NavMenu.vue";
 
 export default defineComponent({
   components: {NavMenu},
-  data() {
-    return {
-      userList: [{
-        name: "hello"
-      }]
-    }
-  },
   computed: {
     isCollapse() {
       return this.$store.getters.aside.collapse

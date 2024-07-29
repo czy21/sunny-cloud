@@ -1,9 +1,7 @@
-package com.sunny.system.core.model.po;
-
-import lombok.Data;
+package generator.domain;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import lombok.Data;
 
 /**
  * 用户
