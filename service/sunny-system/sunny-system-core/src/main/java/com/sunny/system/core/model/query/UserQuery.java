@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UserQuery extends PagingParam {
-    private String username;
+    private String name;
+    private String email;
     private String phone;
 }
