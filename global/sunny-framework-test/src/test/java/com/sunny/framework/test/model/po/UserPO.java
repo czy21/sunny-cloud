@@ -1,24 +1,62 @@
 package com.sunny.framework.test.model.po;
 
-import com.sunny.framework.core.model.BasePO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
-@EqualsAndHashCode(callSuper = true)
-@Table("user")
+import java.time.LocalDateTime;
+
+/**
+ * 
+ * @TableName user
+ */
 @Data
-public class UserPO extends BasePO<Long,String> {
-
-    @Id
+public class UserPO {
+    /**
+     * 
+     */
     private Long id;
 
+    /**
+     * 
+     */
     private String name;
 
+    /**
+     * 
+     */
     private Integer age;
 
+    /**
+     * 
+     */
     private String address;
 
-    private String status;
+    /**
+     * 
+     */
+    private Integer status;
+
+    /**
+     * 
+     */
+    private String createUser;
+
+    /**
+     * 
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 
+     */
+    private String updateUser;
+
+    /**
+     * 
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 
+     */
+    private Boolean deleted;
 }
