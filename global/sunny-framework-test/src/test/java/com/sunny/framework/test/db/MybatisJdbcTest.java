@@ -3,15 +3,12 @@ package com.sunny.framework.test.db;
 import com.sunny.framework.test.mapper.UserMapper;
 import com.sunny.framework.test.model.po.UserPO;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.jdbc.repository.config.MyBatisJdbcConfiguration;
 
 @SpringBootTest
-@EnableJdbcRepositories(basePackageClasses = UserMapper.class)
-@Import(MyBatisJdbcConfiguration.class)
+@MapperScan(basePackageClasses = UserMapper.class)
 public class MybatisJdbcTest {
 
     @Autowired
@@ -21,7 +18,7 @@ public class MybatisJdbcTest {
     public void testInsert() {
         UserPO userPO = new UserPO();
         userPO.setName("你好");
-        UserPO inserted = userMapper.save(userPO);
+        userMapper.insertSelective(userPO);
         System.out.println();
     }
 
