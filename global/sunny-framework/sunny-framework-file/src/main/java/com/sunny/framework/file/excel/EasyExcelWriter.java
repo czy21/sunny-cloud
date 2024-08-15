@@ -11,8 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EasyExcelWriter<T extends BaseExcelModel> {
@@ -54,6 +53,40 @@ public class EasyExcelWriter<T extends BaseExcelModel> {
                             row.setMessage(String.join(";", errors));
                         }
                         return row;
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
+                writer.write(targets, EasyExcel.writerSheet().build());
+                start = end;
+                end = start + batch;
+            } while (CollectionUtils.isNotEmpty(list));
+            writer.finish();
+        }
+    }
+
+    public void doWrite(OutputStream outputStream, LinkedHashMap<String, List<String>> nameHeads) {
+        List<String> message = new ArrayList<>();
+        message.add("错误信息");
+        nameHeads.putIfAbsent("message", message);
+        try (ExcelWriter writer = EasyExcel.write(outputStream).head(new ArrayList<>(nameHeads.values())).build()) {
+            var boundListOperation = redisTemplate.boundListOps(ExcelGenericDataEventListener.DATA_KEY_PREFIX_FUNC.apply(token));
+            int start = 0;
+            int end = batch;
+            List<String> list;
+            do {
+                list = boundListOperation.range(start, end - 1);
+                List<List<Object>> targets = Optional.ofNullable(list).orElse(List.of()).stream().map(t -> {
+                    try {
+                        Map<String, Object> row = objectMapper.readValue(t, new TypeReference<Map<String, Object>>() {
+                        });
+                        String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(row.get("rowIndex")));
+                        if (!StringUtils.isEmpty(errorListStr)) {
+                            List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
+                            });
+                            row.put("message", String.join(";", errors));
+                        }
+                        return nameHeads.keySet().stream().map(row::get).collect(Collectors.toList());
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }

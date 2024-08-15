@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends AnalysisEventListener<T> {
+public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
     private final Logger logger = LoggerFactory.getLogger(ExcelGenericDataEventListener.class);
     private final Validator validator;
     private final List<T> rows = new ArrayList<>();
@@ -33,6 +33,7 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     private AtomicInteger successTotal = new AtomicInteger(0);
     private Consumer<Context<T>> processConsumer;
     private String token;
+    private Map<Integer, String> indexNameMap = new HashMap<>();
 
     private int expireMinutes = 30;
     public final static String EXCEL_STORAGE_KEY_PREDIX = "generic:excel:import";
@@ -81,6 +82,14 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         this.expireMinutes = expireMinutes;
     }
 
+    public Map<Integer, String> getIndexNameMap() {
+        return indexNameMap;
+    }
+
+    public void setIndexNameMap(Map<Integer, String> indexNameMap) {
+        this.indexNameMap = indexNameMap;
+    }
+
     public int getTotal() {
         return total;
     }
@@ -89,13 +98,20 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
         return successTotal;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void invoke(T t, AnalysisContext analysisContext) {
         total++;
         int rowIndex = analysisContext.readRowHolder().getRowIndex() + 1;
         if (rowIndex > total) {
             error.put(rowIndex, new ArrayList<>());
-            t.setRowIndex(rowIndex);
+            if (t instanceof BaseExcelModel) {
+                ((BaseExcelModel) t).setRowIndex(rowIndex);
+            } else {
+                Map<Integer, Object> tMap = (Map<Integer, Object>) t;
+                t = (T) indexNameMap.entrySet().stream().collect(LinkedHashMap::new, (m, n) -> Optional.ofNullable(tMap.get(n.getKey())).ifPresent(c -> m.put(n.getValue(), c)), Map::putAll);
+                ((LinkedHashMap<String, Object>) t).put("rowIndex", rowIndex);
+            }
             rows.add(t);
             if (rows.size() >= batch) {
                 processRows();
@@ -113,7 +129,11 @@ public class ExcelGenericDataEventListener<T extends BaseExcelModel> extends Ana
     }
 
     private void processRows() {
-        rows.forEach(t -> validator.validate(t).forEach(e -> error.get(t.getRowIndex()).add(e.getMessage())));
+        rows.stream().findFirst().ifPresent(r -> {
+            if (r instanceof BaseExcelModel) {
+                rows.forEach(t -> validator.validate(t).forEach(e -> error.get(((BaseExcelModel) t).getRowIndex()).add(e.getMessage())));
+            }
+        });
         processContext.setRows(rows);
         processContext.setError(error);
         processContext.setTotal(total);

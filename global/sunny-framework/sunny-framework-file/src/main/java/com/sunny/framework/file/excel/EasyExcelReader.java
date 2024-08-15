@@ -8,11 +8,12 @@ import jakarta.validation.Validator;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class EasyExcelReader<T extends BaseExcelModel> {
+public class EasyExcelReader<T> {
 
     private String token;
     private int batch = 200;
@@ -21,6 +22,7 @@ public class EasyExcelReader<T extends BaseExcelModel> {
     private StringRedisTemplate redisTemplate;
     private Validator validator;
     private ExcelGenericDataEventListener<T> excelGenericDataEventListener;
+    private Map<Integer, String> indexNameMap;
 
     public EasyExcelReader(ObjectMapper objectMapper, StringRedisTemplate redisTemplate, Validator validator) {
         this.objectMapper = objectMapper;
@@ -42,12 +44,21 @@ public class EasyExcelReader<T extends BaseExcelModel> {
         return this;
     }
 
+    public Map<Integer, String> getIndexNameMap() {
+        return indexNameMap;
+    }
+
+    public void setIndexNameMap(Map<Integer, String> indexNameMap) {
+        this.indexNameMap = indexNameMap;
+    }
+
     public EasyExcelReader<T> process(Consumer<ExcelGenericDataEventListener.Context<T>> consumer) {
         this.token = UUID.randomUUID().toString().replace("-", "");
         this.excelGenericDataEventListener = new ExcelGenericDataEventListener<>(consumer, objectMapper, redisTemplate, validator);
         this.excelGenericDataEventListener.setToken(token);
         this.excelGenericDataEventListener.setBatch(batch);
         this.excelGenericDataEventListener.setExpireMinutes(expireMinutes);
+        this.excelGenericDataEventListener.setIndexNameMap(indexNameMap);
         return this;
     }
 
