@@ -83,13 +83,10 @@ public class FileTest {
 
     @Test
     public void testWriteMapError() throws Exception {
-        File outFile = new File(ResourceUtils.getURL("classpath:excel/").getPath() + "user-import-error.xlsx");
-        if (!outFile.exists()) {
-            outFile.createNewFile();
-        }
+        String filePath = ResourceUtils.getURL("classpath:excel/").getPath() + "user-import-error.xlsx";
         EasyExcelWriter<Map<String, Object>> writer = new EasyExcelWriter<>(objectMapper, stringRedisTemplate);
         writer.token("710add51c3b94ae49da0b7217e38aa6a");
-        writer.doWrite(() -> EasyExcel.write(outFile), userNameProperty);
+        writer.doWrite(() -> EasyExcel.write(filePath), userNameProperty);
     }
 
     @Test
