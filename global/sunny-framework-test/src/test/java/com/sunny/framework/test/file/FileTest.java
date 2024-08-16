@@ -87,7 +87,7 @@ public class FileTest {
         if (!outFile.exists()) {
             outFile.createNewFile();
         }
-        EasyExcelWriter writer = new EasyExcelWriter(objectMapper, stringRedisTemplate);
+        EasyExcelWriter<Map<String,Object>> writer = new EasyExcelWriter<>(objectMapper, stringRedisTemplate);
         writer.token("710add51c3b94ae49da0b7217e38aa6a");
         writer.doWrite(() -> EasyExcel.write(outFile), userNameProperty);
     }

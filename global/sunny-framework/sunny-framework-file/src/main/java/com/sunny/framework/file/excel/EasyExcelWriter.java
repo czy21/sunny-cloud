@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.OutputStream;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,25 +40,33 @@ public class EasyExcelWriter<T> {
         return this;
     }
 
-    public void doWrite(Supplier<ExcelWriterBuilder> writerBuilderSupplier, Class<?> head) {
-        try (ExcelWriter writer = writerBuilderSupplier.get().head(head).build()) {
-            JavaType javaType = objectMapper.getTypeFactory().constructType(head);
+    @SuppressWarnings("unchecked")
+    public void doWrite(Supplier<ExcelWriterBuilder> writerBuilderSupplier, Class<?> rowType, Function<Object, Object> rowFunc) {
+        try (ExcelWriter writer = writerBuilderSupplier.get().build()) {
+            JavaType javaType = objectMapper.getTypeFactory().constructType(rowType);
             var boundListOperation = redisTemplate.boundListOps(ExcelGenericDataEventListener.DATA_KEY_PREFIX_FUNC.apply(token));
             int start = 0;
             int end = batch;
             List<String> list;
             do {
                 list = boundListOperation.range(start, end - 1);
-                List<BaseExcelModel> targets = Optional.ofNullable(list).orElse(List.of()).stream().map(t -> {
+                List<Object> targets = Optional.ofNullable(list).orElse(List.of()).stream().map(t -> {
                     try {
-                        BaseExcelModel row = objectMapper.readValue(t, javaType);
-                        String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(row.getRowIndex()));
+                        Object row = objectMapper.readValue(t, javaType);
+                        String errorListStr = (String) redisTemplate.opsForHash()
+                                .get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token),
+                                        String.valueOf(BaseExcelModel.class.isAssignableFrom(rowType) ? ((BaseExcelModel) row).getRowIndex() : ((Map<String, Object>) row).get("rowIndex")));
                         if (!StringUtils.isEmpty(errorListStr)) {
                             List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
                             });
-                            row.setMessage(String.join(";", errors));
+                            String message = String.join(";", errors);
+                            if (BaseExcelModel.class.isAssignableFrom(rowType)) {
+                                ((BaseExcelModel) row).setMessage(message);
+                            } else {
+                                ((Map<String, Object>) row).put("message", message);
+                            }
                         }
-                        return row;
+                        return rowFunc.apply(row);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
@@ -70,11 +79,15 @@ public class EasyExcelWriter<T> {
         }
     }
 
-    public void doWrite(OutputStream outputStream, Class<?> head) {
-        doWrite(() -> EasyExcel.write(outputStream), head);
+    public void doWrite(Supplier<ExcelWriterBuilder> writerBuilderSupplier, Class<?> head) {
+        doWrite(writerBuilderSupplier, head, r -> r);
     }
 
+    public void doWrite(OutputStream outputStream, Class<?> head) {
+        doWrite(() -> EasyExcel.write(outputStream).head(head), head);
+    }
 
+    @SuppressWarnings("unchecked")
     public void doWrite(Supplier<ExcelWriterBuilder> writerBuilderSupplier, Map<String, EasyExcelProperty> nameProperty) {
         int messageIndex = nameProperty.values().stream().max(Comparator.comparingInt(EasyExcelProperty::getIndex)).map(EasyExcelProperty::getIndex).orElse(0) + 1;
         List<String> message = new ArrayList<>();
@@ -86,35 +99,9 @@ public class EasyExcelWriter<T> {
                         .findFirst()
                         .ifPresentOrElse(p -> m.put(p.getKey(), p.getValue().getHead()), () -> m.put("empty" + n, new ArrayList<>())),
                 Map::putAll);
-        try (ExcelWriter writer = writerBuilderSupplier.get().head(nameHead.values().stream().collect(Collectors.toList())).build()) {
-            var boundListOperation = redisTemplate.boundListOps(ExcelGenericDataEventListener.DATA_KEY_PREFIX_FUNC.apply(token));
-            int start = 0;
-            int end = batch;
-            List<String> list;
-            do {
-                list = boundListOperation.range(start, end - 1);
-                List<List<Object>> targets = Optional.ofNullable(list).orElse(List.of()).stream().map(t -> {
-                    try {
-                        Map<String, Object> row = objectMapper.readValue(t, new TypeReference<Map<String, Object>>() {
-                        });
-                        String errorListStr = (String) redisTemplate.opsForHash().get(ExcelGenericDataEventListener.ERROR_KEY_PREFIX_FUNC.apply(token), String.valueOf(row.get("rowIndex")));
-                        if (!StringUtils.isEmpty(errorListStr)) {
-                            List<String> errors = objectMapper.readValue(errorListStr, new TypeReference<List<String>>() {
-                            });
-                            row.put("message", String.join(";", errors));
-                        }
-                        return nameHead.keySet().stream().map(row::get).collect(Collectors.toList());
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(Collectors.toList());
-                writer.write(targets, EasyExcel.writerSheet().build());
-                start = end;
-                end = start + batch;
-            } while (CollectionUtils.isNotEmpty(list));
-            writer.finish();
-        }
+        doWrite(writerBuilderSupplier, Map.class, r -> nameHead.keySet().stream().map(t -> ((Map<String, Object>) r).get(t)).collect(Collectors.toList()));
     }
+
 
     public void doWrite(OutputStream outputStream, Map<String, EasyExcelProperty> nameProperty) {
         doWrite(() -> EasyExcel.write(outputStream), nameProperty);
