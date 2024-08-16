@@ -2,10 +2,13 @@ package com.sunny.framework.test.file;
 
 import com.alibaba.excel.EasyExcel;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sunny.framework.file.excel.EasyExcelProperty;
 import com.sunny.framework.file.excel.EasyExcelReader;
+import com.sunny.framework.file.excel.EasyExcelWriter;
 import com.sunny.framework.file.model.ExcelResult;
 import com.sunny.framework.test.model.excel.UserImport;
 import jakarta.validation.Validator;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +18,8 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 public class FileTest {
@@ -30,14 +31,20 @@ public class FileTest {
     @Autowired
     Validator validator;
 
+    static Map<String, EasyExcelProperty> userNameProperty = new HashMap<>();
+
+    static {
+        userNameProperty.put("name", EasyExcelProperty.of(0, List.of("姓名").stream().collect(Collectors.toList())));
+        userNameProperty.put("age", EasyExcelProperty.of(1, List.of("年龄").stream().collect(Collectors.toList())));
+        userNameProperty.put("birthDay", EasyExcelProperty.of(2, List.of("出生日期").stream().collect(Collectors.toList())));
+    }
+
     @Test
     public void testReader() throws FileNotFoundException {
         File userImportFile = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/user-import.xlsx");
         EasyExcelReader<UserImport> reader = new EasyExcelReader<>(objectMapper, stringRedisTemplate, validator);
         reader.process(ctx -> {
             ctx.getRows().forEach(t -> {
-
-
                 ctx.getSuccessTotal().incrementAndGet();
             });
         });
@@ -54,19 +61,35 @@ public class FileTest {
     public void testReadMap() throws FileNotFoundException {
         File userImportFile = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/user-import.xlsx");
         EasyExcelReader<Map<String, Object>> reader = new EasyExcelReader<>(objectMapper, stringRedisTemplate, validator);
-        reader.setIndexNameMap(Map.of(1, "name", 2, "age", 3, "birthDay"));
-        reader.process(ctx -> {
-            ctx.getRows().forEach(t -> {
+        reader.nameProperty(userNameProperty).process(ctx -> {
+            for (Map<String, Object> t : ctx.getRows()) {
+                Integer rowIndex = (Integer) t.get("rowIndex");
+                List<String> errors = ctx.getError().get(rowIndex);
+                if (ObjectUtils.isEmpty(t.get("name"))) {
+                    errors.add("姓名不能为空");
+                    continue;
+                }
                 ctx.getSuccessTotal().incrementAndGet();
-            });
+            }
         });
-        reader.read(new FileInputStream(userImportFile)).doReadAll();
+        reader.read(new FileInputStream(userImportFile)).headRowNumber(userNameProperty.values().stream().map(t -> t.getHead().size()).max(Comparator.comparingInt(t -> t)).orElse(0)).doReadAll();
         ExcelResult result = new ExcelResult();
         result.setToken(reader.getToken());
         result.setSuccess(reader.getTotal() == reader.getSuccessTotal().get());
         result.setSuccessTotal(reader.getSuccessTotal().get());
         result.setFailureTotal(reader.getFailureTotal());
         System.out.println();
+    }
+
+    @Test
+    public void testWriteMapError() throws Exception {
+        File outFile = new File(ResourceUtils.getURL("classpath:excel/").getPath() + "user-import-error.xlsx");
+        if (!outFile.exists()) {
+            outFile.createNewFile();
+        }
+        EasyExcelWriter writer = new EasyExcelWriter(objectMapper, stringRedisTemplate);
+        writer.token("710add51c3b94ae49da0b7217e38aa6a");
+        writer.doWrite(() -> EasyExcel.write(outFile), userNameProperty);
     }
 
     @Test

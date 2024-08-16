@@ -5,6 +5,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunny.framework.file.excel.BaseExcelModel;
+import com.sunny.framework.file.excel.EasyExcelProperty;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
     private AtomicInteger successTotal = new AtomicInteger(0);
     private Consumer<Context<T>> processConsumer;
     private String token;
-    private Map<Integer, String> indexNameMap = new HashMap<>();
+    private Map<String, EasyExcelProperty> nameProperty = new HashMap<>();
 
     private int expireMinutes = 30;
     public final static String EXCEL_STORAGE_KEY_PREDIX = "generic:excel:import";
@@ -82,12 +83,12 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
         this.expireMinutes = expireMinutes;
     }
 
-    public Map<Integer, String> getIndexNameMap() {
-        return indexNameMap;
+    public Map<String, EasyExcelProperty> getNameProperty() {
+        return nameProperty;
     }
 
-    public void setIndexNameMap(Map<Integer, String> indexNameMap) {
-        this.indexNameMap = indexNameMap;
+    public void setNameProperty(Map<String, EasyExcelProperty> nameProperty) {
+        this.nameProperty = nameProperty;
     }
 
     public int getTotal() {
@@ -109,7 +110,7 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
                 ((BaseExcelModel) t).setRowIndex(rowIndex);
             } else {
                 Map<Integer, Object> tMap = (Map<Integer, Object>) t;
-                t = (T) indexNameMap.entrySet().stream().collect(LinkedHashMap::new, (m, n) -> Optional.ofNullable(tMap.get(n.getKey())).ifPresent(c -> m.put(n.getValue(), c)), Map::putAll);
+                t = (T) nameProperty.entrySet().stream().collect(LinkedHashMap::new, (m, n) -> Optional.ofNullable(tMap.get(n.getValue().getIndex())).ifPresent(c -> m.put(n.getKey(), c)), Map::putAll);
                 ((LinkedHashMap<String, Object>) t).put("rowIndex", rowIndex);
             }
             rows.add(t);

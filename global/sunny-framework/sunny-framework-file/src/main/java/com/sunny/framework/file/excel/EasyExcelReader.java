@@ -22,7 +22,7 @@ public class EasyExcelReader<T> {
     private StringRedisTemplate redisTemplate;
     private Validator validator;
     private ExcelGenericDataEventListener<T> excelGenericDataEventListener;
-    private Map<Integer, String> indexNameMap;
+    private Map<String, EasyExcelProperty> nameProperty;
 
     public EasyExcelReader(ObjectMapper objectMapper, StringRedisTemplate redisTemplate, Validator validator) {
         this.objectMapper = objectMapper;
@@ -44,12 +44,9 @@ public class EasyExcelReader<T> {
         return this;
     }
 
-    public Map<Integer, String> getIndexNameMap() {
-        return indexNameMap;
-    }
-
-    public void setIndexNameMap(Map<Integer, String> indexNameMap) {
-        this.indexNameMap = indexNameMap;
+    public EasyExcelReader<T> nameProperty(Map<String, EasyExcelProperty> nameProperty) {
+        this.nameProperty = nameProperty;
+        return this;
     }
 
     public EasyExcelReader<T> process(Consumer<ExcelGenericDataEventListener.Context<T>> consumer) {
@@ -58,7 +55,7 @@ public class EasyExcelReader<T> {
         this.excelGenericDataEventListener.setToken(token);
         this.excelGenericDataEventListener.setBatch(batch);
         this.excelGenericDataEventListener.setExpireMinutes(expireMinutes);
-        this.excelGenericDataEventListener.setIndexNameMap(indexNameMap);
+        this.excelGenericDataEventListener.setNameProperty(nameProperty);
         return this;
     }
 
