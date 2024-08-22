@@ -16,6 +16,10 @@ const routes = [
                 path: "/sys/menu",
                 component: () => import('@v/menu/index.vue')
             },
+            {
+                path: "/sys/table/dynamic-head",
+                component: () => import('@v/table/dynamic-head.vue')
+            },
         ],
         beforeEnter: (to: any, from: any, next: any) => {
             const token = util.auth.getToken()

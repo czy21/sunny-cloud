@@ -1,7 +1,7 @@
 export interface MenuModel {
-    path?: string,
     name: string,
-    icon: string,
+    path?: string,
+    icon?: string,
     children?: MenuModel[]
 }
 
@@ -24,6 +24,16 @@ const menus: Array<MenuModel> = [
                 name: "菜单管理",
                 path: "/sys/menu",
                 icon: "Menu"
+            },
+        ]
+    },
+    {
+        name: "Table",
+        icon: "Setting",
+        children: [
+            {
+                name: "动态表头",
+                path: "/sys/table/dynamic-head"
             },
         ]
     }
