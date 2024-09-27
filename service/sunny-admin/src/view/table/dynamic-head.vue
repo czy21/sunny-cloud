@@ -10,58 +10,22 @@
 
 <script lang="ts" setup>
 import DynamicColumn from "@v/table/dynamic-column.vue";
+import util from "@/util"
 
 const handleClick = () => {
   console.log('click')
 }
 
-const headData:any = [
-]
-
-const insert_head = (node: any, next: any) => {
-  let current = node
-  next.heads.forEach((tt: any) => {
-    current.children = current.children || []
-    let parent = current.children.find((pt: any) => pt.desc == tt)
-    if (!parent) {
-      parent = {
-        "desc": tt
-      }
-      current.children.push(parent)
-    }
-    current = parent
-  })
-}
+const headData: any[] = []
 
 const getHeadGroup = () => {
   headData.forEach((t: any) => {
     t["heads"] = t["detailMeta"]["heads"]
-  })
-  let root = {
-    "desc": "",
-    "children": []
-  }
-  headData.forEach((t: any, i: any) => {
     t["desc"] = t.heads[t.heads.length - 1]
-    insert_head(root, t)
   })
-  let tree=Object.values(root.children)
+
+  let tree = util.tree.buildByPath(headData, null, "heads", "desc", "parentDesc")
   console.log(tree)
   return tree
-}
-
-const buildTree = (all: any) => {
-  return all.filter((t: any) => t.parentId == "").map((t: any) => buildChildren(all, t)).sort((a, b) => a.sort - b.sort)
-}
-
-const buildChildren = (items: any, node: any) => {
-  let children = items.filter((t: any) => node.id == t.parentId).map((t: any) => buildChildren(items, t))
-  if (node['children']) {
-    node['children'].push(...children)
-  } else {
-    node['children'] = children
-  }
-  node.children.sort((a, b) => a.sort - b.sort)
-  return node
 }
 </script>
