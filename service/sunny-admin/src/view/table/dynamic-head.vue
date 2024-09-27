@@ -1,6 +1,6 @@
 <template>
   <el-table>
-    <template v-for="t in treeHead">
+    <template v-for="t in getHeadGroup()">
       <dynamic-column v-if="t.children" :column-item="t"/>
       <el-table-column v-else :label="t.desc" :prop="t.name"/>
     </template>
@@ -15,70 +15,53 @@ const handleClick = () => {
   console.log('click')
 }
 
-const treeHead = [
-  {
-    "desc": "一级",
-    "children": [
-      {
-        "name": "name",
-        "desc": "姓名",
-        "children": [
-          {
-            "name": "name1",
-            "desc": "姓名1"
-          },
-          {
-            "name": "name1",
-            "desc": "姓名2"
-          }
-        ]
-      },
-      {
-        "name": "name",
-        "desc": "年龄"
-      }
-    ]
-  },
-  {
-    "name": "address",
-    "desc": "地址"
-  }
-]
-const headData = [
-  {
-    "name": "name",
-    "heads": ["一级", "二级", "姓名"]
-  },
-  {
-    "name": "age",
-    "heads": ["一级", "年龄"]
-  },
-  {
-    "name": "age",
-    "heads": ["一级", "手机号"]
-  },
-  {
-    "name": "address",
-    "heads": ["地址"]
-  }
+const headData:any = [
 ]
 
-const getHeadGroup = () => {
-  const flat = headData.map((t: any) => {
-    t["desc"] = t.heads[t.heads.length - 1]
-    t["parentDesc"] = t.heads.length == 1 ? null : t.heads[t.heads.length - 2]
-    return t
-  })
-  const parents = flat.map(t => t.heads.slice(0, -1)).filter(t => t.length > 0).map(t=>{
-    return {
-      "desc": t[t.length - 1],
-      "parentDesc": t[t.length - 2]
+const insert_head = (node: any, next: any) => {
+  let current = node
+  next.heads.forEach((tt: any) => {
+    current.children = current.children || []
+    let parent = current.children.find((pt: any) => pt.desc == tt)
+    if (!parent) {
+      parent = {
+        "desc": tt
+      }
+      current.children.push(parent)
     }
+    current = parent
   })
-  console.log(flat)
-  console.log(parents)
 }
-// const getComponent=()=>{
-//   return
-// }
+
+const getHeadGroup = () => {
+  headData.forEach((t: any) => {
+    t["heads"] = t["detailMeta"]["heads"]
+  })
+  let root = {
+    "desc": "",
+    "children": []
+  }
+  headData.forEach((t: any, i: any) => {
+    t["desc"] = t.heads[t.heads.length - 1]
+    insert_head(root, t)
+  })
+  let tree=Object.values(root.children)
+  console.log(tree)
+  return tree
+}
+
+const buildTree = (all: any) => {
+  return all.filter((t: any) => t.parentId == "").map((t: any) => buildChildren(all, t)).sort((a, b) => a.sort - b.sort)
+}
+
+const buildChildren = (items: any, node: any) => {
+  let children = items.filter((t: any) => node.id == t.parentId).map((t: any) => buildChildren(items, t))
+  if (node['children']) {
+    node['children'].push(...children)
+  } else {
+    node['children'] = children
+  }
+  node.children.sort((a, b) => a.sort - b.sort)
+  return node
+}
 </script>

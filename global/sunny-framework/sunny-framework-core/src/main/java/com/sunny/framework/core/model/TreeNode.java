@@ -8,25 +8,39 @@ public interface TreeNode<T> extends Comparable<TreeNode<T>> {
 
     T getId();
 
-    void setId(T id);
+    default void setId(T id) {
+    }
 
     T getParentId();
 
-    void setParentId(T parentId);
+    default void setParentId(T parentId) {
+    }
 
-    List<T> getParentIds();
+    default List<T> getParentIds() {
+        return null;
+    }
 
-    void setParentIds(List<T> parentIds);
+    default void setParentIds(List<T> parentIds) {
+    }
+
+    default List<T> getPathIds() {
+        return null;
+    }
+
+    default void setPathIds(List<T> pathIds) {
+    }
 
     List<? extends TreeNode<T>> getChildren();
 
-    void setChildren(List<? extends TreeNode<T>> children);
+    default void setChildren(List<? extends TreeNode<T>> children) {
+    }
 
     default Integer getSort() {
         return 0;
     }
 
-    default void setSort(Integer sort) {}
+    default void setSort(Integer sort) {
+    }
 
     @Override
     default int compareTo(TreeNode<T> o) {
