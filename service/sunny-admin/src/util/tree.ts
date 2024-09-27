@@ -1,3 +1,24 @@
+export function override(t1: any, t2: any, idKey: string = "id", parentKey: string = "parentId") {
+
+    if (t1[idKey] === t2[idKey]) {
+        let mergedNode: any = {...t1, ...t2}
+        const childMap = new Map();
+
+        for (const child of t1.children || []) {
+            childMap.set(child[idKey], child);
+        }
+
+        for (const child of t2.children || []) {
+            childMap.set(child.id, childMap.has(child[idKey]) ? override(childMap.get(child[idKey]), child) : child);
+        }
+
+        mergedNode.children = Array.from(childMap.values());
+        return mergedNode;
+    }
+
+    return t1.children;
+}
+
 export function buildByPath(all: any[],
                             rootValue: any = null,
                             pathsKey: string = "paths",
