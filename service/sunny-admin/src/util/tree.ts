@@ -8,7 +8,7 @@ export function buildByPath(all: any[],
     root[idKey] = rootValue
     root["children"] = []
     all.forEach(t => processPath(root, t, pathsKey, idKey, parentKey, sortKey))
-    return Object.values(root.children.sort((a: any, b: any) => a[sortKey] - b[sortKey]))
+    return root.children
 }
 
 export function processPath(root: any,
@@ -27,7 +27,7 @@ export function processPath(root: any,
             child[parentKey] = current[idKey]
             child = i == a.length - 1 ? {...node, ...child} : child
             current.children.push(child)
-            current.children = current.children.sort((a: any, b: any) => a[sortKey] - b[sortKey])
+            current.children.sort((a: any, b: any) => a[sortKey] - b[sortKey])
         }
         current = child
     })
