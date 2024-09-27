@@ -9,7 +9,7 @@ export function override(t1: any, t2: any, idKey: string = "id", parentKey: stri
         }
 
         for (const child of t2.children || []) {
-            childMap.set(child.id, childMap.has(child[idKey]) ? override(childMap.get(child[idKey]), child) : child);
+            childMap.set(child[idKey], childMap.has(child[idKey]) ? override(childMap.get(child[idKey]), child) : child);
         }
 
         mergedNode.children = Array.from(childMap.values());
