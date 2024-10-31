@@ -4,7 +4,8 @@ import {resolve} from 'path'
 
 const alias = {
     "@": "src",
-    "@v": "src/view"
+    "@v": "src/view",
+    "@c": "src/component",
 }
 
 // https://vitejs.dev/config/

@@ -18,7 +18,7 @@ const routes = [
             },
             {
                 path: "/sys/table/dynamic-head",
-                component: () => import('@v/table/dynamic-head.vue')
+                component: () => import('@v/table/dynamic-table.vue')
             },
         ],
         beforeEnter: (to: any, from: any, next: any) => {
