@@ -22,9 +22,6 @@ export default defineComponent({
     node: {type: Object}
   },
   methods: {
-    handleClick:(scope) => {
-      console.log(scope)
-    }
   }
 })
 
