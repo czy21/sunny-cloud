@@ -1,12 +1,10 @@
 <template>
   <el-table :data="props.data" ref="tableRef">
-    <template v-for="t in props.columns">
-      <dynamic-column :node="t">
-        <template #default="{columnName,column,scope}">
-          <slot :name="columnName" :column="column" :scope="scope" :row="scope.row" :rowIndex="scope.$index"/>
-        </template>
-      </dynamic-column>
-    </template>
+    <dynamic-column :node="t" v-for="t in props.columns">
+      <template #default="{columnName,column,scope}">
+        <slot :name="columnName" :column="column" :scope="scope" :row="scope.row" :rowIndex="scope.$index"/>
+      </template>
+    </dynamic-column>
   </el-table>
 </template>
 
