@@ -1,30 +1,37 @@
 <template>
-  <el-table-column :label="node.desc" :prop="node.name" align="center" v-if="node.children && node.children.length > 0">
-    <dynamic-column :node="child" v-for="child in node.children">
+  <el-table-column :label="props.node.desc" :prop="props.node.name" align="center" v-if="props.node.children && props.node.children.length > 0">
+    <dynamic-column :node="child" v-for="child in props.node.children">
       <template #default="scope">
         <slot :columnName="scope.columnName" :column="scope.column" :scope="scope.scope"/>
       </template>
     </dynamic-column>
   </el-table-column>
-  <el-table-column :label="node.desc" :prop="node.name" align="center" v-else>
+  <el-table-column :label="props.node.desc" :prop="props.node.name" align="center" v-else>
     <template #default="scope">
-      <slot :columnName="node.name" :column="node" :scope="scope" v-if="node.custom"/>
-      <el-input v-model="scope.row[node.name]" v-if="!node.type"/>
+      <slot :columnName="props.node.name" :column="node" :scope="scope" v-if="props.node.custom"/>
+      <el-input v-model="scope.row[props.node.name]" @blur="onExitEditMode(scope)" v-else-if="isInputString(scope)"/>
+      <el-input v-model="scope.row[props.node.name]" type="number" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)"/>
     </template>
   </el-table-column>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
+<script setup lang="tsx">
+import {defineProps} from "vue"
 
-export default defineComponent({
-  props: {
-    node: {type: Object}
-  },
-  methods: {
-  }
-})
+const props = defineProps(["node"])
 
-</script>
-<script setup lang="ts">
+const isEditable = (scope) => {
+  return props.node.editable && scope.row[`${props.node.name}_editable`]
+}
+
+const isInputString = (scope) => {
+  return (props.node.type === 'string' || !props.node.type) && isEditable(scope)
+}
+
+const isInputNumber = (scope) => {
+  return props.node.type === 'number' && isEditable(scope)
+}
+
+const onExitEditMode = (scope) => (scope.row[`${props.node.name}_editable`] = null)
+
 </script>

@@ -4,9 +4,9 @@
     <template #age="{column,scope}">
       <el-input v-model="scope.row['age']"/>
     </template>
-    <template #c="{column,scope}">
-      <el-input v-model="scope.row['c']"/>
-    </template>
+<!--    <template #c="{column,scope}">-->
+<!--      <el-input v-model="scope.row['c']"/>-->
+<!--    </template>-->
   </dynamic-table>
 
   <el-button @click="handleClick">确认</el-button>
@@ -19,9 +19,7 @@ import util from "@/util"
 import {reactive, onMounted, ref} from "vue"
 
 const handleClick = (scope) => {
-  console.log(scope)
-  // console.log(tableRef.value.tableRef.data)
-  // console.log('click')
+  console.log(tableRef.value.tableRef.data)
 }
 
 const tableRef = ref(null)
@@ -56,27 +54,25 @@ const headData: any[] = [
     "name": "age",
     "desc": "年龄",
     "heads": ["年龄"],
-    "type": "select",
-    "custom": true
+    "type": "number",
+    "editable": true
   },
   {
     "name": "address",
     "desc": "a",
     "heads": ["a1", "a2", "address"],
-    "type": "number",
     "editable": true
   },
   {
     "name": "b",
     "desc": "b",
     "heads": ["a1", "a2", "b"],
-    // "editable": true,
+    "editable": true,
   },
   {
     "name": "c",
     "desc": "c",
-    "heads": ["a1", "a2", "a3", "c"],
-    "custom": true
+    "heads": ["a1", "a2", "a3", "c"]
   }
 ]
 
