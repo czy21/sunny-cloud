@@ -29,11 +29,10 @@ const menus: Array<MenuModel> = [
     },
     {
         name: "Table",
-        icon: "Setting",
         children: [
             {
-                name: "动态表头",
-                path: "/sys/table/dynamic-head"
+                name: "动态表格",
+                path: "/sys/table/dynamic-table"
             },
         ]
     }
