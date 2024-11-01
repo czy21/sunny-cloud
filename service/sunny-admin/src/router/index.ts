@@ -20,6 +20,10 @@ const routes = [
                 path: "/sys/table/dynamic-table",
                 component: () => import('@v/table/dynamic-table.vue')
             },
+            {
+                path: "/sys/table/virtual-table",
+                component: () => import('@v/table/virtual-table.vue')
+            },
         ],
         beforeEnter: (to: any, from: any, next: any) => {
             const token = util.auth.getToken()

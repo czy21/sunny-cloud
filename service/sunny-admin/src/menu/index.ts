@@ -34,6 +34,10 @@ const menus: Array<MenuModel> = [
                 name: "动态表格",
                 path: "/sys/table/dynamic-table"
             },
+            {
+                name: "虚拟表格",
+                path: "/sys/table/virtual-table"
+            },
         ]
     }
 ]

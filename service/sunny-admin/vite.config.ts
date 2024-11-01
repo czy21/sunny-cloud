@@ -1,6 +1,8 @@
+import {fileURLToPath, URL} from 'node:url'
+
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {resolve} from 'path'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const alias = {
     "@": "src",
@@ -10,12 +12,20 @@ const alias = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        vue(),
+        vueJsx()
+    ],
     build: {
         outDir: "build"
     },
     resolve: {
-        alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: resolve(alias[c])}), {})
+        alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url))}), {})
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {api: 'modern-compiler'},
+        }
     },
     server: {
         host: '0.0.0.0',
