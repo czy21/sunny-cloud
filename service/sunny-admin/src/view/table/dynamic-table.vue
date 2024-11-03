@@ -1,12 +1,12 @@
 <template>
 
-  <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data">
+  <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict">
     <template #age="{column,scope}">
       <el-input v-model="scope.row['age']"/>
     </template>
-<!--    <template #c="{column,scope}">-->
-<!--      <el-input v-model="scope.row['c']"/>-->
-<!--    </template>-->
+    <!--    <template #c="{column,scope}">-->
+    <!--      <el-input v-model="scope.row['c']"/>-->
+    <!--    </template>-->
   </dynamic-table>
 
   <el-button @click="handleClick">确认</el-button>
@@ -26,23 +26,35 @@ const tableRef = ref(null)
 
 const tableDataRef = reactive({
   columns: [],
-  data: []
+  data: [],
+  dict: []
 })
 
 onMounted(() => {
-  tableDataRef.columns = getHeadGroup()
+  tableDataRef.columns = getColumns()
   tableDataRef.data = [
     {
       "name": "张三",
       "address": "上海",
       "age": 25,
+      "hobby": "dance",
       "c": 980
     },
     {
-      "name": "李四"
-    }
+      "name": "李四",
+      "address": "上海",
+      "age": 25,
+      "hobby": "b"
+    },
   ]
+  tableDataRef.dict = {
+    "hobby": [
+      {"label": "唱歌", "value": "music"},
+      {"label": "跳舞", "value": "dance"}
+    ]
+  }
 })
+
 const headData: any[] = [
   {
     "name": "name",
@@ -60,23 +72,28 @@ const headData: any[] = [
   {
     "name": "address",
     "desc": "a",
-    "heads": ["a1", "a2", "address"],
+    "heads": ["a1", "a2", "地址"],
     "editable": true
   },
   {
-    "name": "b",
-    "desc": "b",
-    "heads": ["a1", "a2", "b"],
+    "name": "entryTime",
+    "desc": "入职时间",
+    "heads": ["a1", "a2", "入职时间"],
+    "type": "datetime",
     "editable": true,
   },
   {
-    "name": "c",
-    "desc": "c",
-    "heads": ["a1", "a2", "a3", "c"]
-  }
+    "name": "hobby",
+    "desc": "爱好",
+    "heads": ["爱好"],
+    "type": "select",
+    "dictKey": "hobby",
+    "editable": true,
+    "heads": ["a1", "a2", "爱好"]
+  },
 ]
 
-const getHeadGroup = () => {
+const getColumns = () => {
   headData.forEach((t: any) => {
     t["heads"] = t["heads"]
     t["desc"] = t.heads[t.heads.length - 1]
