@@ -9,39 +9,30 @@
   <el-table-column :label="props.node.desc" :prop="props.node.name" align="center" v-else>
     <template #default="scope">
       <slot :columnName="props.node.name" :column="node" :scope="scope" v-if="props.node.custom"/>
-      <el-input ref="editRef" v-model="scope.row[props.node.name]" @blur="onExitEditMode(scope)" v-else-if="isInputString(scope)"/>
-      <el-input ref="editRef" v-model="scope.row[props.node.name]" type="number" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)"/>
+      <edit-cell :scope="scope" v-else-if="isEdit(scope)"/>
     </template>
   </el-table-column>
 </template>
 
 <script setup lang="tsx">
-import {ref, defineProps} from "vue"
+import {ref, defineProps, FunctionalComponent} from "vue"
+import {ElInput} from "element-plus";
 
 const props = defineProps(["node"])
 
-const editRef = ref(null)
+const editRef = ref()
 
-const isEditable = (scope) => {
-  return props.node.editable && scope.row[`${props.node.name}_editable`]
-}
+const isEdit = (scope) => props.node.editable && scope.row[`${props.node.name}_editable`]
 
-const isInputString = (scope) => {
-  let val = (props.node.type === 'string' || !props.node.type) && isEditable(scope)
-  if (val) {
-    editRef.value?.focus()
+const onExitEditMode = (scope) => delete scope.row[`${props.node.name}_editable`]
+
+const EditCell: FunctionalComponent = ({scope}) => {
+  let instance = <ElInput ref={editRef} modelValue={scope.row[props.node.name]} onBlur={() => onExitEditMode(scope)} onInput={(value) => scope.row[props.node.name] = value}/>
+  editRef.value?.focus()
+  if (props.node.type === 'number') {
+    instance.props.type = "number"
   }
-  return val
+  return instance
 }
-
-const isInputNumber = (scope) => {
-  let val = props.node.type === 'number' && isEditable(scope)
-  if (val) {
-    editRef.value?.focus()
-  }
-  return val
-}
-
-const onExitEditMode = (scope) => (scope.row[`${props.node.name}_editable`] = null)
 
 </script>
