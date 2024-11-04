@@ -1,12 +1,13 @@
 <template>
 
   <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict">
-    <template #age="{column,scope}">
+    <template #age="{scope}">
       <el-input v-model="scope.row['age']"/>
     </template>
-    <!--    <template #c="{column,scope}">-->
-    <!--      <el-input v-model="scope.row['c']"/>-->
-    <!--    </template>-->
+    <template #action="{scope}">
+      <el-button @click="()=>{}" link type="primary">加行</el-button>
+      <el-button @click="()=>{}" link type="danger">删除</el-button>
+    </template>
   </dynamic-table>
 
   <el-button @click="handleClick">确认</el-button>
@@ -32,21 +33,22 @@ const tableDataRef = reactive({
 
 onMounted(() => {
   tableDataRef.columns = getColumns()
-  tableDataRef.data = [
-    {
-      "name": "张三",
-      "address": "上海",
-      "age": 25,
-      "hobby": "dance",
-      "c": 980
-    },
-    {
-      "name": "李四",
+  tableDataRef.data = Array.from({length: 10}).map((t, i) => {
+    return {
+      "name": "李四" + i,
       "address": "上海",
       "age": 25,
       "hobby": "b"
-    },
-  ]
+    }
+  })
+  console.log(Array.from(100).map((t, i) => {
+    return {
+      "name": "李四" + i,
+      "address": "上海",
+      "age": 25,
+      "hobby": "b"
+    }
+  }))
   tableDataRef.dict = {
     "hobby": [
       {"label": "唱歌", "value": "music"},
@@ -56,6 +58,12 @@ onMounted(() => {
 })
 
 const headData: any[] = [
+  {
+    "name": "seq",
+    "desc": "序号",
+    "type": "index",
+    "heads": ["序号"]
+  },
   {
     "name": "name",
     "desc": "姓名",
@@ -67,7 +75,8 @@ const headData: any[] = [
     "desc": "年龄",
     "heads": ["年龄"],
     "type": "number",
-    "editable": true
+    "editable": true,
+    "custom": true
   },
   {
     "name": "address",
@@ -91,11 +100,15 @@ const headData: any[] = [
     "editable": true,
     "heads": ["a1", "a2", "爱好"]
   },
+  {
+    "name": "action",
+    "desc": "操作",
+    "heads": ["操作"]
+  }
 ]
 
 const getColumns = () => {
   headData.forEach((t: any) => {
-    t["heads"] = t["heads"]
     t["desc"] = t.heads[t.heads.length - 1]
   })
 
