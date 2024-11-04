@@ -1,8 +1,8 @@
 <template>
-  <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" height="100%">
+  <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" width="100%" height="100%">
     <dynamic-column :node="t" v-for="t in props.columns">
       <template #default="{columnName,scope}">
-        <slot :name="columnName" :scope="scope" :row="scope.row" :rowIndex="scope.$index" v-if="scope.column.node.custom"/>
+        <slot :name="columnName" :=scope v-if="scope.column.node.custom"/>
         <template v-else-if="isEdit(scope)">
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInputString(scope)"/>
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" :type="scope.column.node.type" v-else-if="isInputNumber(scope)"/>
@@ -19,7 +19,7 @@
           <el-button @click="addRow(scope)" link type="primary" v-if="showAddRow(scope)">加行</el-button>
           <el-button @click="delRow(scope)" link type="danger">删除</el-button>
         </span>
-        <show-cell :scope="scope" v-else/>
+        <show-cell :="scope" v-else/>
       </template>
     </dynamic-column>
   </el-table>
@@ -79,7 +79,7 @@ const onExitEditMode = (scope) => {
   delete scope.row[`${scope.column.property}_editable`]
 }
 
-const ShowCell: FunctionalComponent = ({scope}) => {
+const ShowCell: FunctionalComponent = (scope) => {
   let label = scope.row[scope.column.property]
   if (scope.column.node.dictKey && props.dict) {
     let value = props.dict[scope.column.node.dictKey].find(t => t.value === scope.row[scope.column.property])?.label
@@ -108,6 +108,24 @@ const addRow = (scope) => {
 }
 const delRow = (scope) => {
   props.data.splice(scope.$index, 1)
+}
+
+const summaryMethod = (data: { columns: any[], data: any[] }) => {
+  const sums = []
+  const totalSummary = {}
+  if (data.columns && data.columns.length > 0) {
+    totalSummary[`${data.columns[0].property}`] = "合计"
+    data.columns.forEach((c, ci) => {
+      data.data.forEach((t, ti) => {
+        if (c.node.colTotal) {
+          console.log(t[c.property])
+        }
+      })
+    })
+    sums.push(totalSummary)
+    sums.push(totalSummary)
+  }
+  return sums
 }
 
 defineExpose({

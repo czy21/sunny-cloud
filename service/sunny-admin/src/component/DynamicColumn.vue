@@ -6,7 +6,7 @@
       </template>
     </dynamic-column>
   </el-table-column>
-  <el-table-column :label="props.node.desc" :prop="props.node.name" header-align="center" v-else>
+  <el-table-column :label="props.node.desc" :prop="props.node.name" header-align="center" :fixed="props.node.fixed" :width="props.node.width!=null ?props.node.width:150" v-else>
     <template #header="scope">
       {{ renderHeader(props.node, scope) }}
     </template>

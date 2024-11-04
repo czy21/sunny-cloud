@@ -1,12 +1,8 @@
 <template>
 
   <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict">
-    <template #age="{scope}">
+    <template #age="scope">
       <el-input v-model="scope.row['age']"/>
-    </template>
-    <template #action="{scope}">
-      <el-button @click="()=>{}" link type="primary">加行</el-button>
-      <el-button @click="()=>{}" link type="danger">删除</el-button>
     </template>
   </dynamic-table>
 
@@ -19,10 +15,6 @@ import DynamicTable from "@c/DynamicTable.vue";
 import util from "@/util"
 import {reactive, onMounted, ref} from "vue"
 
-const handleClick = (scope) => {
-  console.log(tableRef.value.tableRef.data)
-}
-
 const tableRef = ref(null)
 
 const tableDataRef = reactive({
@@ -30,6 +22,10 @@ const tableDataRef = reactive({
   data: [],
   dict: []
 })
+
+const handleClick = () => {
+  console.log(tableRef.value.tableRef.data)
+}
 
 onMounted(() => {
   tableDataRef.columns = getColumns()
@@ -61,8 +57,9 @@ const headData: any[] = [
   {
     "name": "seq",
     "desc": "序号",
+    "heads": ["序号"],
     "type": "index",
-    "heads": ["序号"]
+    "fixed": "left",
   },
   {
     "name": "name",
@@ -90,6 +87,7 @@ const headData: any[] = [
     "heads": ["a1", "a2", "入职时间"],
     "type": "datetime",
     "editable": true,
+    "width": 200
   },
   {
     "name": "hobby",
@@ -101,9 +99,154 @@ const headData: any[] = [
     "heads": ["a1", "a2", "爱好"]
   },
   {
+    "name": "m1",
+    "desc": "1月",
+    "heads": [
+      "工资",
+      "1月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m2",
+    "desc": "2月",
+    "heads": [
+      "工资",
+      "2月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m3",
+    "desc": "3月",
+    "heads": [
+      "工资",
+      "3月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m4",
+    "desc": "4月",
+    "heads": [
+      "工资",
+      "4月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m5",
+    "desc": "5月",
+    "heads": [
+      "工资",
+      "5月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m6",
+    "desc": "6月",
+    "heads": [
+      "工资",
+      "6月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m7",
+    "desc": "7月",
+    "heads": [
+      "工资",
+      "7月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m8",
+    "desc": "8月",
+    "heads": [
+      "工资",
+      "8月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m9",
+    "desc": "9月",
+    "heads": [
+      "工资",
+      "9月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m10",
+    "desc": "10月",
+    "heads": [
+      "工资",
+      "10月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m11",
+    "desc": "11月",
+    "heads": [
+      "工资",
+      "11月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "m12",
+    "desc": "12月",
+    "heads": [
+      "工资",
+      "12月"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true
+  },
+  {
+    "name": "yearTotal",
+    "desc": "合计",
+    "heads": [
+      "工资",
+      "年合计"
+    ],
+    "type": "number",
+    "editable": true,
+    "colTotal": true,
+    "rowTotal": "Number(obj.m1??null),Number(obj.m2??null),Number(obj.m3??null),Number(obj.m4??null),Number(obj.m5??null),Number(obj.m6??null),Number(obj.m7??null),Number(obj.m8??null),Number(obj.m9??null),Number(obj.m10??null),Number(obj.m11??null),Number(obj.m12??null)"
+  },
+  {
     "name": "action",
     "desc": "操作",
-    "heads": ["操作"]
+    "heads": ["操作"],
+    "fixed": "right"
   }
 ]
 
