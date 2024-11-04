@@ -92,7 +92,6 @@ const headData: any[] = [
   {
     "name": "hobby",
     "desc": "爱好",
-    "heads": ["爱好"],
     "type": "select",
     "dictKey": "hobby",
     "editable": true,
