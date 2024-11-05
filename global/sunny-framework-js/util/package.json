@@ -1,0 +1,6 @@
+{
+    "name": "@sunny-framework-js/util",
+    "private": true,
+    "license": "MIT",
+    "main": "index.ts"
+}

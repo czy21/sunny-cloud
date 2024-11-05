@@ -1,9 +1,9 @@
 import * as auth from './auth'
-import * as tree from './tree'
 import * as object from './object'
+import * as tree from './tree'
 
 export default {
     auth,
-    tree,
-    object
+    object,
+    tree
 }
