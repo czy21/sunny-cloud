@@ -7,8 +7,12 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 const alias = {
     "@": "src",
     "@v": "src/view",
-    "@c": "src/component",
+    "@c": "src/component"
 }
+
+const frameworkDep = ["axios", "element-plus", "lodash", "js-cookie"]
+
+frameworkDep.forEach(t => alias[t] = `../node_modules/${t}`)
 
 // https://vitejs.dev/config/
 export default defineConfig({

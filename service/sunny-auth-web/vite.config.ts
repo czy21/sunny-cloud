@@ -9,6 +9,10 @@ const alias = {
     "@v": "src/view"
 }
 
+const frameworkDep = ["axios", "element-plus", "lodash", "js-cookie"]
+
+frameworkDep.forEach(t => alias[t] = `../node_modules/${t}`)
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
