@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import util from "@sunny-framework-js/util";
+import util from "../util";
 import {ElMessage} from "element-plus";
 
 

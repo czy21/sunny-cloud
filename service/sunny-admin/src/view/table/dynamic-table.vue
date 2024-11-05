@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import DynamicTable from "@c/DynamicTable.vue";
-import util from "@sunny-framework-js/util"
+import util from "sunny-framework-js/util"
 import {reactive, onMounted, ref} from "vue"
 
 const tableRef = ref(null)

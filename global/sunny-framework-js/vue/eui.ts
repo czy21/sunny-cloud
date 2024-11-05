@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import util from '@sunny-framework-js/util'
+import util from '../util'
 import {MessageBox} from "element-plus";
 
 export interface EUI {
