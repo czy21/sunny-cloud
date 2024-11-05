@@ -17,7 +17,15 @@ export default defineConfig({
         vueJsx()
     ],
     build: {
-        outDir: "build"
+        outDir: "build",
+        rollupOptions: {
+            external: [
+                "axios",
+                "lodash",
+                "js-cookie",
+                "element-plus"
+            ]
+        }
     },
     resolve: {
         alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url))}), {})
