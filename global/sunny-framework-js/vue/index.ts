@@ -1,7 +1,7 @@
 import * as api from "./api";
-import * as helper from "./helper";
+import * as eui from "./eui";
 
 export default {
     api,
-    helper
+    eui
 }
