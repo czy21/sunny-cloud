@@ -2,5 +2,8 @@
     "name": "@sunny-framework-js/vue",
     "private": true,
     "license": "MIT",
-    "main": "index.ts"
+    "main": "index.ts",
+    "dependencies": {
+        "element-plus": "^2.8.7"
+    }
 }

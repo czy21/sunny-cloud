@@ -5,5 +5,10 @@
         "react",
         "vue",
         "util"
-    ]
+    ],
+    "dependencies": {
+        "@sunny-framework-js/react": "workspace:*",
+        "@sunny-framework-js/vue": "workspace:*",
+        "@sunny-framework-js/util": "workspace:*"
+    }
 }
