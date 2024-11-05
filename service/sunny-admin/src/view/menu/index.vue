@@ -3,7 +3,7 @@
   <el-button @click="executeExpression">确认</el-button>
 </template>
 <script setup lang="ts">
-import util from 'sunny-framework-js/util'
+import util from '@sunny-framework-js/util'
 
 const expressionByObj = (row,expression) =>{
   return Function("row","return "+expression)(row)

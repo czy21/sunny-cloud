@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import VirtualTable from "@c/VirtualTable.vue";
-import util from "sunny-framework-js/util"
+import util from "@sunny-framework-js/util"
 import {reactive, onMounted, ref} from "vue"
 
 const handleClick = (scope) => {

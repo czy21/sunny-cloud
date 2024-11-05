@@ -1,10 +1,11 @@
 {
   "private": true,
   "workspaces": [
-    "../global/sunny-framework-js",
+    "../global/sunny-framework-js/*",
     "sunny-admin"
   ],
   "dependencies": {
-    "sunny-framework-js": "workspace:*"
+    "@sunny-framework-js/vue": "workspace:*",
+    "@sunny-framework-js/util": "workspace:*"
   }
 }
