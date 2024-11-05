@@ -8,11 +8,7 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "workspaces": [
-    "../../global/sunny-framework-js"
-  ],
   "dependencies": {
-    "sunny-framework-js": "workspace:*",
     "@element-plus/icons-vue": "^2.3.1",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.7",
