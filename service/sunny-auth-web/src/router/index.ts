@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '@/layout/Home.vue'
 import Login from '@v/Login.vue'
-import util from "sunny-framework-js/util";
+import util from "@sunny-framework-js/util";
 
 const routes = [
     {

@@ -2,7 +2,7 @@
   <el-button @click="onOk">确认</el-button>
 </template>
 <script setup lang="ts">
-import api from 'sunny-framework-js/vue/api';
+import api from '@sunny-framework-js/vue/api';
 
 const onOk = () => {
   api.get("auth/test").then(t=>{

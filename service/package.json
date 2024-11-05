@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "sunny-framework-js/*",
-    "sunny-admin"
+    "sunny-admin",
+    "sunny-auth-web"
   ],
   "dependencies": {
     "@sunny-framework-js/vue": "workspace:*",
