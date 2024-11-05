@@ -1,6 +1,6 @@
-import {fileURLToPath, URL} from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
@@ -10,15 +10,26 @@ const alias = {
     "@c": "src/component"
 }
 
-const frameworkDep = ["axios", "element-plus", "lodash", "js-cookie"]
 
-frameworkDep.forEach(t => alias[t] = `../node_modules/${t}`)
+const resolveFrameworkImporter = () => {
+    return {
+        name: 'transform-framework-importer',
+        async resolveId(source, importer, options) {
+            if (/sunny-framework-js/.test(importer)){
+                const resolution = await this.resolve(fileURLToPath(new URL(`../node_modules/${source}`,import.meta.url)), importer, options);
+                // console.log(resolution)
+                return resolution.id;
+            }
+        }
+    }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
-        vueJsx()
+        vueJsx(),
+        resolveFrameworkImporter()
     ],
     build: {
         outDir: "build"
@@ -28,7 +39,7 @@ export default defineConfig({
     },
     css: {
         preprocessorOptions: {
-            scss: {api: 'modern-compiler'},
+            scss: { api: 'modern-compiler' },
         }
     },
     server: {
