@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import util from "../util";
+import util from "../../util";
 import {ElMessage} from "element-plus";
 
 
@@ -86,17 +86,22 @@ function apiAxios(method: Method, url: string, params: any, config?: AxiosReques
     })
 }
 
+const get = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+    return apiAxios(Method.GET, url, params, config, errorCallBack)
+}
+const post = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+    return apiAxios(Method.POST, url, params, config, errorCallBack)
+}
+const put = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+    return apiAxios(Method.PUT, url, params, config, errorCallBack)
+}
+const del = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+    return apiAxios(Method.DELETE, url, params, config, errorCallBack)
+}
+
 export default {
-    get: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
-        return apiAxios(Method.GET, url, params, config, errorCallBack)
-    },
-    post: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
-        return apiAxios(Method.POST, url, params, config, errorCallBack)
-    },
-    put: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
-        return apiAxios(Method.PUT, url, params, config, errorCallBack)
-    },
-    delete: (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
-        return apiAxios(Method.DELETE, url, params, config, errorCallBack)
-    }
-};
+    get,
+    post,
+    put,
+    del
+}

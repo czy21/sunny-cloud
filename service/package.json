@@ -6,6 +6,8 @@
         "sunny-auth-web"
     ],
     "dependencies": {
-        "@sunny-framework-js/util": "workspace:*"
+        "@sunny-framework-js/util": "workspace:*",
+        "@sunny-framework-js/vue": "workspace:*",
+        "@sunny-framework-js/react": "workspace:*"
     }
 }

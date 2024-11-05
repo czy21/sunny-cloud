@@ -14,8 +14,8 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import router from "@/router";
-import api from '@/api';
-import util from "@/util"
+import api from '@sunny-framework-js/vue/api';
+import util from "@sunny-framework-js/util"
 import type {FormInstance, FormRules} from "element-plus";
 
 const form = reactive<FormRule>({
