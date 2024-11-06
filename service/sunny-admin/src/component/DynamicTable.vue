@@ -1,5 +1,5 @@
 <template>
-  <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" width="100%" height="100%">
+  <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" width="100%" height="100%" show-summary :summary-method="summaryMethod">
     <dynamic-column :node="t" v-for="t in props.columns">
       <template #default="{columnName,scope}">
         <slot :name="columnName" :=scope v-if="scope.column.node.custom"/>
@@ -26,11 +26,35 @@
 </template>
 
 <script lang="tsx" setup>
-import {ref, defineProps, defineExpose, FunctionalComponent} from "vue"
+import {ref, defineProps, defineExpose, FunctionalComponent, h} from "vue"
 import DynamicColumn from "./DynamicColumn.vue"
-import {ElTable, ElDatePicker, ElInput, ElOption, ElSelect, ElButton} from "element-plus";
+import {ElTable, ElDatePicker, ElInput, ElOption, ElSelect, ElButton, RenderRowData} from "element-plus";
+import util from '@sunny-framework-js/util'
 
-const props = defineProps(["columns", "data", "dict"])
+interface Props {
+  columns: Column,
+  data: Array<any>,
+  dict: DictType,
+  subTotal: SubTotalType
+}
+
+interface Column {
+  name: string,
+  desc: string,
+  type: string,
+  parentDesc?: string
+  heads?: string[],
+}
+
+interface DictType {
+  [key: string]: Array<{ label: string, value: Object }>
+}
+
+interface SubTotalType {
+  [key: string]: { groupBy(data: Object): boolean }
+}
+
+const props = defineProps<Props>()
 
 const tableRef = ref()
 const editRef = ref()
@@ -41,9 +65,9 @@ const handleCellFocus = () => {
   }
 }
 
-const isEdit = (scope) => scope.column.node.editable && scope.row[`${scope.column.property}_editable`]
+const isEdit = (scope: RenderRowData<any>) => scope.column.node.editable && scope.row[`${scope.column.property}_editable`]
 
-const isInputString = (scope) => {
+const isInputString = (scope:RenderRowData<any>) => {
   let val = (scope.column.node.type === 'string' || !scope.column.node.type)
   if (val) {
     handleCellFocus()
@@ -51,7 +75,7 @@ const isInputString = (scope) => {
   return val
 }
 
-const isInputNumber = (scope) => {
+const isInputNumber = (scope:RenderRowData<any>) => {
   let val = scope.column.node.type === 'number'
   if (val) {
     handleCellFocus()
@@ -59,7 +83,7 @@ const isInputNumber = (scope) => {
   return val
 }
 
-const isSelect = (scope) => {
+const isSelect = (scope:RenderRowData<any>) => {
   let val = scope.column.node.type === 'select'
   if (val) {
     handleCellFocus()
@@ -67,7 +91,7 @@ const isSelect = (scope) => {
   return val
 }
 
-const isDate = (scope) => {
+const isDate = (scope:RenderRowData<any>) => {
   let val = scope.column.node.type === 'date' || scope.column.node.type === 'datetime'
   if (val) {
     handleCellFocus()
@@ -75,11 +99,11 @@ const isDate = (scope) => {
   return val
 }
 
-const onExitEditMode = (scope) => {
+const onExitEditMode = (scope:RenderRowData<any>) => {
   delete scope.row[`${scope.column.property}_editable`]
 }
 
-const ShowCell: FunctionalComponent = (scope) => {
+const ShowCell: FunctionalComponent<any> = (scope:RenderRowData<any>) => {
   let label = scope.row[scope.column.property]
   if (scope.column.node.dictKey && props.dict) {
     let value = props.dict[scope.column.node.dictKey].find(t => t.value === scope.row[scope.column.property])?.label
@@ -99,33 +123,49 @@ const handleCell = (row: any, column: any) => {
   }
 }
 
-const showAddRow = (scope) => {
+const showAddRow = (scope:RenderRowData<any>) => {
   return scope.$index == props.data.length - 1
 }
 
-const addRow = (scope) => {
+const addRow = (scope:RenderRowData<any>) => {
   props.data.splice(scope.$index + 1, 0, {})
 }
-const delRow = (scope) => {
+
+const delRow = (scope:RenderRowData<any>) => {
   props.data.splice(scope.$index, 1)
 }
 
 const summaryMethod = (data: { columns: any[], data: any[] }) => {
-  const sums = []
-  const totalSummary = {}
+  const sums: any[] = []
   if (data.columns && data.columns.length > 0) {
-    totalSummary[`${data.columns[0].property}`] = "合计"
-    data.columns.forEach((c, ci) => {
-      data.data.forEach((t, ti) => {
-        if (c.node.colTotal) {
-          console.log(t[c.property])
+    const totalSummary: any = {}
+    totalSummary[data.columns[0].property] = "合计"
+    data.columns.forEach((c) => {
+      data.data.forEach((t) => {
+        if (c.node.rowTotal) {
+          t[c.property] = Number(util.object.getValueByExpression(t, c.node.rowTotal) || null).toFixed(2)
+        }
+        if (c.node.colTotal || c.node.rowTotal) {
+          Object.keys(props.subTotal || {}).forEach(b => {
+            let subItem = sums.find(p => p[data.columns[0].property] == b)
+            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t)) {
+              if (!subItem) {
+                subItem = {}
+                subItem[data.columns[0].property] = b
+                sums.push(subItem)
+              }
+              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+            }
+          })
+          totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
         }
       })
     })
     sums.push(totalSummary)
-    sums.push(totalSummary)
+    return data.columns.map((c, ci) => sums.map(t => h('dl', {style: {"text-align": "center"}}, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || "0") : ""])))
   }
-  return sums
+
+  return []
 }
 
 defineExpose({

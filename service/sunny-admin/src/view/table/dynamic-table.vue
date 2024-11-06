@@ -1,6 +1,6 @@
 <template>
 
-  <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict">
+  <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict" :sub-total="tableDataRef.subTotal">
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
     </template>
@@ -20,7 +20,8 @@ const tableRef = ref(null)
 const tableDataRef = reactive({
   columns: [],
   data: [],
-  dict: []
+  dict: {},
+  subTotal: {}
 })
 
 const handleClick = () => {
@@ -34,7 +35,9 @@ onMounted(() => {
       "name": "李四" + i,
       "address": "上海",
       "age": 25,
-      "hobby": "b"
+      "hobby": "b",
+      "m1": 100 + i,
+      "m2": 100 + (i * 2)
     }
   })
   console.log(Array.from(100).map((t, i) => {
@@ -50,6 +53,12 @@ onMounted(() => {
       {"label": "唱歌", "value": "music"},
       {"label": "跳舞", "value": "dance"}
     ]
+  }
+
+  tableDataRef.subTotal = {
+    "一月<105": {
+      "groupBy": (row) => row.m1 < 105
+    }
   }
 })
 
@@ -237,9 +246,8 @@ const headData: any[] = [
       "年合计"
     ],
     "type": "number",
-    "editable": true,
     "colTotal": true,
-    "rowTotal": "Number(obj.m1??null),Number(obj.m2??null),Number(obj.m3??null),Number(obj.m4??null),Number(obj.m5??null),Number(obj.m6??null),Number(obj.m7??null),Number(obj.m8??null),Number(obj.m9??null),Number(obj.m10??null),Number(obj.m11??null),Number(obj.m12??null)"
+    "rowTotal": "Number(obj.m1||null)+Number(obj.m2||null)+Number(obj.m3||null)+Number(obj.m4||null)+Number(obj.m5||null)+Number(obj.m6||null)+Number(obj.m7||null)+Number(obj.m8||null)+Number(obj.m9||null)+Number(obj.m10||null)+Number(obj.m11||null)+Number(obj.m12||null)"
   },
   {
     "name": "action",

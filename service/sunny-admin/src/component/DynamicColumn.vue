@@ -18,11 +18,11 @@
 
 <script setup lang="tsx">
 import {defineProps} from "vue"
-import {ElTableColumn} from "element-plus";
+import {ElTableColumn, RenderRowData} from "element-plus";
 
 const props = defineProps(["node"])
 
-const renderHeader = (node, scope) => {
+const renderHeader = (node, scope:RenderRowData<any>) => {
   scope.column.node = node
   return scope.column.label
 }
