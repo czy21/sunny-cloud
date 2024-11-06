@@ -45,7 +45,7 @@ const handleCellFocus = () => {
 
 const isEdit = (scope: RenderRowData<any>) => scope.column.node.editable && scope.row[`${scope.column.property}_editable`]
 
-const isInputString = (scope:RenderRowData<any>) => {
+const isInputString = (scope: RenderRowData<any>) => {
   let val = (scope.column.node.type === 'string' || !scope.column.node.type)
   if (val) {
     handleCellFocus()
@@ -53,7 +53,7 @@ const isInputString = (scope:RenderRowData<any>) => {
   return val
 }
 
-const isInputNumber = (scope:RenderRowData<any>) => {
+const isInputNumber = (scope: RenderRowData<any>) => {
   let val = scope.column.node.type === 'number'
   if (val) {
     handleCellFocus()
@@ -61,7 +61,7 @@ const isInputNumber = (scope:RenderRowData<any>) => {
   return val
 }
 
-const isSelect = (scope:RenderRowData<any>) => {
+const isSelect = (scope: RenderRowData<any>) => {
   let val = scope.column.node.type === 'select'
   if (val) {
     handleCellFocus()
@@ -69,7 +69,7 @@ const isSelect = (scope:RenderRowData<any>) => {
   return val
 }
 
-const isDate = (scope:RenderRowData<any>) => {
+const isDate = (scope: RenderRowData<any>) => {
   let val = scope.column.node.type === 'date' || scope.column.node.type === 'datetime'
   if (val) {
     handleCellFocus()
@@ -77,11 +77,11 @@ const isDate = (scope:RenderRowData<any>) => {
   return val
 }
 
-const onExitEditMode = (scope:RenderRowData<any>) => {
+const onExitEditMode = (scope: RenderRowData<any>) => {
   delete scope.row[`${scope.column.property}_editable`]
 }
 
-const ShowCell: FunctionalComponent<any> = (scope:RenderRowData<any>) => {
+const ShowCell: FunctionalComponent<any> = (scope: RenderRowData<any>) => {
   let label = scope.row[scope.column.property]
   if (scope.column.node.dictKey && props.dict) {
     let value = props.dict[scope.column.node.dictKey].find(t => t.value === scope.row[scope.column.property])?.label
@@ -101,15 +101,15 @@ const handleCell = (row: any, column: any) => {
   }
 }
 
-const showAddRow = (scope:RenderRowData<any>) => {
+const showAddRow = (scope: RenderRowData<any>) => {
   return scope.$index == props.data.length - 1
 }
 
-const addRow = (scope:RenderRowData<any>) => {
+const addRow = (scope: RenderRowData<any>) => {
   props.data.splice(scope.$index + 1, 0, {})
 }
 
-const delRow = (scope:RenderRowData<any>) => {
+const delRow = (scope: RenderRowData<any>) => {
   props.data.splice(scope.$index, 1)
 }
 
@@ -140,7 +140,9 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
       })
     })
     sums.push(totalSummary)
-    return data.columns.map((c, ci) => sums.map(t => h('dl', {style: {"text-align": "center"}}, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || "0") : ""])))
+    return data.columns.map((c, ci) =>
+        h('dl', {style: {"text-align": "center"}}, sums.map(t => h('dt', null, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || "0") : ""])))
+    )
   }
 
   return []
