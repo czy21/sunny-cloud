@@ -14,6 +14,7 @@
 import DynamicTable from "@c/DynamicTable.vue";
 import util from "@sunny-framework-js/util"
 import {reactive, onMounted, ref} from "vue"
+import {TableColumn} from "@c/DynamicTable";
 
 const tableRef = ref(null)
 
@@ -62,53 +63,53 @@ onMounted(() => {
   }
 })
 
-const headData: any[] = [
+const headData: TableColumn[] = [
   {
-    "name": "seq",
-    "desc": "序号",
+    "prop": "seq",
+    "name": "序号",
     "heads": ["序号"],
     "type": "index",
     "fixed": "left",
   },
   {
-    "name": "name",
-    "desc": "姓名",
+    "prop": "name",
+    "name": "姓名",
     "heads": ["姓名"],
     "editable": true
   },
   {
-    "name": "age",
-    "desc": "年龄",
+    "prop": "age",
+    "name": "年龄",
     "heads": ["年龄"],
     "type": "number",
     "editable": true,
     "custom": true
   },
   {
-    "name": "address",
-    "desc": "a",
+    "prop": "address",
+    "name": "a",
     "heads": ["a1", "a2", "地址"],
     "editable": true
   },
   {
-    "name": "entryTime",
-    "desc": "入职时间",
+    "prop": "entryTime",
+    "name": "入职时间",
     "heads": ["a1", "a2", "入职时间"],
     "type": "datetime",
     "editable": true,
     "width": 200
   },
   {
-    "name": "hobby",
-    "desc": "爱好",
+    "prop": "hobby",
+    "name": "爱好",
     "type": "select",
     "dictKey": "hobby",
     "editable": true,
     "heads": ["a1", "a2", "爱好"]
   },
   {
-    "name": "m1",
-    "desc": "1月",
+    "prop": "m1",
+    "name": "1月",
     "heads": [
       "工资",
       "1月"
@@ -118,8 +119,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m2",
-    "desc": "2月",
+    "prop": "m2",
+    "name": "2月",
     "heads": [
       "工资",
       "2月"
@@ -129,8 +130,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m3",
-    "desc": "3月",
+    "prop": "m3",
+    "name": "3月",
     "heads": [
       "工资",
       "3月"
@@ -140,8 +141,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m4",
-    "desc": "4月",
+    "prop": "m4",
+    "name": "4月",
     "heads": [
       "工资",
       "4月"
@@ -151,8 +152,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m5",
-    "desc": "5月",
+    "prop": "m5",
+    "name": "5月",
     "heads": [
       "工资",
       "5月"
@@ -162,8 +163,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m6",
-    "desc": "6月",
+    "prop": "m6",
+    "name": "6月",
     "heads": [
       "工资",
       "6月"
@@ -173,8 +174,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m7",
-    "desc": "7月",
+    "prop": "m7",
+    "name": "7月",
     "heads": [
       "工资",
       "7月"
@@ -184,8 +185,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m8",
-    "desc": "8月",
+    "prop": "m8",
+    "name": "8月",
     "heads": [
       "工资",
       "8月"
@@ -195,8 +196,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m9",
-    "desc": "9月",
+    "prop": "m9",
+    "name": "9月",
     "heads": [
       "工资",
       "9月"
@@ -206,8 +207,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m10",
-    "desc": "10月",
+    "prop": "m10",
+    "name": "10月",
     "heads": [
       "工资",
       "10月"
@@ -217,8 +218,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m11",
-    "desc": "11月",
+    "prop": "m11",
+    "name": "11月",
     "heads": [
       "工资",
       "11月"
@@ -228,8 +229,8 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "m12",
-    "desc": "12月",
+    "prop": "m12",
+    "name": "12月",
     "heads": [
       "工资",
       "12月"
@@ -239,19 +240,19 @@ const headData: any[] = [
     "colTotal": true
   },
   {
-    "name": "yearTotal",
-    "desc": "合计",
+    "prop": "yearTotal",
+    "name": "合计",
     "heads": [
       "工资",
       "年合计"
     ],
     "type": "number",
     "colTotal": true,
-    "rowTotal": "Number(obj.m1||null)+Number(obj.m2||null)+Number(obj.m3||null)+Number(obj.m4||null)+Number(obj.m5||null)+Number(obj.m6||null)+Number(obj.m7||null)+Number(obj.m8||null)+Number(obj.m9||null)+Number(obj.m10||null)+Number(obj.m11||null)+Number(obj.m12||null)"
+    "rowTotal": "Array.from({length: 12},(v,i)=>Number(obj[`m${i+1}`]||null)).reduce((a,b)=>a+b)"
   },
   {
-    "name": "action",
-    "desc": "操作",
+    "prop": "action",
+    "name": "操作",
     "heads": ["操作"],
     "fixed": "right"
   }
@@ -259,10 +260,10 @@ const headData: any[] = [
 
 const getColumns = () => {
   headData.forEach((t: any) => {
-    t["desc"] = t.heads[t.heads.length - 1]
+    t["name"] = t.heads[t.heads.length - 1]
   })
 
-  let tree = util.tree.buildByPath(headData, null, "heads", "desc", "parentDesc")
+  let tree = util.tree.buildByPath(headData, null, "heads", "name", "parentName")
   console.log(tree)
   return tree
 }

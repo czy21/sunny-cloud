@@ -22,7 +22,7 @@ const CustomizedHeader: FunctionalComponent<TableV2CustomizedHeaderSlotParam> = 
   console.log(cells)
   console.log(columns)
   console.log(headerIndex)
-  return columns.map(t=>t.desc)
+  return columns.map(t=>t.name)
 }
 
 defineExpose({

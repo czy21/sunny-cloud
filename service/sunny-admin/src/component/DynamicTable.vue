@@ -1,8 +1,8 @@
 <template>
   <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" width="100%" height="100%" show-summary :summary-method="summaryMethod">
     <dynamic-column :node="t" v-for="t in props.columns">
-      <template #default="{columnName,scope}">
-        <slot :name="columnName" :=scope v-if="scope.column.node.custom"/>
+      <template #default="{prop,scope}">
+        <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
         <template v-else-if="isEdit(scope)">
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInputString(scope)"/>
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" :type="scope.column.node.type" v-else-if="isInputNumber(scope)"/>
@@ -30,31 +30,9 @@ import {ref, defineProps, defineExpose, FunctionalComponent, h} from "vue"
 import DynamicColumn from "./DynamicColumn.vue"
 import {ElTable, ElDatePicker, ElInput, ElOption, ElSelect, ElButton, RenderRowData} from "element-plus";
 import util from '@sunny-framework-js/util'
+import {TableProps} from "@c/DynamicTable";
 
-interface Props {
-  columns: Column,
-  data: Array<any>,
-  dict: DictType,
-  subTotal: SubTotalType
-}
-
-interface Column {
-  name: string,
-  desc: string,
-  type: string,
-  parentDesc?: string
-  heads?: string[],
-}
-
-interface DictType {
-  [key: string]: Array<{ label: string, value: Object }>
-}
-
-interface SubTotalType {
-  [key: string]: { groupBy(data: Object): boolean }
-}
-
-const props = defineProps<Props>()
+const props = defineProps<TableProps>()
 
 const tableRef = ref()
 const editRef = ref()
