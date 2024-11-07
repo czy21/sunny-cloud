@@ -1,18 +1,41 @@
 <template>
-  <el-table ref="tableRef" :data="props.data" @cell-click="handleCell" width="100%" height="100%" show-summary :summary-method="summaryMethod">
+  <el-table ref="tableRef"
+            :data="props.data"
+            @cell-click="handleCell"
+            width="100%" height="100%"
+            show-summary
+            :summary-method="summaryMethod"
+            show-overflow-tooltip
+  >
     <dynamic-column :node="t" v-for="t in props.columns">
       <template #default="{prop,scope}">
         <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
         <template v-else-if="isEdit(scope)">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInputString(scope)"/>
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" :type="scope.column.node.type" v-else-if="isInputNumber(scope)"/>
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)">
-            <el-option v-for="t in (props.dict[scope.column.property])" :label="t.label" :value="t.value"/>
+          <el-input ref="editRef"
+                    v-model="scope.row[scope.column.property]"
+                    @blur="onExitEditMode(scope)"
+                    v-if="isInputString(scope)"
+          />
+          <el-input ref="editRef"
+                    v-model="scope.row[scope.column.property]"
+                    @blur="onExitEditMode(scope)"
+                    :type="scope.column.node.type"
+                    v-else-if="isInputNumber(scope)"
+          />
+          <el-select ref="editRef"
+                     v-model="scope.row[scope.column.property]"
+                     @blur="onExitEditMode(scope)"
+                     v-else-if="isSelect(scope)"
+                     @change="(value)=>handleSelect(value,scope)"
+          >
+            <el-option v-for="t in props.dict[scope.column.node.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
-          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)"
+          <el-date-picker ref="editRef"
+                          v-model="scope.row[scope.column.property]"
+                          @blur="onExitEditMode(scope)"
                           :type="scope.column.node.type"
                           size="default"
-                          value-format="YYYY-MM-DD HH:mm:ss"
+                          value-format="scope.column.node.format|| 'YYYY-MM-DD HH:mm:ss'"
                           v-else-if="isDate(scope)"/>
         </template>
         <span v-else-if="props.editable && scope.column.property==='action'">
@@ -99,7 +122,7 @@ const onExitEditMode = (scope: RenderRowData<any>) => {
 const ShowCell: FunctionalComponent<any> = (scope: RenderRowData<any>) => {
   let label = scope.row[scope.column.property]
   if (scope.column.node.dictKey && props.dict) {
-    let value = props.dict[scope.column.node.dictKey].find(t => t.value === scope.row[scope.column.property])?.label
+    let value = props.dict[scope.column.node.dictKey]?.find(t => t.value === scope.row[scope.column.property])?.label
     if (value) {
       label = value
     }
@@ -113,6 +136,14 @@ const ShowCell: FunctionalComponent<any> = (scope: RenderRowData<any>) => {
 const handleCell = (row: any, column: any) => {
   if (props.editable && (column.node.editable == true || util.object.getValueByExpression(row, column.node.editable))) {
     row[`${column.property}_editable`] = true
+  }
+}
+
+const handleSelect = (value: any, scope: RenderRowData<any>) => {
+  let dictPush = scope.column.node.dictPush
+  if (dictPush) {
+    let dictValue = props.dict[scope.column.node.dictKey].find((t: any) => t.value === value)
+    Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictValue[v])
   }
 }
 
@@ -141,7 +172,7 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
         if (c.node.colTotal || c.node.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
             let subItem = sums.find(p => p[data.columns[0].property] == b)
-            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t)) {
+            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t, data)) {
               if (!subItem) {
                 subItem = {}
                 subItem[data.columns[0].property] = b

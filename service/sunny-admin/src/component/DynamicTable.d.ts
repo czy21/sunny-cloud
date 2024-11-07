@@ -24,6 +24,7 @@ export interface TableColumn {
     required?: boolean
     editable?: boolean | string
     dictKey?: string
+    dictPush?: [string, object]
     rowTotal?: string
     colTotal?: boolean
     width?: string | number
@@ -32,9 +33,9 @@ export interface TableColumn {
 }
 
 export interface DictType {
-    [key: string]: Array<{ label: string, value: Object }>
+    [key: string]: Array<{ label: string, value: Object, extra: Object }>
 }
 
 export interface SubTotalType {
-    [key: string]: { groupBy(item: Object): boolean }
+    [key: string]: { groupBy(item: Object, data: { columns: any[], data: any[] }): boolean }
 }

@@ -57,7 +57,7 @@ onMounted(() => {
     }
   }))
   tableDataRef.dict = {
-    "hobby": [
+    "HOBBY": [
       {"label": "唱歌", "value": "music"},
       {"label": "跳舞", "value": "dance"}
     ]
@@ -112,7 +112,7 @@ const headData: TableColumn[] = [
     "prop": "hobby",
     "name": "爱好",
     "type": "select",
-    "dictKey": "hobby",
+    "dictKey": "HOBBY",
     "editable": true,
     "heads": ["a1", "a2", "爱好"]
   },
