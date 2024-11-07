@@ -15,13 +15,16 @@
                           value-format="YYYY-MM-DD HH:mm:ss"
                           v-else-if="isDate(scope)"/>
         </template>
-        <span v-else-if="scope.column.property==='action'">
+        <span v-else-if="props.editable && scope.column.property==='action'">
           <el-button @click="addRow(scope)" link type="primary" v-if="showAddRow(scope)">加行</el-button>
           <el-button @click="delRow(scope)" link type="danger">删除</el-button>
         </span>
         <show-cell :="scope" v-else/>
       </template>
     </dynamic-column>
+    <template #empty>
+      <el-button @click="addRow(scope)" type="primary">加行</el-button>
+    </template>
   </el-table>
 </template>
 
@@ -32,7 +35,19 @@ import {ElTable, ElDatePicker, ElInput, ElOption, ElSelect, ElButton, RenderRowD
 import util from '@sunny-framework-js/util'
 import {TableProps} from "@c/DynamicTable";
 
-const props = defineProps<TableProps>()
+const props = withDefaults(defineProps<TableProps>(), {
+  columns: () => [],
+  data: () => [],
+  dict() {
+    return {}
+  },
+  subTotal() {
+    return {}
+  },
+  editable() {
+    return false
+  },
+})
 
 const tableRef = ref()
 const editRef = ref()
@@ -43,7 +58,7 @@ const handleCellFocus = () => {
   }
 }
 
-const isEdit = (scope: RenderRowData<any>) => scope.column.node.editable && scope.row[`${scope.column.property}_editable`]
+const isEdit = (scope: RenderRowData<any>) => scope.row[`${scope.column.property}_editable`]
 
 const isInputString = (scope: RenderRowData<any>) => {
   let val = (scope.column.node.type === 'string' || !scope.column.node.type)
@@ -96,7 +111,7 @@ const ShowCell: FunctionalComponent<any> = (scope: RenderRowData<any>) => {
 }
 
 const handleCell = (row: any, column: any) => {
-  if (column.node.editable) {
+  if (props.editable && (column.node.editable == true || util.object.getValueByExpression(row, column.node.editable))) {
     row[`${column.property}_editable`] = true
   }
 }
@@ -106,7 +121,7 @@ const showAddRow = (scope: RenderRowData<any>) => {
 }
 
 const addRow = (scope: RenderRowData<any>) => {
-  props.data.splice(scope.$index + 1, 0, {})
+  props.data.splice(scope?.$index + 1, 0, {})
 }
 
 const delRow = (scope: RenderRowData<any>) => {
@@ -118,8 +133,8 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
   if (data.columns && data.columns.length > 0) {
     const totalSummary: any = {}
     totalSummary[data.columns[0].property] = "合计"
-    data.columns.forEach((c) => {
-      data.data.forEach((t) => {
+    data.columns.forEach(c => {
+      data.data.forEach(t => {
         if (c.node.rowTotal) {
           t[c.property] = Number(util.object.getValueByExpression(t, c.node.rowTotal) || null).toFixed(2)
         }
@@ -140,9 +155,7 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
       })
     })
     sums.push(totalSummary)
-    return data.columns.map((c, ci) =>
-        h('dl', {style: {"text-align": "center"}}, sums.map(t => h('dt', null, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || "0") : ""])))
-    )
+    return data.columns.map(c => h('dl', {style: {"text-align": "center"}}, sums.map(t => h('dt', null, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || 0) : ""]))))
   }
 
   return []

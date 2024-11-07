@@ -7,10 +7,11 @@ declare module 'element-plus' {
 }
 
 export interface TableProps {
-    columns: TableColumn,
+    columns: Array<TableColumn>,
     data: Array<any>,
     dict: DictType,
     subTotal: SubTotalType
+    editable?: boolean
 }
 
 export interface TableColumn {
@@ -20,7 +21,8 @@ export interface TableColumn {
     parentProp?: string
     parentName?: string
     heads?: string[]
-    editable?: boolean
+    required?: boolean
+    editable?: boolean | string
     dictKey?: string
     rowTotal?: string
     colTotal?: boolean

@@ -1,6 +1,12 @@
 <template>
 
-  <dynamic-table ref="tableRef" :columns="tableDataRef.columns" :data="tableDataRef.data" :dict="tableDataRef.dict" :sub-total="tableDataRef.subTotal">
+  <dynamic-table ref="tableRef"
+                 :columns="tableDataRef.columns"
+                 :data="tableDataRef.data"
+                 :dict="tableDataRef.dict"
+                 :sub-total="tableDataRef.subTotal"
+                 :editable="tableDataRef.editable"
+  >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
     </template>
@@ -22,7 +28,8 @@ const tableDataRef = reactive({
   columns: [],
   data: [],
   dict: {},
-  subTotal: {}
+  subTotal: {},
+  editable: true
 })
 
 const handleClick = () => {
@@ -75,7 +82,8 @@ const headData: TableColumn[] = [
     "prop": "name",
     "name": "姓名",
     "heads": ["姓名"],
-    "editable": true
+    "editable": true,
+    "required": true
   },
   {
     "prop": "age",
@@ -83,7 +91,8 @@ const headData: TableColumn[] = [
     "heads": ["年龄"],
     "type": "number",
     "editable": true,
-    "custom": true
+    "custom": true,
+    "required": true
   },
   {
     "prop": "address",
@@ -137,7 +146,7 @@ const headData: TableColumn[] = [
       "3月"
     ],
     "type": "number",
-    "editable": true,
+    "editable": "obj.m1 > 100",
     "colTotal": true
   },
   {
@@ -260,7 +269,9 @@ const headData: TableColumn[] = [
 
 const getColumns = () => {
   headData.forEach((t: any) => {
-    t["name"] = t.heads[t.heads.length - 1]
+    if (t.heads && t.required) {
+      t.heads[t.heads.length - 1] = !t.heads[t.heads.length - 1].includes("*") ? ("*" + t.heads[t.heads.length - 1]) : t.heads[t.heads.length - 1]
+    }
   })
 
   let tree = util.tree.buildByPath(headData, null, "heads", "name", "parentName")
