@@ -57,6 +57,7 @@ import DynamicColumn from "./DynamicColumn.vue"
 import {ElTable, ElDatePicker, ElInput, ElOption, ElSelect, ElButton, RenderRowData} from "element-plus";
 import util from '@sunny-framework-js/util'
 import {TableProps} from "@c/DynamicTable";
+import _ from "lodash";
 
 const props = withDefaults(defineProps<TableProps>(), {
   columns: () => [],
@@ -74,6 +75,7 @@ const props = withDefaults(defineProps<TableProps>(), {
 
 const tableRef = ref()
 const editRef = ref()
+const spanRef = ref({})
 
 const handleCellFocus = () => {
   if (editRef.value && editRef.value.length > 0) {
@@ -158,6 +160,30 @@ const addRow = (scope: RenderRowData<any>) => {
 const delRow = (scope: RenderRowData<any>) => {
   props.data.splice(scope.$index, 1)
 }
+
+// const spanMethod = ({row, column, rowIndex, columnIndex}) => {
+//   if (column.node.spanMerge) {
+//     let spanMergeColumn = spanRef.value[column.property]
+//     if (_.isEmpty(spanMergeColumn)) {
+//       spanRef.value[column.property] = column.node.spanMerge
+//     }
+//   }
+//   let ret
+//   Object.keys(spanRef.value).forEach(t => {
+//     spanRef.value[t].forEach(c => {
+//       if (util.object.getValueByExpression(row, c.condition)) {
+//         if (column.property == t) {
+//           ret = [1, c.props.length + 1]
+//         }
+//         if (c.props.includes(column.property)) {
+//           ret = [0, 0]
+//         }
+//       }
+//     })
+//   })
+//
+//   return ret
+// }
 
 const summaryMethod = (data: { columns: any[], data: any[] }) => {
   const sums: any[] = []
