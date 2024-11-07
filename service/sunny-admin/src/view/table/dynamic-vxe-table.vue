@@ -6,7 +6,6 @@
                  :dict="tableDataRef.dict"
                  :sub-total="tableDataRef.subTotal"
                  :editable="tableDataRef.editable"
-                 :header-height="tableDataRef.headerHeight"
   >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
@@ -17,8 +16,8 @@
   <el-button @click="getMergeTree">树合并</el-button>
 </template>
 
-<script lang="tsx" setup>
-import DynamicTable from "@c/VirtualTable.vue";
+<script lang="ts" setup>
+import DynamicTable from "@c/DynamicVxeTable.vue";
 import util from "@sunny-framework-js/util"
 import {reactive, onMounted, ref} from "vue"
 import {TableColumn} from "@c/DynamicTable";
@@ -38,21 +37,17 @@ const handleClick = () => {
 }
 
 onMounted(() => {
-  let columns=getColumns()
-  tableDataRef.columns = columns
-  tableDataRef.headerHeight = Array.from({length: columns.map(t => t.heads.length).reduce((a, b) => Math.max(a, b))}).map(t => 50)
-
-  tableDataRef.data = Array.from({length: 100}).map((t, i) => {
-    let d = {
+  tableDataRef.columns = getColumns()
+  Array.from({length: 10}).forEach((t, i) => {
+    tableDataRef.data.push({
       "name": "李四" + i,
       "address": "上海",
       "age": 25,
-      "hobby": "b"
-    }
-    Array.from({length: 12}).forEach((v, i1) => d[`m${i1 + 1}`] = 100 + i)
-    return d
+      "hobby": "b",
+      "m1": 100 + i,
+      "m2": 100 + (i * 2)
+    })
   })
-
   tableDataRef.dict = {
     "HOBBY": [
       {"label": "唱歌", "value": "music"},
@@ -93,7 +88,7 @@ const headData: TableColumn[] = [
   },
   {
     "prop": "address",
-    "name": "地址",
+    "name": "a",
     "heads": ["a1", "a2", "地址"],
     "editable": true
   },
@@ -269,54 +264,11 @@ const getColumns = () => {
     if (t.heads && t.required) {
       t.heads[t.heads.length - 1] = !t.heads[t.heads.length - 1].includes("*") ? ("*" + t.heads[t.heads.length - 1]) : t.heads[t.heads.length - 1]
     }
-    t["key"] = t.prop
-    t["dataKey"] = t.prop
-    t["title"] = t.name
-    t["width"] = 150
   })
-  console.log(headData)
-  let tree = util.tree.buildByPath(headData, null, "heads", "name", "parentName")
-  // console.log(tree)
-  headData[1] = {
-    ...headData[1],
-    cellRenderer: ({rowData, column}) => {
-      const onChange = (value: string) => {
-        rowData[column.dataKey!] = value
-      }
-      const onEnterEditMode = () => {
-        rowData.editing = true
-      }
 
-      const onExitEditMode = () => (rowData.editing = false)
-      const input = ref()
-      const setRef = (el) => {
-        input.value = el
-        if (el) {
-          el.focus?.()
-        }
-      }
-      console.log(rowData)
-      // return rowData.editing ? (
-      //     <InputCell
-      //         forwardRef={setRef}
-      //         value={rowData[column.dataKey!]}
-      //         onChange={onChange}
-      //         onBlur={onExitEditMode}
-      //         onKeydownEnter={onExitEditMode}
-      //     />
-      // ) : (
-      //     <div class="table-v2-inline-editing-trigger" onClick={onEnterEditMode}>
-      //       {rowData[column.dataKey!]}
-      //     </div>
-      // )
-      return (
-          <div class="table-v2-inline-editing-trigger" onClick={onEnterEditMode}>
-            {rowData[column.dataKey!]}
-          </div>
-      )
-    },
-  }
-  return headData
+  let tree = util.tree.buildByPath(headData, null, "heads", "name", "parentName")
+  console.log(tree)
+  return tree
 }
 
 const getMergeTree = () => {

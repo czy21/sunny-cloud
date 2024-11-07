@@ -35,6 +35,14 @@ const menus: Array<MenuModel> = [
                 path: "/sys/table/dynamic-table"
             },
             {
+                name: "Vxe表格",
+                path: "/sys/table/dynamic-vxe-table"
+            },
+            {
+                name: "Vxe表格",
+                path: "/sys/table/dynamic-vxe-test"
+            },
+            {
                 name: "虚拟表格",
                 path: "/sys/table/virtual-table"
             },

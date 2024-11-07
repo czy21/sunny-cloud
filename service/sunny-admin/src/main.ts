@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from "@/router";
 import store from "@/store"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import VxeUITable from 'vxe-table'
+import 'vxe-table/lib/style.css'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -13,4 +15,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(ElementPlus, {size: 'mini'} as any)
 app.use(router)
 app.use(store)
+app.use(VxeUITable)
 app.mount('#app')
