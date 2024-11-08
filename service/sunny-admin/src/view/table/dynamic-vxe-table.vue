@@ -38,7 +38,7 @@ const handleClick = () => {
 
 onMounted(() => {
   tableDataRef.columns = getColumns()
-  Array.from({length: 10}).forEach((t, i) => {
+  Array.from({length: 0}).forEach((t, i) => {
     tableDataRef.data.push({
       "name": "李四" + i,
       "address": "上海",

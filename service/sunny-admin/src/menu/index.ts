@@ -31,21 +31,13 @@ const menus: Array<MenuModel> = [
         name: "Table",
         children: [
             {
-                name: "动态表格",
-                path: "/sys/table/dynamic-table"
+                name: "EL表格",
+                path: "/sys/table/dynamic-el-table"
             },
             {
                 name: "Vxe表格",
                 path: "/sys/table/dynamic-vxe-table"
-            },
-            {
-                name: "Vxe表格",
-                path: "/sys/table/dynamic-vxe-test"
-            },
-            {
-                name: "虚拟表格",
-                path: "/sys/table/virtual-table"
-            },
+            }
         ]
     }
 ]

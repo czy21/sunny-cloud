@@ -35,7 +35,7 @@
                           @blur="onExitEditMode(scope)"
                           :type="scope.column.node.type"
                           size="default"
-                          value-format="scope.column.node.format|| 'YYYY-MM-DD HH:mm:ss'"
+                          :value-format="scope.column.node.format || 'YYYY-MM-DD HH:mm:ss'"
                           v-else-if="isDate(scope)"/>
         </template>
         <span v-else-if="props.editable && scope.column.property==='action'">

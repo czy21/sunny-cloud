@@ -17,33 +17,24 @@ const routes = [
                 component: () => import('@v/menu/index.vue')
             },
             {
-                path: "/sys/table/dynamic-table",
-                component: () => import('@v/table/dynamic-table.vue')
+                path: "/sys/table/dynamic-el-table",
+                component: () => import('@v/table/dynamic-el-table.vue')
             },
             {
                 path: "/sys/table/dynamic-vxe-table",
                 component: () => import('@v/table/dynamic-vxe-table.vue')
-            },
-            {
-                path: "/sys/table/dynamic-vxe-test",
-                component: () => import('@v/table/dynamic-vxe-test.vue')
-            },
-            {
-                path: "/sys/table/virtual-table",
-                component: () => import('@v/table/virtual-table.vue')
-            },
+            }
         ],
         beforeEnter: (to: any, from: any, next: any) => {
-            // const token = util.auth.getToken()
-            // if (!token) {
-            //     console.log(window.location)
-            //     api.get("auth/login-uri").then((t: any) => {
-            //         window.location.href = t.data.data + "?redirectUri=" + window.location
-            //     })
-            // } else {
-            //     next()
-            // }
-            next()
+            const token = util.auth.getToken()
+            if (!token) {
+                console.log(window.location)
+                api.get("auth/login-uri").then((t: any) => {
+                    window.location.href = t.data.data + "?redirectUri=" + window.location
+                })
+            } else {
+                next()
+            }
         }
     },
 ]

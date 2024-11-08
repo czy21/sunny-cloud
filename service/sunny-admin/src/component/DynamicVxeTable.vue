@@ -1,14 +1,19 @@
 <template>
-  <vxe-table :data="props.data"
+  <vxe-table ref="tableRef"
+             :data="props.data"
              @cell-click="handleCell"
-             width="100%" height="100%"
-             show-header-overflow
-             show-footer-overflow
+             width="100%"
+             height="100%"
+             show-overflow
+             :column-config="{resizable: true}"
+             :scroll-x="{enabled: true, gt: 0}"
+             :scroll-y="{enabled: true, gt: 0}"
+             show-footer
+             :footer-method="summaryMethod"
   >
     <dynamic-column :node="t" v-for="t in props.columns">
       <template #default="{prop,scope}">
         <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
-
         <template v-else-if="isEdit(scope)">
           <el-input ref="editRef"
                     v-model="scope.row[scope.column.property]"
@@ -20,6 +25,7 @@
                     @blur="onExitEditMode(scope)"
                     :type="scope.column.node.type"
                     v-else-if="isInputNumber(scope)"
+                    @change="updateFooterEvent"
           />
           <el-select ref="editRef"
                      v-model="scope.row[scope.column.property]"
@@ -34,7 +40,7 @@
                           @blur="onExitEditMode(scope)"
                           :type="scope.column.node.type"
                           size="default"
-                          value-format="scope.column.node.format|| 'YYYY-MM-DD HH:mm:ss'"
+                          :value-format="scope.column.node.format || 'YYYY-MM-DD HH:mm:ss'"
                           v-else-if="isDate(scope)"/>
         </template>
         <span v-else-if="props.editable && scope.column.property==='action'">
@@ -55,8 +61,7 @@ import {ref, defineProps, defineExpose, FunctionalComponent, h} from "vue"
 import DynamicColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps} from "@c/DynamicTable";
-import _ from "lodash";
-import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect, ElTable} from "element-plus";
+import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
   columns: () => [],
@@ -77,15 +82,14 @@ const editRef = ref()
 const spanRef = ref({})
 
 const handleCellFocus = () => {
-  console.log(editRef)
   if (editRef.value && editRef.value.length > 0) {
     editRef.value[editRef.value.length - 1].focus?.()
   }
 }
 
-const isEdit = (scope: RenderRowData<any>) => scope.row[`${scope.column.property}_editable`]
+const isEdit = (scope) => scope.row[`${scope.column.property}_editable`]
 
-const isInputString = (scope: RenderRowData<any>) => {
+const isInputString = (scope) => {
   let val = (scope.column.node.type === 'string' || !scope.column.node.type)
   if (val) {
     handleCellFocus()
@@ -93,7 +97,7 @@ const isInputString = (scope: RenderRowData<any>) => {
   return val
 }
 
-const isInputNumber = (scope: RenderRowData<any>) => {
+const isInputNumber = (scope) => {
   let val = scope.column.node.type === 'number'
   if (val) {
     handleCellFocus()
@@ -101,7 +105,7 @@ const isInputNumber = (scope: RenderRowData<any>) => {
   return val
 }
 
-const isSelect = (scope: RenderRowData<any>) => {
+const isSelect = (scope) => {
   let val = scope.column.node.type === 'select'
   if (val) {
     handleCellFocus()
@@ -109,7 +113,7 @@ const isSelect = (scope: RenderRowData<any>) => {
   return val
 }
 
-const isDate = (scope: RenderRowData<any>) => {
+const isDate = (scope) => {
   let val = scope.column.node.type === 'date' || scope.column.node.type === 'datetime'
   if (val) {
     handleCellFocus()
@@ -117,12 +121,11 @@ const isDate = (scope: RenderRowData<any>) => {
   return val
 }
 
-const onExitEditMode = (scope: RenderRowData<any>) => {
-  console.log(scope)
+const onExitEditMode = (scope) => {
   delete scope.row[`${scope.column.property}_editable`]
 }
 
-const ShowCell: FunctionalComponent<any> = (scope: RenderRowData<any>) => {
+const ShowCell: FunctionalComponent<any> = (scope) => {
   let label = scope.row[scope.column.property]
   if (scope.column.node.dictKey && props.dict) {
     let value = props.dict[scope.column.node.dictKey]?.find(t => t.value === scope.row[scope.column.property])?.label
@@ -142,7 +145,7 @@ const handleCell = ({row, column}) => {
   }
 }
 
-const handleSelect = (value: any, scope: RenderRowData<any>) => {
+const handleSelect = (value: any, scope) => {
   let dictPush = scope.column.node.dictPush
   if (dictPush) {
     let dictValue = props.dict[scope.column.node.dictKey].find((t: any) => t.value === value)
@@ -150,41 +153,24 @@ const handleSelect = (value: any, scope: RenderRowData<any>) => {
   }
 }
 
-const showAddRow = (scope: RenderRowData<any>) => {
+const showAddRow = (scope) => {
   return scope.rowIndex == props.data.length - 1
 }
 
-const addRow = (scope: RenderRowData<any>) => {
+const addRow = (scope) => {
   props.data.splice(scope?.rowIndex + 1, 0, {})
 }
 
-const delRow = (scope: RenderRowData<any>) => {
+const delRow = (scope) => {
   props.data.splice(scope.rowIndex, 1)
 }
 
-// const spanMethod = ({row, column, rowIndex, columnIndex}) => {
-//   if (column.node.spanMerge) {
-//     let spanMergeColumn = spanRef.value[column.property]
-//     if (_.isEmpty(spanMergeColumn)) {
-//       spanRef.value[column.property] = column.node.spanMerge
-//     }
-//   }
-//   let ret
-//   Object.keys(spanRef.value).forEach(t => {
-//     spanRef.value[t].forEach(c => {
-//       if (util.object.getValueByExpression(row, c.condition)) {
-//         if (column.property == t) {
-//           ret = [1, c.props.length + 1]
-//         }
-//         if (c.props.includes(column.property)) {
-//           ret = [0, 0]
-//         }
-//       }
-//     })
-//   })
-//
-//   return ret
-// }
+const updateFooterEvent = () => {
+  const $table = tableRef.value
+  if ($table) {
+    $table.updateFooter()
+  }
+}
 
 const summaryMethod = (data: { columns: any[], data: any[] }) => {
   const sums: any[] = []
@@ -193,10 +179,10 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
     totalSummary[data.columns[0].property] = "合计"
     data.columns.forEach(c => {
       data.data.forEach(t => {
-        if (c.node.rowTotal) {
+        if (c.node?.rowTotal) {
           t[c.property] = Number(util.object.getValueByExpression(t, c.node.rowTotal) || null).toFixed(2)
         }
-        if (c.node.colTotal || c.node.rowTotal) {
+        if (c.node?.colTotal || c.node?.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
             let subItem = sums.find(p => p[data.columns[0].property] == b)
             if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t, data)) {
@@ -213,10 +199,8 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
       })
     })
     sums.push(totalSummary)
-    return data.columns.map(c => h('dl', {style: {"text-align": "center"}}, sums.map(t => h('dt', null, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || 0) : ""]))))
   }
-
-  return []
+  return sums
 }
 
 defineExpose({
