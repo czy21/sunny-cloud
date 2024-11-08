@@ -4,10 +4,11 @@
              @cell-click="handleCell"
              width="100%"
              height="100%"
-             show-overflow
+             size="mini"
              :column-config="{resizable: true}"
              :scroll-x="{enabled: true, gt: 0}"
              :scroll-y="{enabled: true, gt: 0}"
+             show-overflow
              show-footer
              :footer-method="summaryMethod"
   >
@@ -51,7 +52,7 @@
       </template>
     </dynamic-column>
     <template #empty>
-      <el-button @click="addRow(scope)" type="primary">加行</el-button>
+      <el-button @click="addRow" type="primary">加行</el-button>
     </template>
   </vxe-table>
 </template>
