@@ -2,6 +2,7 @@
   <vxe-table ref="tableRef"
              :data="props.data"
              @cell-click="handleCell"
+             border
              width="100%"
              height="100%"
              size="mini"
@@ -62,6 +63,7 @@ import {ref, defineProps, defineExpose, FunctionalComponent, h} from "vue"
 import DynamicColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps} from "@c/DynamicTable";
+import {VxeTable} from "vxe-table";
 import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
@@ -80,7 +82,7 @@ const props = withDefaults(defineProps<TableProps>(), {
 
 const tableRef = ref()
 const editRef = ref()
-const spanRef = ref({})
+const mergeRef = ref([])
 
 const handleCellFocus = () => {
   if (editRef.value && editRef.value.length > 0) {

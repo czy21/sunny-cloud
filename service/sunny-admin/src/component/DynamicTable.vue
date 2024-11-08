@@ -3,6 +3,7 @@
             :data="props.data"
             @cell-click="handleCell"
             width="100%" height="100%"
+            size="small"
             show-summary
             :summary-method="summaryMethod"
             show-overflow-tooltip
