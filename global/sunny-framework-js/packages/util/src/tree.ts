@@ -1,7 +1,7 @@
-export function override(t1: any, t2: any, idKey: string = "id", parentKey: string = "parentId") {
+export const override = (t1: any, t2: any, idKey: string = "id", parentKey: string = "parentId") => {
 
     if (t1[idKey] === t2[idKey]) {
-        let mergedNode: any = {...t1, ...t2}
+        let mergedNode: any = { ...t1, ...t2 }
         const childMap = new Map();
 
         for (const child of t1.children || []) {
@@ -19,12 +19,12 @@ export function override(t1: any, t2: any, idKey: string = "id", parentKey: stri
     return t1.children;
 }
 
-export function buildByPath(all: any[],
-                            rootValue: any = null,
-                            pathsKey: string = "paths",
-                            idKey: string = "id",
-                            parentKey: string = "parentId",
-                            sortKey: string = "sort") {
+export const buildByPath = (all: any[],
+    rootValue: any = null,
+    pathsKey: string = "paths",
+    idKey: string = "id",
+    parentKey: string = "parentId",
+    sortKey: string = "sort") => {
     let root: any = {}
     root[idKey] = rootValue
     root["children"] = []
@@ -32,12 +32,12 @@ export function buildByPath(all: any[],
     return root.children
 }
 
-export function processPath(root: any,
-                            node: any,
-                            pathsKey: string = "paths",
-                            idKey: string = "id",
-                            parentKey: string = "parentId",
-                            sortKey: string = "sort") {
+export const processPath = (root: any,
+    node: any,
+    pathsKey: string = "paths",
+    idKey: string = "id",
+    parentKey: string = "parentId",
+    sortKey: string = "sort") => {
     let current = root
     node[pathsKey].forEach((t: any, i: number, a: any[]) => {
         current.children = current.children || []
@@ -46,7 +46,7 @@ export function processPath(root: any,
             child = {}
             child[idKey] = t
             child[parentKey] = current[idKey]
-            child = i == a.length - 1 ? {...node, ...child} : child
+            child = i == a.length - 1 ? { ...node, ...child } : child
             current.children.push(child)
             current.children.sort((a: any, b: any) => a[sortKey] - b[sortKey])
         }
@@ -54,19 +54,19 @@ export function processPath(root: any,
     })
 }
 
-export function build(all: any[],
-                      predicate: (value: any, index: number, array: any[]) => unknown, thisArg?: any,
-                      idKey: string = "id",
-                      parentKey: string = "parentId",
-                      sortKey: string = "sort") {
+export const build = (all: any[],
+    predicate: (value: any, index: number, array: any[]) => unknown, thisArg?: any,
+    idKey: string = "id",
+    parentKey: string = "parentId",
+    sortKey: string = "sort") => {
     return all.filter(predicate).map((t: any) => buildChildren(all, t, idKey, parentKey)).sort((a, b) => a[sortKey] - b[sortKey])
 }
 
-export function buildChildren(items: any[],
-                              node: any,
-                              idKey: string = "id",
-                              parentKey: string = "parentId",
-                              sortKey: string = "sort") {
+export const buildChildren = (items: any[],
+    node: any,
+    idKey: string = "id",
+    parentKey: string = "parentId",
+    sortKey: string = "sort") => {
     let children = items.filter((t: any) => node[idKey] == t[parentKey]).map((t: any) => buildChildren(items, t, idKey, parentKey))
     node['children'] = node['children'] ? [...node['children'], ...children] : children
     node.children.sort((a: any, b: any) => a[sortKey] - b[sortKey])

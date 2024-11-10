@@ -1,6 +1,5 @@
+import path from 'path'
 import { builtinModules } from 'module';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
 import typescript from '@rollup/plugin-typescript';
 
 /**
@@ -10,6 +9,12 @@ import typescript from '@rollup/plugin-typescript';
  * @returns {import('rollup').RollupOptions}
  */
 export function createConfig({ pkg, external = [] }) {
+  external.push(/node_modules/)
+  if (pkg.name !== '@sunny-framework-js/util'){
+    external.push("@sunny-framework-js/util")
+    external.push("axios")
+    external.push("lodash")
+  }
   return {
     input: 'src/index.ts',
     external: Object.keys(pkg.dependencies || {})
@@ -19,35 +24,24 @@ export function createConfig({ pkg, external = [] }) {
     onwarn: (warning) => {
       throw Object.assign(new Error(), warning);
     },
-    strictDeprecations: true,
     output: [
       {
         format: 'cjs',
-        file: pkg.main,
-        exports: 'named',
-        footer: 'module.exports = Object.assign(exports.default, exports);',
-        sourcemap: true
+        dir: path.resolve(pkg.main,'..'),
+        sourcemap: true,
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        exports: "named"
       },
       {
         format: 'es',
-        file: pkg.module,
-        plugins: [emitModulePackageFile()],
-        sourcemap: true
+        dir: path.resolve(pkg.module,'..'),
+        sourcemap: true,
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        exports: "named"
       }
     ],
     plugins: [typescript({ sourceMap: true })]
-  };
-}
-
-export function emitModulePackageFile() {
-  return {
-    name: 'emit-module-package-file',
-    generateBundle() {
-      this.emitFile({
-        type: 'asset',
-        fileName: 'package.json',
-        source: `{"type":"module"}`
-      });
-    }
   };
 }

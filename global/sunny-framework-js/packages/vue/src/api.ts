@@ -86,22 +86,15 @@ function apiAxios(method: Method, url: string, params: any, config?: AxiosReques
     })
 }
 
-const get = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+export const get = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
     return apiAxios(Method.GET, url, params, config, errorCallBack)
 }
-const post = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+export const post = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
     return apiAxios(Method.POST, url, params, config, errorCallBack)
 }
-const put = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+export const put = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
     return apiAxios(Method.PUT, url, params, config, errorCallBack)
 }
-const del = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
+export const del = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
     return apiAxios(Method.DELETE, url, params, config, errorCallBack)
-}
-
-export default {
-    get,
-    post,
-    put,
-    del
 }

@@ -1,15 +1,15 @@
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 import _ from 'lodash'
 
 
-export const callIfExists = function (fn?: Function, resultForNonFunction?: any, ...args: any) {
+export const callIfExists = (fn?: Function, resultForNonFunction?: any, ...args: any) => {
     if (_.isFunction(fn)) {
         return fn?.apply(args)
     }
     return resultForNonFunction
 }
 
-export const downloadFile = function (res: AxiosResponse, fileName?: string) {
+export const downloadFile = (res: AxiosResponse, fileName?: string) => {
     let url = URL.createObjectURL(res.data)
     const a = document.createElement('a')
     a.style.display = 'none'

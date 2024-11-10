@@ -2,7 +2,11 @@
     "name": "@sunny-framework-js/vue",
     "private": true,
     "license": "MIT",
-    "main": "src/index.ts",
+    "main": "./dist/lib/index.js",
+    "module": "./dist/es/index.js",
+    "scripts": {
+        "build": "rollup -c"
+    },
     "dependencies": {
         "element-plus": "^2.8.7"
     }

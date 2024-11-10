@@ -6,7 +6,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const alias = {
     "@": "src",
-    "@v": "src/view"
+    "@v": "src/view",
+    "@sunny-framework-js/util": "../node_modules/@sunny-framework-js/util/src",
+    "@sunny-framework-js/vue": "../node_modules/@sunny-framework-js/vue/src"
 }
 
 const resolveFrameworkImporter = () => {

@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '@/layout/Home.vue'
 import util from "@sunny-framework-js/util";
-import api from '@sunny-framework-js/vue/api';
+import {api} from '@sunny-framework-js/vue';
 
 const routes = [
     {

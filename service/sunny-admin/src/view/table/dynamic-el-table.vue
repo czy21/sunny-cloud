@@ -13,7 +13,6 @@
   </dynamic-table>
 
   <el-button @click="handleClick">确认</el-button>
-  <el-button @click="getMergeTree">树合并</el-button>
 </template>
 
 <script lang="ts" setup>

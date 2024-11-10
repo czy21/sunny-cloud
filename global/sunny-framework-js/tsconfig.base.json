@@ -1,20 +1,11 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
-    "esModuleInterop": false,
-    "lib": [
-      "es6"
-    ],
-    "module": "commonjs",
+    "module": "esnext",
+    "target": "es6",
+    "lib": ["es6","dom"],
     "moduleResolution": "node",
-    "noEmit": false,
-    "noEmitOnError": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "pretty": false,
-    "sourceMap": false,
-    "strict": false,
-    "target": "es2019"
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "exclude": ["dist","node_modules","test/types"]
+  "exclude": ["dist", "node_modules"]
 }
