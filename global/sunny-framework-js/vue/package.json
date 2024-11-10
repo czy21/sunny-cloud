@@ -1,6 +1,0 @@
-{
-    "name": "@sunny-framework-js/vue",
-    "private": true,
-    "license": "MIT",
-    "main": "index.ts"
-}

@@ -1,7 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "../global/sunny-framework-js/*",
+    "../global/sunny-framework-js/packages/*",
     "sunny-admin",
     "sunny-auth-web"
   ],
