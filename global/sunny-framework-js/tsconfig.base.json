@@ -1,18 +1,20 @@
 {
-    "compilerOptions": {
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "lib": ["es6"],
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "noEmit": true,
-      "noEmitOnError": false,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "pretty": true,
-      "sourceMap": true,
-      "strict": true,
-      "target": "es2019"
-    },
-    "exclude": ["dist", "node_modules", "test/types"]
-  }
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false,
+    "lib": [
+      "es6"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "noEmitOnError": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "pretty": false,
+    "sourceMap": false,
+    "strict": false,
+    "target": "es2019"
+  },
+  "exclude": ["dist","node_modules","test/types"]
+}
