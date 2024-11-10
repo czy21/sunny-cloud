@@ -1,8 +1,11 @@
 {
-    "private": true,
     "workspaces": [
         "packages/*"
     ],
+    "scripts": {
+        "build": "sh main.sh --build",
+        "deploy": "sh main.sh --deploy"
+    },
     "dependencies": {
         "@sunny-framework-js/react": "workspace:*",
         "@sunny-framework-js/util": "workspace:*",
