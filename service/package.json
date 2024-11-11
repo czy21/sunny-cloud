@@ -2,8 +2,7 @@
   "private": true,
   "workspaces": [
     "../global/sunny-framework-js/packages/*",
-    "sunny-admin",
-    "sunny-auth-web"
+    "sunny-admin"
   ],
   "dependencies": {
     "@sunny-framework-js/util": "workspace:*",
