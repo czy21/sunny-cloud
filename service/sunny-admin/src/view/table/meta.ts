@@ -214,7 +214,7 @@ export const getData = (length = 10) => {
     return Array.from({length: length}).map((t, i) => {
         return {
             "name": "李四" + i,
-            "address": i%2==0?"上海":"北京",
+            "address": i % 4 == 0 ? "上海" : "北京",
             "age": 25,
             "hobby": "b",
             "m1": 100 + i,

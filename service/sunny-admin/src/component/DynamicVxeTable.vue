@@ -187,25 +187,24 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
         }
         if (c.node?.colTotal || c.node?.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
-            if (props.subTotal[b].byValue) {
-              let value = props.subTotal[b].groupBy(t, data)
-              let subItem = sums.find(p => p[data.columns[0].property] == value)
+            if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
+              let subItem = sums.find(p => p[data.columns[0].property] == b)
               if (!subItem) {
                 subItem = {}
-                subItem[data.columns[0].property] = value
+                subItem[data.columns[0].property] = b
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
-            } else {
-              let subItem = sums.find(p => p[data.columns[0].property] == b)
-              if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
-                if (!subItem) {
-                  subItem = {}
-                  subItem[data.columns[0].property] = b
-                  sums.push(subItem)
-                }
-                subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+            }
+            if (props.subTotal[b].byValue) {
+              let valItem = props.subTotal[b].groupBy(t, data)
+              let subItem = sums.find(p => p[data.columns[0].property] == valItem)
+              if (!subItem) {
+                subItem = {}
+                subItem[data.columns[0].property] = valItem
+                sums.push(subItem)
               }
+              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
             }
           })
           totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
