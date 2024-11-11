@@ -28,6 +28,7 @@ export interface TableColumn {
     rowTotal?: string
     colTotal?: boolean
     width?: string | number
+    colors?: string[]
     fixed?: string
     custom?: boolean
 }

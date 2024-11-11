@@ -8,6 +8,7 @@ export const fields: TableColumn[] = [
         "heads": ["序号"],
         "type": "index",
         "fixed": "left",
+        "colors":["#1F487C"]
     },
     {
         "prop": "name",
@@ -29,6 +30,7 @@ export const fields: TableColumn[] = [
         "prop": "address",
         "name": "a",
         "heads": ["a1", "a2", "地址"],
+        "colors":["#1F487C"],
         "editable": true
     },
     {
@@ -204,8 +206,17 @@ export const getColumns = () => {
             t.heads[t.heads.length - 1] = !t.heads[t.heads.length - 1].includes("*") ? ("*" + t.heads[t.heads.length - 1]) : t.heads[t.heads.length - 1]
         }
     })
-
-    let tree = util.tree.buildByPath(fields, null, "heads", "name", "parentName")
+    let decoFunc: any = (item: any, node: any, pathIndex: number) => {
+        let nodeColor = item.colors?.find(((t, i) => i === pathIndex))
+        if (nodeColor) {
+            node["color"] = nodeColor
+        }
+    }
+    let tree = util.tree.buildByPath(fields, null, {
+        pathsKey: "heads",
+        idKey: "name",
+        parentKey: "parentName"
+    }, decoFunc)
     console.log(tree)
     return tree
 }

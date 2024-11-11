@@ -1,6 +1,7 @@
 <template>
   <vxe-table ref="tableRef"
              :data="props.data"
+             :header-cell-style="headerCellStyle"
              @cell-click="handleCell"
              border
              width="100%"
@@ -83,6 +84,15 @@ const props = withDefaults(defineProps<TableProps>(), {
 const tableRef = ref()
 const editRef = ref()
 const mergeRef = ref([])
+
+const headerCellStyle = ({ column }) => {
+  if (column.node?.color) {
+    return {
+      backgroundColor: column.node.color,
+      color: "#FFF"
+    }
+  }
+}
 
 const handleCellFocus = () => {
   if (editRef.value && editRef.value.length > 0) {
