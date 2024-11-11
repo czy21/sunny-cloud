@@ -210,11 +210,11 @@ export const getColumns = () => {
     return tree
 }
 
-export const getData = (length = 100) => {
+export const getData = (length = 10) => {
     return Array.from({length: length}).map((t, i) => {
         return {
             "name": "李四" + i,
-            "address": "上海",
+            "address": i%2==0?"上海":"北京",
             "age": 25,
             "hobby": "b",
             "m1": 100 + i,
@@ -235,7 +235,11 @@ export const getDict = () => {
 export const getSubTotal = () => {
     return {
         "一月<105": {
-            "groupBy": (item:any,data:any[]) => item.m1 < 105
+            "groupBy": (item: any, data: any[]) => item.m1 < 105
+        },
+        "地址": {
+            "groupBy": (item: any, data: any[]) => item.address,
+            "byValue": true
         }
     }
 }

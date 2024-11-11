@@ -1,6 +1,5 @@
 {
     "name": "@sunny-framework-js/util",
-    "private": false,
     "version": "1.0.0",
     "license": "MIT",
     "main": "dist/lib/index.js",

@@ -187,14 +187,25 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
         }
         if (c.node?.colTotal || c.node?.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
-            let subItem = sums.find(p => p[data.columns[0].property] == b)
-            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t, data)) {
+            if (props.subTotal[b].byValue) {
+              let value = props.subTotal[b].groupBy(t, data)
+              let subItem = sums.find(p => p[data.columns[0].property] == value)
               if (!subItem) {
                 subItem = {}
-                subItem[data.columns[0].property] = b
+                subItem[data.columns[0].property] = value
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+            } else {
+              let subItem = sums.find(p => p[data.columns[0].property] == b)
+              if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
+                if (!subItem) {
+                  subItem = {}
+                  subItem[data.columns[0].property] = b
+                  sums.push(subItem)
+                }
+                subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+              }
             }
           })
           totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
