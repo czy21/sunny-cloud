@@ -8,6 +8,7 @@ export const fields: TableColumn[] = [
         "heads": ["序号"],
         "type": "index",
         "fixed": "left",
+        "colors":["#1F487C"]
     },
     {
         "prop": "name",
@@ -29,6 +30,7 @@ export const fields: TableColumn[] = [
         "prop": "address",
         "name": "a",
         "heads": ["a1", "a2", "地址"],
+        "colors":["#1F487C"],
         "editable": true
     },
     {
@@ -204,17 +206,26 @@ export const getColumns = () => {
             t.heads[t.heads.length - 1] = !t.heads[t.heads.length - 1].includes("*") ? ("*" + t.heads[t.heads.length - 1]) : t.heads[t.heads.length - 1]
         }
     })
-
-    let tree = util.tree.buildByPath(fields, null, "heads", "name", "parentName")
+    let decoFunc: any = (item: any, node: any, pathIndex: number) => {
+        let nodeColor = item.colors?.find(((t, i) => i === pathIndex))
+        if (nodeColor) {
+            node["color"] = nodeColor
+        }
+    }
+    let tree = util.tree.buildByPath(fields, null, {
+        pathsKey: "heads",
+        idKey: "name",
+        parentKey: "parentName"
+    }, decoFunc)
     console.log(tree)
     return tree
 }
 
-export const getData = (length = 100) => {
+export const getData = (length = 10) => {
     return Array.from({length: length}).map((t, i) => {
         return {
             "name": "李四" + i,
-            "address": "上海",
+            "address": i % 4 == 0 ? "上海" : "北京",
             "age": 25,
             "hobby": "b",
             "m1": 100 + i,
@@ -235,7 +246,11 @@ export const getDict = () => {
 export const getSubTotal = () => {
     return {
         "一月<105": {
-            "groupBy": (item:any,data:any[]) => item.m1 < 105
+            "groupBy": (item: any, data: any[]) => item.m1 < 105
+        },
+        "地址": {
+            "groupBy": (item: any, data: any[]) => item.address,
+            "byValue": true
         }
     }
 }

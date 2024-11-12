@@ -6,30 +6,14 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const alias = {
     "@": "src",
-    "@v": "src/view",
-    "@sunny-framework-js/util": "../node_modules/@sunny-framework-js/util/src",
-    "@sunny-framework-js/vue": "../node_modules/@sunny-framework-js/vue/src"
-}
-
-const resolveFrameworkImporter = () => {
-    return {
-        name: 'transform-framework-importer',
-        async resolveId(source, importer, options) {
-            if (/sunny-framework-js/.test(importer)) {
-                const resolution = await this.resolve(fileURLToPath(new URL(`../node_modules/${source}`, import.meta.url)), importer, options);
-                // console.log(resolution)
-                return resolution.id;
-            }
-        }
-    }
+    "@v": "src/view"
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
-        vueJsx(),
-        resolveFrameworkImporter()
+        vueJsx()
     ],
     build: {
         outDir: "build"

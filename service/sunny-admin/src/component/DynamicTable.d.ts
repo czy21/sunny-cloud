@@ -28,6 +28,7 @@ export interface TableColumn {
     rowTotal?: string
     colTotal?: boolean
     width?: string | number
+    colors?: string[]
     fixed?: string
     custom?: boolean
 }
@@ -37,5 +38,5 @@ export interface DictType {
 }
 
 export interface SubTotalType {
-    [key: string]: { groupBy(item: Object, data: { columns: any[], data: any[] }): boolean }
+    [key: string]: { groupBy(item: Object, data: { columns: any[], data: any[] }): boolean, byValue: boolean }
 }

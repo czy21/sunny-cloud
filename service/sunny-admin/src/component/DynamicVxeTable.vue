@@ -1,6 +1,7 @@
 <template>
   <vxe-table ref="tableRef"
              :data="props.data"
+             :header-cell-style="headerCellStyle"
              @cell-click="handleCell"
              border
              width="100%"
@@ -83,6 +84,15 @@ const props = withDefaults(defineProps<TableProps>(), {
 const tableRef = ref()
 const editRef = ref()
 const mergeRef = ref([])
+
+const headerCellStyle = ({ column }) => {
+  if (column.node?.color) {
+    return {
+      backgroundColor: column.node.color,
+      color: "#FFF"
+    }
+  }
+}
 
 const handleCellFocus = () => {
   if (editRef.value && editRef.value.length > 0) {
@@ -187,11 +197,21 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
         }
         if (c.node?.colTotal || c.node?.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
-            let subItem = sums.find(p => p[data.columns[0].property] == b)
-            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t, data)) {
+            if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
+              let subItem = sums.find(p => p[data.columns[0].property] == b)
               if (!subItem) {
                 subItem = {}
                 subItem[data.columns[0].property] = b
+                sums.push(subItem)
+              }
+              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+            }
+            if (props.subTotal[b].byValue) {
+              let valItem = props.subTotal[b].groupBy(t, data)
+              let subItem = sums.find(p => p[data.columns[0].property] == valItem)
+              if (!subItem) {
+                subItem = {}
+                subItem[data.columns[0].property] = valItem
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
