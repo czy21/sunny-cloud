@@ -45,7 +45,7 @@ export function createConfig({pkg, external = []}) {
                     exports: "named",
                 }
             ],
-            plugins: [typescript({sourceMap: true, declaration: true, declarationDir: t.dir}),vue()]
+            plugins: [typescript({sourceMap: true, declaration: true, declarationDir: t.dir}), vue()]
         }
     })
 }
