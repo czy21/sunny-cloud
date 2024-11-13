@@ -1,6 +1,7 @@
 import path from 'path'
 import {readFileSync} from 'fs';
 import {builtinModules} from 'module';
+import vue from 'rollup-plugin-vue'
 import typescript from '@rollup/plugin-typescript';
 
 /**
@@ -44,7 +45,7 @@ export function createConfig({pkg, external = []}) {
                     exports: "named",
                 }
             ],
-            plugins: [typescript({sourceMap: true, declaration: true, declarationDir: t.dir})]
+            plugins: [typescript({sourceMap: true, declaration: true, declarationDir: t.dir}),vue()]
         }
     })
 }
