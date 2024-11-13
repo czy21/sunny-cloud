@@ -36,7 +36,7 @@ const handleClick = () => {
 
 onMounted(() => {
   tableDataRef.columns = meta.getColumns()
-  tableDataRef.data = meta.getData(2000)
+  tableDataRef.data = meta.getData(200)
   tableDataRef.dict = meta.getDict()
   tableDataRef.subTotal = meta.getSubTotal()
 })

@@ -47,14 +47,14 @@ export const processPath = (root: any, item: any, attr: any = {}, decoFunc: (ite
         node.children = node.children || []
         let child = node.children.find((c: any) => c[attr.idKey] == (typeof t == 'object' ? t[attr.idKey] : t))
         if (!child) {
-            child = typeof t == 'object' ? {...t} : {}
-            child[attr.idKey] = (typeof t == 'object' ? t[attr.idKey] : t)
+            child = {}
+            child[attr.idKey] = typeof t === 'object' ? t[attr.idKey] : t
             child[attr.parentKey] = node[attr.idKey]
             child = i == a.length - 1 ? {...item, ...child} : child
             node.children.push(child)
             node.children.sort((a: any, b: any) => a[attr.sortKey] - b[attr.sortKey])
         }
-        node = child
+        node = typeof t === 'object' ? {...child, ...t} : child
         decoFunc && decoFunc(item, node, i)
     })
 }

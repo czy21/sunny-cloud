@@ -42,12 +42,16 @@ export const fields: TableColumn[] = [
         "heads": [
             {
                 name: "a1",
+                style: {
+                    backgroundColor: "blue"
+                }
             },
+            "a2",
             {
-                name: "a2"
-            },
-            {
-                name: "地址"
+                name: "地址",
+                style: {
+                    backgroundColor: "red"
+                }
             }
         ],
         "editable": true
@@ -55,10 +59,18 @@ export const fields: TableColumn[] = [
     {
         "prop": "entryTime",
         "name": "入职时间",
-        "heads": ["a1", "a2", "入职时间"],
         "type": "datetime",
         "editable": true,
-        "width": 200
+        "heads": [
+            "a1",
+            "a2",
+            {
+                name: "入职时间",
+                style: {
+                    backgroundColor: "yellow"
+                }
+            }
+        ],
     },
     {
         "prop": "hobby",
@@ -66,7 +78,16 @@ export const fields: TableColumn[] = [
         "type": "select",
         "dictKey": "HOBBY",
         "editable": true,
-        "heads": ["a1", "a2", "爱好"]
+        "heads": [
+            "a1",
+            "a2",
+            {
+                name: "爱好",
+                style: {
+                    backgroundColor: "DarkBlue"
+                }
+            }
+        ],
     },
     {
         "prop": "m1",
