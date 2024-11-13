@@ -1,4 +1,5 @@
 import {TableColumnCtx, IDatePickerType} from "element-plus";
+import {CSSProperties} from "vue";
 
 declare module 'element-plus' {
     export interface TableColumnCtx<T> {
@@ -20,17 +21,20 @@ export interface TableColumn {
     type?: string | "string" | "number" | "select" | IDatePickerType
     parentProp?: string
     parentName?: string
-    heads?: string[]
     required?: boolean
     editable?: boolean | string
     dictKey?: string
     dictPush?: [string, object]
     rowTotal?: string
     colTotal?: boolean
-    width?: string | number
-    colors?: string[]
+    heads?: (string | TableHead)[]
     fixed?: string
     custom?: boolean
+}
+
+export interface TableHead {
+    name: string
+    style?: CSSProperties
 }
 
 export interface DictType {

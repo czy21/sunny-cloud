@@ -5,17 +5,27 @@ export const fields: TableColumn[] = [
     {
         "prop": "seq",
         "name": "序号",
-        "heads": ["序号"],
         "type": "index",
         "fixed": "left",
-        "colors":["#1F487C"]
+        "heads": [
+            {
+                name: "序号"
+            }
+        ]
     },
     {
         "prop": "name",
         "name": "姓名",
-        "heads": ["姓名"],
         "editable": true,
-        "required": true
+        "required": true,
+        "heads": [
+            {
+                name: "姓名",
+                style: {
+                    width: 200
+                }
+            }
+        ]
     },
     {
         "prop": "age",
@@ -29,8 +39,17 @@ export const fields: TableColumn[] = [
     {
         "prop": "address",
         "name": "a",
-        "heads": ["a1", "a2", "地址"],
-        "colors":["#1F487C"],
+        "heads": [
+            {
+                name: "a1",
+            },
+            {
+                name: "a2"
+            },
+            {
+                name: "地址"
+            }
+        ],
         "editable": true
     },
     {
@@ -203,20 +222,20 @@ export const fields: TableColumn[] = [
 export const getColumns = () => {
     fields.forEach((t: any) => {
         if (t.heads && t.required) {
-            t.heads[t.heads.length - 1] = !t.heads[t.heads.length - 1].includes("*") ? ("*" + t.heads[t.heads.length - 1]) : t.heads[t.heads.length - 1]
+            let leaf = t.heads[t.heads.length - 1]
+            if (typeof leaf === 'object' && !leaf.name.startsWith("*")) {
+                t.heads[t.heads.length - 1] = {...leaf, ...{name: "*" + leaf.name}}
+            }
+            if (typeof leaf === 'string' && !leaf.startsWith("*")) {
+                t.heads[t.heads.length - 1] = "*" + leaf
+            }
         }
     })
-    let decoFunc: any = (item: any, node: any, pathIndex: number) => {
-        let nodeColor = item.colors?.find(((t, i) => i === pathIndex))
-        if (nodeColor) {
-            node["color"] = nodeColor
-        }
-    }
     let tree = util.tree.buildByPath(fields, null, {
         pathsKey: "heads",
         idKey: "name",
         parentKey: "parentName"
-    }, decoFunc)
+    })
     console.log(tree)
     return tree
 }

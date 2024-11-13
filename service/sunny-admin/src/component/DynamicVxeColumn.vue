@@ -9,7 +9,7 @@
       </template>
     </dynamic-vxe-column>
   </vxe-colgroup>
-  <vxe-column :title="props.node.name" :field="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.width||150" v-else>
+  <vxe-column :title="props.node.name" :field="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||150" v-else>
     <template #header="scope">
       {{ renderHeader(props.node, scope) }}
     </template>

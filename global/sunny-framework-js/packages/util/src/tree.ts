@@ -45,10 +45,10 @@ export const processPath = (root: any, item: any, attr: any = {}, decoFunc: (ite
     let node = root
     item[attr.pathsKey].forEach((t: any, i: number, a: any[]) => {
         node.children = node.children || []
-        let child = node.children.find((c: any) => c[attr.idKey] == t)
+        let child = node.children.find((c: any) => c[attr.idKey] == (typeof t == 'object' ? t[attr.idKey] : t))
         if (!child) {
-            child = {}
-            child[attr.idKey] = t
+            child = typeof t == 'object' ? {...t} : {}
+            child[attr.idKey] = (typeof t == 'object' ? t[attr.idKey] : t)
             child[attr.parentKey] = node[attr.idKey]
             child = i == a.length - 1 ? {...item, ...child} : child
             node.children.push(child)

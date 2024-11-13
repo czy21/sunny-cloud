@@ -1,6 +1,7 @@
 <template>
   <el-table ref="tableRef"
             :data="props.data"
+            :header-cell-style="headerCellStyle"
             @cell-click="handleCell"
             width="100%" height="100%"
             size="small"
@@ -77,6 +78,14 @@ const props = withDefaults(defineProps<TableProps>(), {
 const tableRef = ref()
 const editRef = ref()
 const spanRef = ref({})
+
+const headerCellStyle = ({column}) => {
+  return {
+    // backgroundColor: "#1F487C",
+    // color: '#FFF',
+    ...column.node?.style
+  }
+}
 
 const handleCellFocus = () => {
   if (editRef.value && editRef.value.length > 0) {

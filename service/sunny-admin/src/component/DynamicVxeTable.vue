@@ -85,12 +85,11 @@ const tableRef = ref()
 const editRef = ref()
 const mergeRef = ref([])
 
-const headerCellStyle = ({ column }) => {
-  if (column.node?.color) {
-    return {
-      backgroundColor: column.node.color,
-      color: "#FFF"
-    }
+const headerCellStyle = ({column}) => {
+  return {
+    // backgroundColor: "#1F487C",
+    // color: '#FFF',
+    ...column.node?.style
   }
 }
 
