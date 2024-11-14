@@ -1,9 +1,3 @@
-import * as api from "./api";
-import * as eui from "./eui";
-
-export {
-    api,
-    eui
-}
-
-export * from './table'
+export * as api from "./api";
+export * as eui from "./eui";
+export * from "./component"

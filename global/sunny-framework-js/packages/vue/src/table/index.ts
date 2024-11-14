@@ -1,9 +1,13 @@
-import {App} from 'vue'
-
+import type {App} from "vue";
 import DynamicElColumn from './src/DynamicElColumn.vue'
+import DynamicElTable from './src/DynamicElTable.vue'
+import DynamicVxeColumn from "./src/DynamicVxeColumn.vue";
+import DynamicVxeTable from './src/DynamicVxeTable.vue'
 
-DynamicElColumn.install = (app: App) => {
-    app.component(DynamicElColumn.name, DynamicElColumn)
-}
+const components = [DynamicElColumn, DynamicElTable, DynamicVxeColumn, DynamicVxeTable]
 
-export default DynamicElColumn
+components.forEach(t => {
+    t.install = (app: App) => app.component(t.name, t)
+})
+
+export {DynamicElColumn, DynamicElTable, DynamicVxeColumn, DynamicVxeTable}

@@ -1,28 +1,39 @@
 import path from 'path'
-import { readFileSync } from 'fs';
+import {readFileSync} from 'fs';
+import {UserConfig} from "vite";
+import {OutputOptions} from 'rollup'
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import dts from 'vite-plugin-dts'
 
 /**
- * Create a base rollup config
+ * Create a base vite config
  * @param {Record<string,any>} pkg Imported package.json
  * @param {string[]} external Imported package.json
- * @returns {import('rollup').RollupOptions || import('rollup').RollupOptions[]}
+ * @param {import('vite').PluginOption[]} plugins Imported package.json
+ * @returns {UserConfig}
  */
-export function createConfig({ pkg, output={},external = [], plugins = [] }) {
+export const createConfig = ({pkg, external = [], plugins = []}): UserConfig => {
 
     if (pkg.name !== '@sunny-framework-js/util') {
         let util_pkg = JSON.parse(readFileSync(new URL('../packages/util/package.json', import.meta.url), 'utf8'))
         external.push(util_pkg.name)
         external = external.concat(Object.keys(util_pkg.dependencies || {})).concat(Object.keys(util_pkg.peerDependencies || {}))
     }
+    external = external.concat(Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {})))
+    external.push("vue")
+    external.push("element-plus/es/utils")
 
-    let builds = [
+    external = Array.from(new Set(external))
+    console.log(`external: ${external}`)
+
+    let outputOptions: OutputOptions[] = [
         {
             "format": "cjs",
             "dir": path.resolve(pkg.main, '..'),
         },
         {
-            "format": "es",
+            "format": "esm",
             "dir": path.resolve(pkg.module, '..')
         }
     ]
@@ -31,17 +42,18 @@ export function createConfig({ pkg, output={},external = [], plugins = [] }) {
         build: {
             target: "modules",
             sourcemap: true,
-            manifest: true,
             minify: false,
             lib: {
                 entry: ['src/index.ts']
             },
             rollupOptions: {
-                external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {})).concat(external),
-                output: builds.map(t => {
+                external: external,
+                output: outputOptions.map(t => {
                     return {
                         ...t,
-                        ...output,
+                        globals: {
+                            vue: 'Vue',
+                        },
                         preserveModules: true,
                         preserveModulesRoot: "src",
                         exports: "named",
@@ -51,9 +63,14 @@ export function createConfig({ pkg, output={},external = [], plugins = [] }) {
             },
         },
         plugins: [
-            ...plugins,
+            vue({
+
+            }),
+            vueJsx({
+
+            }),
             dts({
-                outDir: builds.map(t => t.dir)
+                outDir: outputOptions.map(t => t.dir)
             })
         ]
     }

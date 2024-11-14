@@ -2,6 +2,7 @@
   <el-container>
     <el-aside :class="{'main-collapse':isCollapse}">
       <el-menu :collapse="isCollapse" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" :default-active="getCurrentRoute" router>
+        <NavMenu :collapse="isCollapse" :menu-tree="getMenuTree"/>
       </el-menu>
     </el-aside>
     <el-container>
@@ -18,21 +19,20 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue'
+import menus from "@/menu";
+import NavMenu from "@/layout/NavMenu.vue";
 
 export default defineComponent({
-  data() {
-    return {
-      userList: [{
-        name: "hello"
-      }]
-    }
-  },
+  components: {NavMenu},
   computed: {
     isCollapse() {
       return this.$store.getters.aside.collapse
     },
     getCurrentRoute() {
-      return this.$route.path.replace('/', '');
+      return this.$route.path;
+    },
+    getMenuTree() {
+      return menus
     }
   },
   methods: {
