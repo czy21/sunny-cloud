@@ -19,6 +19,18 @@ export const override = (t1: any, t2: any, idKey: string = "id", parentKey: stri
     return t1.children;
 }
 
+export const build = (all: any[], predicate: (value: any, index: number, array: any[]) => boolean, attr: { idKey?: string, parentKey?: string, pathsKey?: string, sortKey?: string } = {}) => {
+    attr = {idKey: "id", parentKey: "parentId", pathsKey: "paths", sortKey: "sort", ...attr}
+    return all.filter(predicate).map((t: any) => buildChildren(all, t, attr)).sort((a, b) => a[attr.sortKey] - b[attr.sortKey])
+}
+
+export const buildChildren = (items: any[], node: any, attr: { idKey?: string, parentKey?: string, pathsKey?: string, sortKey?: string } = {}) => {
+    let children = items.filter((t: any) => node[attr.idKey] == t[attr.parentKey]).map((t: any) => buildChildren(items, t, attr))
+    node['children'] = node['children'] ? [...node['children'], ...children] : children
+    node.children.sort((a: any, b: any) => a[attr.sortKey] - b[attr.sortKey])
+    return node
+}
+
 export const buildByPath = (all: any[], rootValue: any = null,
                             attr: { idKey?: string, parentKey?: string, pathsKey?: string, sortKey?: string } = {},
                             decoFunc: (item: any, node: any, pathIndex: number) => {}) => {
@@ -52,16 +64,4 @@ export const processPath = (root: any, item: any,
         }
         decoFunc && decoFunc(item, node, i)
     })
-}
-
-
-export const build = (all: any[], predicate: (value: any, index: number, array: any[]) => unknown, thisArg?: any, idKey: string = "id", parentKey: string = "parentId", sortKey: string = "sort") => {
-    return all.filter(predicate).map((t: any) => buildChildren(all, t, idKey, parentKey)).sort((a, b) => a[sortKey] - b[sortKey])
-}
-
-export const buildChildren = (items: any[], node: any, idKey: string = "id", parentKey: string = "parentId", sortKey: string = "sort") => {
-    let children = items.filter((t: any) => node[idKey] == t[parentKey]).map((t: any) => buildChildren(items, t, idKey, parentKey))
-    node['children'] = node['children'] ? [...node['children'], ...children] : children
-    node.children.sort((a: any, b: any) => a[sortKey] - b[sortKey])
-    return node
 }
