@@ -1,6 +1,6 @@
 import path from 'path'
 import { readFileSync } from 'fs';
-import typescript from '@rollup/plugin-typescript';
+import dts from 'vite-plugin-dts'
 
 /**
  * Create a base rollup config
@@ -8,7 +8,7 @@ import typescript from '@rollup/plugin-typescript';
  * @param {string[]} external Imported package.json
  * @returns {import('rollup').RollupOptions || import('rollup').RollupOptions[]}
  */
-export function createConfig({ pkg, external = [], rollupPlugins = [], vitePlugins = [] }) {
+export function createConfig({ pkg, output={},external = [], plugins = [] }) {
 
     if (pkg.name !== '@sunny-framework-js/util') {
         let util_pkg = JSON.parse(readFileSync(new URL('../packages/util/package.json', import.meta.url), 'utf8'))
@@ -40,19 +40,21 @@ export function createConfig({ pkg, external = [], rollupPlugins = [], vitePlugi
                 external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {})).concat(external),
                 output: builds.map(t => {
                     return {
-                        globals: {
-                            vue: 'Vue',
-                        },
                         ...t,
+                        ...output,
                         preserveModules: true,
                         preserveModulesRoot: "src",
                         exports: "named",
                         entryFileNames: '[name].js'
                     }
-                }),
-                plugins: rollupPlugins
+                })
             },
         },
-        plugins: vitePlugins
+        plugins: [
+            ...plugins,
+            dts({
+                outDir: builds.map(t => t.dir)
+            })
+        ]
     }
 }
