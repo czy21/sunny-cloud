@@ -9,7 +9,7 @@
         "dist"
     ],
     "scripts": {
-        "build": "rollup -c"
+        "build": "vite build"
     },
     "dependencies": {
         "@ant-design/icons": "^5.5.1",

@@ -4,9 +4,9 @@
     "target": "es6",
     "lib": ["es6","dom"],
     "moduleResolution": "node",
-    "jsx": "react",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "declaration": true
   },
   "exclude": ["dist", "node_modules"]
 }
