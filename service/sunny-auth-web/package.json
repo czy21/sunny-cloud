@@ -3,14 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "../../global/sunny-framework-js/packages/util",
+    "../../global/sunny-framework-js/packages/vue"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sunny-framework-js/util": "^1.0.0",
-    "@sunny-framework-js/vue": "^1.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.4.5",
     "vuex": "^4.1.0"

@@ -7,9 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 const alias = {
     "@": "src",
     "@v": "src/view",
-    "@c": "src/component",
-    "@sunny-framework-js/util": "../node_modules/@sunny-framework-js/util/src",
-    "@sunny-framework-js/vue": "../node_modules/@sunny-framework-js/vue/src"
+    "@c": "src/component"
 }
 
 const resolveFrameworkImporter = () => {
@@ -17,8 +15,7 @@ const resolveFrameworkImporter = () => {
         name: 'transform-framework-importer',
         async resolveId(source, importer, options) {
             if (/sunny-framework-js/.test(importer)) {
-                const resolution = await this.resolve(fileURLToPath(new URL(`../node_modules/${source}`, import.meta.url)), importer, options);
-                // console.log(resolution)
+                const resolution = await this.resolve(fileURLToPath(new URL(`./node_modules/${source}`, import.meta.url)), importer, options);
                 return resolution.id;
             }
         }

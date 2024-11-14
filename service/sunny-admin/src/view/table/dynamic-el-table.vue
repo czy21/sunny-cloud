@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import {reactive, onMounted, ref} from "vue"
-import DynamicElTable from "@c/DynamicElTable.vue";
+import {DynamicElTable} from "@sunny-framework-js/vue";
 import * as meta from './meta'
 
 const tableRef = ref(null)

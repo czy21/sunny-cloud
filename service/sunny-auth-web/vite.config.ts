@@ -8,12 +8,24 @@ const alias = {
     "@": "src",
     "@v": "src/view"
 }
+const resolveFrameworkImporter = () => {
+    return {
+        name: 'transform-framework-importer',
+        async resolveId(source, importer, options) {
+            if (/sunny-framework-js/.test(importer)) {
+                const resolution = await this.resolve(fileURLToPath(new URL(`./node_modules/${source}`, import.meta.url)), importer, options);
+                return resolution.id;
+            }
+        }
+    }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
-        vueJsx()
+        vueJsx(),
+        resolveFrameworkImporter()
     ],
     build: {
         outDir: "build"

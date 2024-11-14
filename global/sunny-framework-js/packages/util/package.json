@@ -1,21 +1,14 @@
 {
-    "name": "@sunny-framework-js/util",
-    "version": "1.0.0",
-    "license": "MIT",
-    "main": "dist/lib/index.js",
-    "module": "dist/es/index.js",
-    "types": "dist/lib/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "vite build"
-    },
-    "peerDependencies": {
-        "@types/js-cookie": "^3.0.6",
-        "@types/lodash": "^4.17.13",
-        "axios": "^1.7.7",
-        "js-cookie": "^3.0.5",
-        "lodash": "^4.17.21"
-    }
+  "name": "@sunny-framework-js/util",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.ts",
+  "module": "index.ts",
+  "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.13",
+    "axios": "^1.7.7",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21"
+  }
 }

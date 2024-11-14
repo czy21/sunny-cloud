@@ -1,6 +1,6 @@
 <template>
 
-  <dynamic-table ref="tableRef"
+  <dynamic-vxe-table ref="tableRef"
                  :columns="tableDataRef.columns"
                  :data="tableDataRef.data"
                  :dict="tableDataRef.dict"
@@ -10,14 +10,14 @@
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
     </template>
-  </dynamic-table>
+  </dynamic-vxe-table>
 
   <el-button @click="handleClick">确认</el-button>
 </template>
 
 <script lang="ts" setup>
 import {reactive, onMounted, ref} from "vue"
-import DynamicTable from "@c/DynamicVxeTable.vue";
+import {DynamicVxeTable} from "@sunny-framework-js/vue";
 import * as meta from './meta'
 
 const tableRef = ref(null)

@@ -3,22 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "../../global/sunny-framework-js/packages/util",
+    "../../global/sunny-framework-js/packages/vue"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.1",
-    "@types/js-cookie": "^3.0.6",
-    "axios": "^1.7.7",
-    "element-plus": "^2.8.7",
-    "js-cookie": "^3.0.5",
-    "lodash": "^4.17.21",
-    "vue": "^3.2.45",
     "vue-router": "^4.4.5",
-    "vuex": "^4.1.0",
-    "vxe-table": "^4.6.23"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
@@ -28,5 +24,7 @@
     "typescript": "^4.9.3",
     "vite": "^5.4.10",
     "vue-tsc": "^1.0.24"
-  }
+  },
+  "main": "index.js",
+  "license": "MIT"
 }
