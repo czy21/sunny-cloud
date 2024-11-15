@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import router from "@/router";
-import {api} from '@sunny-framework-js/vue';
+import {helper} from '@sunny-framework-js/vue';
 import util from "@sunny-framework-js/util"
 import type {FormInstance, FormRules} from "element-plus";
 
@@ -42,7 +42,7 @@ const onSubmit = () => {
   const queryMap = router.currentRoute.value.query
   const redirectUri: any = queryMap.redirectUri
   formRef.value?.validate((valid) => {
-    valid && api.post("auth/login", form).then((res: any) => {
+    valid && helper.api.post("auth/login", form).then((res: any) => {
       const token = res.data.data?.token
       if (token) {
         util.auth.setToken(token)

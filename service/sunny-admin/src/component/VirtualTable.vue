@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="tsx">
-import {defineExpose, defineProps, FunctionalComponent, onBeforeMount, onMounted, ref} from "vue";
+import {FunctionalComponent, onBeforeMount, onMounted, ref} from "vue";
 import {TableV2CustomizedHeaderSlotParam, TableV2FixedDir, TableV2Placeholder} from 'element-plus'
 
 const props = defineProps(["columns", "data", "headerHeight"])

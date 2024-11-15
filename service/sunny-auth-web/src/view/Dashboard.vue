@@ -2,10 +2,10 @@
   <el-button @click="onOk">确认</el-button>
 </template>
 <script setup lang="ts">
-import {api} from '@sunny-framework-js/vue';
+import {helper} from '@sunny-framework-js/vue';
 
 const onOk = () => {
-  api.get("auth/test").then(t=>{
+  helper.api.get("auth/test").then(t=>{
     // console.log(t.data)
   })
 }

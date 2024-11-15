@@ -32,7 +32,7 @@
   />
 </template>
 <script setup lang="ts">
-import {api} from '@sunny-framework-js/vue';
+import {helper} from '@sunny-framework-js/vue';
 import type {FormInstance} from 'element-plus';
 import _ from 'lodash'
 import {onMounted, reactive, ref} from "vue";
@@ -46,7 +46,7 @@ const queryFormModel = reactive({
 const page: any = ref({})
 const list: any = ref([])
 const handleSearch = (query = {}) => {
-  api.post("sys/user/page", {..._.omit(page.value, ["total", "totalPage"]), ...queryFormModel}).then((t: any) => {
+  helper.api.post("sys/user/page", {..._.omit(page.value, ["total", "totalPage"]), ...queryFormModel}).then((t: any) => {
     page.value = _.omit(t.data.data, ["list"])
     list.value = t.data.data?.list
   })

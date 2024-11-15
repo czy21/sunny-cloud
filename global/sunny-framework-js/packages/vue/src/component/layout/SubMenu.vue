@@ -7,7 +7,7 @@
         </el-icon>
         <span>{{ t.name }}</span>
       </template>
-      <nav-menu :menuTree="t.children"/>
+      <sub-menu :menuTree="t.children"/>
     </el-sub-menu>
     <el-menu-item v-if="!t.children" :data="t" :index="t.path" :route="t.path">
       <el-icon v-if="t.icon">
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {MenuModel} from '@/menu'
+import type {MenuModel} from './menu.ts'
 
 export default defineComponent({
   props: {

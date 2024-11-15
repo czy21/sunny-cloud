@@ -3,23 +3,12 @@ import {fileURLToPath, URL} from 'node:url'
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import {resolveFrameworkImporter} from "../../global/sunny-framework-js/plugin"
 
 const alias = {
     "@": "src",
     "@v": "src/view",
     "@c": "src/component"
-}
-
-const resolveFrameworkImporter = () => {
-    return {
-        name: 'transform-framework-importer',
-        async resolveId(source, importer, options) {
-            if (/sunny-framework-js/.test(importer)) {
-                const resolution = await this.resolve(fileURLToPath(new URL(`./node_modules/${source}`, import.meta.url)), importer, options);
-                return resolution.id;
-            }
-        }
-    }
 }
 
 // https://vitejs.dev/config/

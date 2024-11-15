@@ -1,14 +1,9 @@
-export interface MenuModel {
-    name: string,
-    path?: string,
-    icon?: string,
-    children?: MenuModel[]
-}
+import {MenuModel} from "@sunny-framework-js/vue";
 
 const menus: Array<MenuModel> = [
     {
         name: "首页",
-        path: "/",
+        path: "/dashboard",
         icon: "HomeFilled"
     },
     {
@@ -33,6 +28,10 @@ const menus: Array<MenuModel> = [
             {
                 name: "EL表格",
                 path: "/sys/table/dynamic-el-table"
+            },
+            {
+                name: "虚拟表格",
+                path: "/sys/table/dynamic-virtual-table"
             },
             {
                 name: "Vxe表格",

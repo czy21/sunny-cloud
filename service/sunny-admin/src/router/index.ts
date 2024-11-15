@@ -1,13 +1,17 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from '@/layout/Home.vue'
 import util from "@sunny-framework-js/util";
-import {api} from '@sunny-framework-js/vue';
+import {helper} from '@sunny-framework-js/vue';
 
 const routes = [
     {
         path: '/',
-        component: Home,
+        component: () => import('@/layout/Home.vue'),
         children: [
+            {
+                name: "Dashboard",
+                path: "dashboard",
+                component: () => import('@v/Dashboard.vue')
+            },
             {
                 path: "/sys/user",
                 component: () => import('@v/user/index.vue')
@@ -21,6 +25,10 @@ const routes = [
                 component: () => import('@v/table/dynamic-el-table.vue')
             },
             {
+                path: "/sys/table/dynamic-virtual-table",
+                component: () => import('@v/table/dynamic-virtual-table.vue')
+            },
+            {
                 path: "/sys/table/dynamic-vxe-table",
                 component: () => import('@v/table/dynamic-vxe-table.vue')
             }
@@ -29,7 +37,7 @@ const routes = [
             const token = util.auth.getToken()
             if (!token) {
                 console.log(window.location)
-                api.get("auth/login-uri").then((t: any) => {
+                helper.api.get("auth/login-uri").then((t: any) => {
                     window.location.href = t.data.data + "?redirectUri=" + window.location
                 })
             } else {

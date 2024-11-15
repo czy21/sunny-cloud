@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
-import app from '@/store/modules/app'
-import getters from "@/store/getters";
+import {store} from '@sunny-framework-js/vue'
+
+const {app, getters} = store
 
 export default new Vuex.Store({
     modules: {
