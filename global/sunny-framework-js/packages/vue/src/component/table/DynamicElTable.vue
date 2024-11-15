@@ -87,9 +87,11 @@ const headerCellStyle = ({column}) => {
 }
 
 const handleCellFocus = () => {
-  if (editRef.value && editRef.value.length > 0) {
-    editRef.value[editRef.value.length - 1].focus?.()
-  }
+  editRef.value?.forEach((t, i, a) => {
+    if (i === a.length - 1) {
+      t.focus?.()
+    }
+  })
 }
 
 const isEdit = (scope: RenderRowData<any>) => scope.row[`${scope.column.property}_editable`]

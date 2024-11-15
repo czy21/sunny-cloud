@@ -20,9 +20,10 @@
 </template>
 
 <script setup lang="tsx">
+import { TableColumn } from "./DynamicTable";
 const props = defineProps(["node"])
 
-const renderHeader = (node: any, scope: any) => {
+const renderHeader = (node: TableColumn, scope: any) => {
   scope.column.node = node
   return scope.column.title
 }

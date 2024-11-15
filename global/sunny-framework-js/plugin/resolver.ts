@@ -1,7 +1,6 @@
 import path from 'path'
 
 const resolveFrameworkImporter = (rootDir) => {
-    console.log(rootDir)
     return {
         name: 'resolve-framework-importer',
         async resolveId(source, importer, options) {

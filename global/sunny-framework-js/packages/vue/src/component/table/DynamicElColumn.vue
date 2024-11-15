@@ -21,10 +21,11 @@
 
 <script setup lang="tsx">
 import {ElTableColumn, RenderRowData} from "element-plus";
+import { TableColumn } from "./DynamicTable";
 
 const props = defineProps(["node"])
 
-const renderHeader = (node: any, scope: RenderRowData<any>) => {
+const renderHeader = (node: TableColumn, scope: RenderRowData<any>) => {
   scope.column.node = node
   return scope.column.label
 }
