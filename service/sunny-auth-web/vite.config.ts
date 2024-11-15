@@ -4,6 +4,12 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
+const alias = {
+    "@": "src",
+    "@v": "src/view",
+    "@c": "src/component"
+}
+
 const resolveFrameworkImporter = () => {
     return {
         name: 'transform-framework-importer',
