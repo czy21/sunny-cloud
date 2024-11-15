@@ -1,10 +1,10 @@
 <template>
   <el-table ref="tableRef"
+            border
+            width="100%" height="100%"
             :data="props.data"
             :header-cell-style="headerCellStyle"
             @cell-click="handleCell"
-            width="100%" height="100%"
-            size="small"
             show-summary
             :summary-method="summaryMethod"
             show-overflow-tooltip

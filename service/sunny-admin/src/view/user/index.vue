@@ -13,13 +13,7 @@
       <el-button type="primary" @click="handleSearch">查询</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="list" border style="width: 100%">
-    <el-table-column prop="username" label="账号"/>
-    <el-table-column prop="name" label="姓名"/>
-    <el-table-column prop="phone" label="手机号"/>
-    <el-table-column prop="email" label="邮箱"/>
-    <el-table-column prop="address" label="地址"/>
-  </el-table>
+  <dynamic-el-table :columns="tableData.columns" :data="tableData.data" border style="width: 100%"/>
   <el-pagination
       layout="total, sizes, prev, pager, next"
       :current-page="page.page"
@@ -33,9 +27,11 @@
 </template>
 <script setup lang="ts">
 import {helper} from '@sunny-framework-js/vue';
+import {DynamicElTable} from "@sunny-framework-js/vue";
 import type {FormInstance} from 'element-plus';
 import _ from 'lodash'
 import {onMounted, reactive, ref} from "vue";
+import {getListColumns} from "./meta";
 
 const queryFormRef = ref<FormInstance>()
 const queryFormModel = reactive({
@@ -44,11 +40,15 @@ const queryFormModel = reactive({
   email: ""
 })
 const page: any = ref({})
-const list: any = ref([])
+
+const tableData = reactive({
+  columns:getListColumns(),
+  data:[]
+})
 const handleSearch = (query = {}) => {
   helper.api.post("sys/user/page", {..._.omit(page.value, ["total", "totalPage"]), ...queryFormModel}).then((t: any) => {
     page.value = _.omit(t.data.data, ["list"])
-    list.value = t.data.data?.list
+    tableData.data = t.data.data?.list
   })
 }
 const handlePageIndexChange = (val: number) => {
