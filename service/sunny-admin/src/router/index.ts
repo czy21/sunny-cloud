@@ -34,9 +34,11 @@ const routes = [
             }
         ],
         beforeEnter: (to: any, from: any, next: any) => {
+            if (import.meta.env.DEV) {
+                util.auth.setToken(import.meta.env.VITE_AUTHORIZATION)
+            }
             const token = util.auth.getToken()
             if (!token) {
-                console.log(window.location)
                 helper.api.get("auth/login-uri").then((t: any) => {
                     window.location.href = t.data.data + "?redirectUri=" + window.location
                 })

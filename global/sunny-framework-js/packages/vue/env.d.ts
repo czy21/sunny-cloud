@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { Store } from 'vuex'
+import {Store} from 'vuex'
 
 declare module '@vue/runtime-core' {
     // 声明自己的 store state

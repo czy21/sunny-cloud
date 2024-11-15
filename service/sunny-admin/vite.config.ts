@@ -33,19 +33,23 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5174,
         proxy: {
-            '/api/sys': {
-                target: 'http://127.0.0.1:8082/',
-                changeOrigin: true,
-                rewrite: (path) => {
-                    return path.replace(/^\/api\/sys/, '')
-                },
-            },
+            // '/api/sys': {
+            //     target: 'http://127.0.0.1:8082/',
+            //     changeOrigin: true,
+            //     rewrite: (path) => {
+            //         return path.replace(/^\/api\/sys/, '')
+            //     },
+            // },
+            // '/api': {
+            //     target: 'http://sunny-gateway.czy21-internal.com/',
+            //     changeOrigin: true,
+            //     rewrite: (path) => {
+            //         return path.replace(/^\/api/, '')
+            //     },
+            // },
             '/api': {
-                target: 'http://sunny-gateway.czy21-internal.com/',
+                target: 'https://sunny-cloud.czy21.com',
                 changeOrigin: true,
-                rewrite: (path) => {
-                    return path.replace(/^\/api/, '')
-                },
             },
         }
     }
