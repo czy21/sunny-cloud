@@ -16,7 +16,7 @@ export default defineConfig({
     plugins: [
         vue(),
         vueJsx(),
-        resolveFrameworkImporter()
+        resolveFrameworkImporter(__dirname)
     ],
     build: {
         outDir: "build"

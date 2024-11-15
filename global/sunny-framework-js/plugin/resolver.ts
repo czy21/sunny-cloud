@@ -1,11 +1,12 @@
-import {fileURLToPath, URL} from 'node:url'
+import path from 'path'
 
-const resolveFrameworkImporter = () => {
+const resolveFrameworkImporter = (rootDir) => {
+    console.log(rootDir)
     return {
         name: 'resolve-framework-importer',
         async resolveId(source, importer, options) {
             if (/sunny-framework-js/.test(importer)) {
-                const resolution = await this.resolve(fileURLToPath(new URL(`./node_modules/${source}`, import.meta.url)), importer, options);
+                const resolution = await this.resolve(path.join(rootDir,`node_modules/${source}`), importer, options);
                 return resolution.id;
             }
         }
