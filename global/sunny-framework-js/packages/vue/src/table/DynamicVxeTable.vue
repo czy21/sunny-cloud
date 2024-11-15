@@ -60,7 +60,7 @@
 </template>
 
 <script lang="tsx" setup>
-import {ref, defineProps, defineExpose, FunctionalComponent, h} from "vue"
+import {ref, FunctionalComponent, h} from "vue"
 import DynamicColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps} from "./DynamicTable";

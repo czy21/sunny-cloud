@@ -48,13 +48,13 @@
       </template>
     </dynamic-el-column>
     <template #empty>
-      <el-button @click="addRow(scope)" type="primary">加行</el-button>
+      <el-button @click="addRow" type="primary">加行</el-button>
     </template>
   </el-table>
 </template>
 
 <script lang="tsx" setup>
-import {defineExpose, defineProps, FunctionalComponent, h, ref} from "vue"
+import {FunctionalComponent, h, ref} from "vue"
 import DynamicElColumn from "./DynamicElColumn.vue"
 import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect, ElTable, RenderRowData} from "element-plus";
 import util from '@sunny-framework-js/util'

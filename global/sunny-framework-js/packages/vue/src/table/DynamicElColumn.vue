@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="tsx">
-import {defineProps} from "vue"
 import {ElTableColumn, RenderRowData} from "element-plus";
 
 const props = defineProps(["node"])

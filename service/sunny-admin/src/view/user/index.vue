@@ -33,7 +33,7 @@
 </template>
 <script setup lang="ts">
 import {api} from '@sunny-framework-js/vue';
-import {FormInstance} from 'element-plus';
+import type {FormInstance} from 'element-plus';
 import _ from 'lodash'
 import {onMounted, reactive, ref} from "vue";
 

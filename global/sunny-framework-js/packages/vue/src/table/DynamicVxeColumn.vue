@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="tsx">
-import {defineProps} from "vue"
-
 const props = defineProps(["node"])
 
 const renderHeader = (node: any, scope: any) => {

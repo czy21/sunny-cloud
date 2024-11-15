@@ -6,9 +6,19 @@
   "module": "index.ts",
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@rollup/plugin-typescript": "^12.1.1",
     "element-plus": "^2.8.7",
-    "vxe-table": "^4.6.23",
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "vue-router": "^4.4.5",
+    "vuex": "^4.1.0",
+    "vxe-table": "^4.8.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "@vue/tsconfig": "^0.5.1",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.10",
+    "sass": "^1.80.5"
   }
 }

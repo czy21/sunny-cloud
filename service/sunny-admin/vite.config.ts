@@ -1,6 +1,6 @@
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 
-import {defineConfig, ViteDevServer} from 'vite'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
@@ -10,34 +10,21 @@ const alias = {
     "@c": "src/component"
 }
 
-const resolveFrameworkImporter = () => {
-    return {
-        name: 'transform-framework-importer',
-        async resolveId(source, importer, options) {
-            if (/sunny-framework-js/.test(importer)) {
-                const resolution = await this.resolve(fileURLToPath(new URL(`./node_modules/${source}`, import.meta.url)), importer, options);
-                return resolution.id;
-            }
-        }
-    }
-}
-
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
-        vueJsx(),
-        resolveFrameworkImporter()
+        vueJsx()
     ],
     build: {
         outDir: "build"
     },
     resolve: {
-        alias: Object.keys(alias).reduce((p, c) => ({ ...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url)) }), {})
+        alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url))}), {})
     },
     css: {
         preprocessorOptions: {
-            scss: { api: 'modern-compiler' },
+            scss: {api: 'modern-compiler'},
         }
     },
     server: {

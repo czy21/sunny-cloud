@@ -1,4 +1,4 @@
-import {TableColumn} from "@c/DynamicTable";
+import type {TableColumn} from "@sunny-framework-js/vue";
 import util from "@sunny-framework-js/util";
 
 export const fields: TableColumn[] = [

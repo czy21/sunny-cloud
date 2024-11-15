@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {MenuModel} from '@/menu'
+import type {MenuModel} from '@/menu'
 
 export default defineComponent({
   props: {
