@@ -1,30 +1,15 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from '@/layout/Home.vue'
-import Login from '@v/Login.vue'
 import util from "@sunny-framework-js/util";
 
 const routes = [
     {
         path: '/',
-        component: Home,
+        component: () => import('@/layout/Home.vue'),
         children: [
             {
                 name: "Dashboard",
                 path: "dashboard",
                 component: () => import('@v/Dashboard.vue')
-            },
-            {
-                name: "Test",
-                path: "test-component",
-                component: () => import('@v/TestComponent.vue')
-            },
-            {
-                path: "/sys/table/dynamic-el-table",
-                component: () => import('@v/table/dynamic-el-table.vue')
-            },
-            {
-                path: "/sys/table/dynamic-vxe-table",
-                component: () => import('@v/table/dynamic-vxe-table.vue')
             }
         ],
         beforeEnter(to: any, from: any, next: any) {
@@ -32,14 +17,14 @@ const routes = [
             if (!token) {
                 next({path: 'login'})
             } else {
-
+                next()
             }
         }
     },
     {
+        name: "Login",
         path: '/login',
-        name: "login",
-        component: Login
+        component: () => import('@v/Login.vue')
     },
 ]
 const router = createRouter({
