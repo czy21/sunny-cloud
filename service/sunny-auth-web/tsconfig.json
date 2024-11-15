@@ -2,6 +2,6 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "../../global/sunny-framework-js/packages/vue/tsconfig.node.json" }
+    { "path": "../../global/sunny-framework-js/tsconfig.node.json" }
   ]
 }
