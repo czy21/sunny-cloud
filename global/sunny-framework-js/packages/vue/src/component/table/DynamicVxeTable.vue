@@ -1,30 +1,43 @@
 <template>
-  <vxe-table ref="tableRef" :data="props.data" :header-cell-style="headerCellStyle" @cell-click="handleCell" border
-    width="100%" height="100%" size="mini" :column-config="{ resizable: true }" :scroll-x="{ enabled: true, gt: 0 }"
-    :scroll-y="{ enabled: true, gt: 0 }" show-overflow show-footer :footer-method="summaryMethod" :scroll="handleScroll">
-    <dynamic-column :node="t" v-for="t in props.columns">
+  <vxe-table ref="tableRef"
+             :data="props.data"
+             :header-cell-style="headerCellStyle"
+             @cell-click="handleCell"
+             border
+             width="100%"
+             height="100%"
+             size="mini"
+             :column-config="{ resizable: true }"
+             :scroll-x="{ enabled: true, gt: 0 }"
+             :scroll-y="{ enabled: true, gt: 0 }"
+             show-overflow
+             show-footer
+             :footer-method="summaryMethod"
+             @scroll="handleScroll"
+  >
+    <dynamic-vxe-column :node="t" v-for="t in props.columns">
       <template #default="{ prop, scope }">
-        <slot :name="prop" :=scope v-if="scope.column.node.custom" />
-        <template v-else-if="isEdit(scope)">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)"
-            v-if="isInputString(scope)" />
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)"
-            :type="scope.column.node.type" v-else-if="isInputNumber(scope)" @change="updateFooterEvent" />
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)"
-            v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
-            <el-option v-for="t in props.dict[scope.column.node.dictKey]" :label="t.label" :value="t.value" />
+        <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
+        <template v-else-if="scope.row[`${scope.column.property}_editable`]">
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInputString(scope)"/>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="updateFooterEvent" :type="scope.column.node.type"/>
+          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
+            <el-option v-for="t in props.dict[scope.column.node.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
-          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)"
-            :type="scope.column.node.type" size="default"
-            :value-format="scope.column.node.format || 'YYYY-MM-DD HH:mm:ss'" v-else-if="isDate(scope)" />
+          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]"
+                          @blur="onExitEditMode(scope)"
+                          :type="scope.column.node.type"
+                          size="default"
+                          :value-format="scope.column.node.format || 'YYYY-MM-DD HH:mm:ss'"
+                          v-else-if="isDate(scope)"/>
         </template>
         <span v-else-if="props.editable && scope.column.property === 'action'">
           <el-button @click="addRow(scope)" link type="primary" v-if="showAddRow(scope)">加行</el-button>
           <el-button @click="delRow(scope)" link type="danger">删除</el-button>
         </span>
-        <show-cell :="scope" v-else />
+        <show-cell :="scope" v-else/>
       </template>
-    </dynamic-column>
+    </dynamic-vxe-column>
     <template #empty>
       <el-button @click="addRow" type="primary">加行</el-button>
     </template>
@@ -32,12 +45,12 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, FunctionalComponent, h } from "vue"
-import DynamicColumn from "./DynamicVxeColumn.vue"
+import {FunctionalComponent, ref} from "vue"
+import DynamicVxeColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
-import { TableProps } from "./DynamicTable.ts";
-import { VxeTable } from "vxe-table";
-import { ElButton, ElDatePicker, ElInput, ElOption, ElSelect } from "element-plus";
+import {TableProps} from "./DynamicTable.ts";
+import {VxeTable} from "vxe-table";
+import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
   columns: () => [],
@@ -55,25 +68,14 @@ const props = withDefaults(defineProps<TableProps>(), {
 
 const tableRef = ref()
 const editRef = ref()
-const mergeRef = ref([])
 
-const headerCellStyle = ({ column }) => {
-  return {
-    // backgroundColor: "#1F487C",
-    // color: '#FFF',
-    ...column.node?.style
-  }
+const headerCellStyle = ({column}) => {
+  return column.node?.style
 }
 
 const handleCellFocus = () => {
-  editRef.value?.forEach((t, i, a) => {
-    if (i === a.length - 1) {
-      t.focus?.()
-    }
-  })
+  editRef.value?.forEach((t, i, a) => i === a.length - 1 && t.focus?.())
 }
-
-const isEdit = (scope) => scope.row[`${scope.column.property}_editable`]
 
 const isInputString = (scope) => {
   let val = (scope.column.node.type === 'string' || !scope.column.node.type)
@@ -125,7 +127,7 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
   return label
 }
 
-const handleCell = ({ row, column }) => {
+const handleCell = ({row, column}) => {
   if (props.editable && (column.node.editable == true || util.object.getValueByExpression(row, column.node.editable))) {
     row[`${column.property}_editable`] = true
   }

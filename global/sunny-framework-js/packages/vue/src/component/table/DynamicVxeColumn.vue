@@ -20,7 +20,8 @@
 </template>
 
 <script setup lang="tsx">
-import { TableColumn } from "./DynamicTable";
+import {TableColumn} from "./DynamicTable";
+
 const props = defineProps(["node"])
 
 const renderHeader = (node: TableColumn, scope: any) => {

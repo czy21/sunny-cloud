@@ -5,7 +5,7 @@
             :data="props.data"
             :header-cell-style="headerCellStyle"
             @cell-click="handleCell"
-            show-summary
+            :show-summary="props.showSummary"
             :summary-method="summaryMethod"
             show-overflow-tooltip
   >
@@ -63,14 +63,17 @@ import {TableProps} from "./DynamicTable.ts";
 const props = withDefaults(defineProps<TableProps>(), {
   columns: () => [],
   data: () => [],
-  dict() {
+  dict: () => {
     return {}
   },
-  subTotal() {
-    return {}
-  },
-  editable() {
+  editable: () => {
     return false
+  },
+  showSummary: () => {
+    return true
+  },
+  subTotal: () => {
+    return {}
   },
 })
 
@@ -79,19 +82,11 @@ const editRef = ref()
 const spanRef = ref({})
 
 const headerCellStyle = ({column}) => {
-  return {
-    // backgroundColor: "#1F487C",
-    // color: '#FFF',
-    ...column.node?.style
-  }
+  return column.node?.style
 }
 
 const handleCellFocus = () => {
-  editRef.value?.forEach((t, i, a) => {
-    if (i === a.length - 1) {
-      t.focus?.()
-    }
-  })
+  editRef.value?.forEach((t: any, i: number, a: any[]) => i === a.length - 1 && t.focus?.())
 }
 
 const isEdit = (scope: RenderRowData<any>) => scope.row[`${scope.column.property}_editable`]
@@ -164,7 +159,7 @@ const showAddRow = (scope: RenderRowData<any>) => {
   return scope.$index == props.data.length - 1
 }
 
-const addRow = (scope: RenderRowData<any>) => {
+const addRow = (scope?: RenderRowData<any>) => {
   props.data.splice(scope?.$index + 1, 0, {})
 }
 

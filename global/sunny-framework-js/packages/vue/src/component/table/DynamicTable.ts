@@ -1,4 +1,4 @@
-import { CSSProperties } from "vue";
+import {CSSProperties} from "vue";
 
 declare module 'element-plus' {
     export interface TableColumnCtx<T> {
@@ -12,7 +12,9 @@ export interface TableProps {
     dict: DictType,
     subTotal: SubTotalType
     editable?: boolean
-    
+
+    showSummary?: boolean
+
     handleInput?: any
     handleSelect?: any
     handleSelectSearch?: any
