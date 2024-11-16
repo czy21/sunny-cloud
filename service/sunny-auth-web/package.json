@@ -4,13 +4,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
-  "workspaces": [
-    "../../global/sunny-framework-js/packages/util",
-    "../../global/sunny-framework-js/packages/vue"
-  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
+  },
+  "dependencies": {
+    "@sunny-framework-js/util": "workspace:*",
+    "@sunny-framework-js/vue": "workspace:*"
   }
 }
