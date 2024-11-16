@@ -1,5 +1,5 @@
-import HomeLayout from "./Home.vue";
+import Home from "./Home.vue";
 
 export {
-    HomeLayout
+    Home
 }
