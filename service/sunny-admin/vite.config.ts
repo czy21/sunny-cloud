@@ -19,7 +19,16 @@ export default defineConfig({
         resolveFrameworkImporter(__dirname)
     ],
     build: {
-        outDir: "build"
+        outDir: "build",
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (/node_modules|sunny-framework-js/.test(id)) {
+                        return "vendor";
+                    }
+                },
+            },
+        }
     },
     resolve: {
         alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url))}), {})
