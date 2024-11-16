@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot'
 }
 
+apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/spring.boot.gradle"
+
 dependencies {
     api project(":sunny-order-core")
 }

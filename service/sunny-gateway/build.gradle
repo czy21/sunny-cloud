@@ -34,3 +34,4 @@ dependencies {
 }
 
 apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
+apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/spring.boot.gradle"
