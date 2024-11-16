@@ -12,6 +12,8 @@ target/
 build/
 
 # Web #
+.yarn
+.pnp.*
 node_modules/
 dist/
 yarn.lock
