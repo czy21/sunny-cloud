@@ -22,11 +22,7 @@ export default defineConfig({
         outDir: "build",
         rollupOptions: {
             output: {
-                manualChunks(id) {
-                    if (/node_modules|sunny-framework-js/.test(id)) {
-                        return "vendor";
-                    }
-                },
+                manualChunks: (id) => /node_modules|sunny-framework-js/.test(id) ? "vendor" : null
             },
         }
     },
