@@ -1,15 +1,13 @@
-import Cookies from "js-cookie";
+import Cookies, {CookieAttributes} from "js-cookie";
 
-const tokenKey = 'token'
-
-export const getToken = () => {
+export const getToken = (tokenKey = "token") => {
     return Cookies.get(tokenKey)
 }
 
-export const setToken = (value: string) => {
-    Cookies.set(tokenKey, value, { domain: '.' + window.location.hostname.split('.').slice(-2).join('.') });
+export const setToken = (tokenKey = "token", value: string, options?: CookieAttributes) => {
+    Cookies.set(tokenKey, value, {domain: '.' + window.location.hostname.split('.').slice(-2).join('.'), ...options});
 }
 
-export const delToken = () => {
-    Cookies.remove(tokenKey, { domain: '.' + window.location.hostname.split('.').slice(-2).join('.') });
+export const delToken = (tokenKey = "token", options?: CookieAttributes) => {
+    Cookies.remove(tokenKey, {domain: '.' + window.location.hostname.split('.').slice(-2).join('.'), ...options});
 }
