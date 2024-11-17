@@ -1,7 +1,10 @@
 {
+  "name": "sunny-framework-js",
   "private": true,
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ]
+  "dependencies": {
+    "@sunny-framework-js/util": "workspace:*",
+    "@sunny-framework-js/react": "workspace:*",
+    "@sunny-framework-js/vue": "workspace:*"
+  }
 }
