@@ -18,10 +18,14 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>build</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
