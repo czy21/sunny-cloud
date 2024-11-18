@@ -33,10 +33,9 @@ const routes = [
                 component: () => import('@v/table/dynamic-vxe-table.vue')
             }
         ],
-
         beforeEnter: (to: any, from: any, next: any) => {
             helper.api.checkVersion()
-
+            
             if (import.meta.env.DEV) {
                 util.cookie.setToken(import.meta.env.VITE_AUTHORIZATION)
             }
