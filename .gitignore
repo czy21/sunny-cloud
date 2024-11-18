@@ -14,8 +14,6 @@ build/
 # Web #
 .yarn
 .pnp.*
-yarn.lock
-package-lock.json
 
 npm-debug.log*
 yarn-debug.log*
