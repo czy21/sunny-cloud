@@ -1,0 +1,3 @@
+packages:
+  - "../../global/sunny-framework-js/packages/util"
+  - "../../global/sunny-framework-js/packages/react"
