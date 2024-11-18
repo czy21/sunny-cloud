@@ -17,7 +17,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
     config => {
-        config.headers.Authorization = !config.url?.includes("login") && util.auth.getToken()
+        config.headers.Authorization = !config.url?.includes("login") && util.cookie.getToken()
         return config;
     },
     error => {
@@ -36,7 +36,7 @@ service.interceptors.response.use(
                     message: "登录信息过期，请重新登录",
                     duration: 2000,
                     onClose() {
-                        util.auth.delToken()
+                        util.cookie.delToken()
                         window.location.reload()
                     },
                 })
@@ -53,7 +53,7 @@ service.interceptors.response.use(
                     message: "登录信息过期，请重新登录",
                     duration: 2000,
                     onClose() {
-                        util.auth.delToken()
+                        util.cookie.delToken()
                         window.location.reload()
                     },
                 })
@@ -97,4 +97,15 @@ export const put = (url: string, params?: any, config?: AxiosRequestConfig, erro
 }
 export const del = (url: string, params?: any, config?: AxiosRequestConfig, errorCallBack?: (error: any) => void) => {
     return apiAxios(Method.DELETE, url, params, config, errorCallBack)
+}
+
+export const checkVersion = () => {
+    const versionKey = "version"
+    let version = JSON.parse(localStorage.getItem(versionKey))
+    get(versionKey, {"date": new Date().getTime()}, {baseURL: "/"}).then(t => {
+        if (t.data?.buildDate != (version?.buildDate)) {
+            localStorage.setItem(versionKey, JSON.stringify(t.data))
+            window.location.reload()
+        }
+    })
 }

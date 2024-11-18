@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {helper} from "@sunny-framework-js/vue"
 import util from "@sunny-framework-js/util";
 
 const routes = [
@@ -13,7 +14,8 @@ const routes = [
             }
         ],
         beforeEnter(to: any, from: any, next: any) {
-            let token = util.auth.getToken()
+            helper.api.checkVersion()
+            let token = util.cookie.getToken()
             if (!token) {
                 next({path: 'login'})
             } else {

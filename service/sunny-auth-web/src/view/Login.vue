@@ -45,7 +45,7 @@ const onSubmit = () => {
     valid && helper.api.post("auth/login", form).then((res: any) => {
       const token = res.data.data?.token
       if (token) {
-        util.auth.setToken(token)
+        util.cookie.setToken(token)
         if (redirectUri) {
           window.location.href = redirectUri
         } else {

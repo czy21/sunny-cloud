@@ -1,9 +1,8 @@
 import {fileURLToPath, URL} from 'node:url'
-
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import {resolveFrameworkImporter} from "../../global/sunny-framework-js/plugin"
+import {generateVersion, resolveFrameworkImporter} from "../../global/sunny-framework-js/plugin"
 
 const alias = {
     "@": "src",
@@ -16,7 +15,8 @@ export default defineConfig({
     plugins: [
         vue(),
         vueJsx(),
-        resolveFrameworkImporter(__dirname)
+        resolveFrameworkImporter(__dirname),
+        generateVersion(__dirname)
     ],
     build: {
         outDir: "build",

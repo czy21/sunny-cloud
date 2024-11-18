@@ -33,11 +33,14 @@ const routes = [
                 component: () => import('@v/table/dynamic-vxe-table.vue')
             }
         ],
+
         beforeEnter: (to: any, from: any, next: any) => {
+            helper.api.checkVersion()
+
             if (import.meta.env.DEV) {
-                util.auth.setToken(import.meta.env.VITE_AUTHORIZATION)
+                util.cookie.setToken(import.meta.env.VITE_AUTHORIZATION)
             }
-            const token = util.auth.getToken()
+            const token = util.cookie.getToken()
             if (!token) {
                 helper.api.get("auth/login-uri").then((t: any) => {
                     window.location.href = t.data.data + "?redirectUri=" + window.location
