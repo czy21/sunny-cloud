@@ -102,7 +102,7 @@ export const del = (url: string, params?: any, config?: AxiosRequestConfig, erro
 export const checkVersion = () => {
     const versionKey = "version"
     let version = JSON.parse(localStorage.getItem(versionKey))
-    get(versionKey, {"date": new Date().getTime()}, {baseURL: "/"}).then(t => {
+    get(versionKey, {"date": new Date().getTime()}, {baseURL: "/", responseType: "json"}).then(t => {
         if (t.data?.buildDate != (version?.buildDate)) {
             localStorage.setItem(versionKey, JSON.stringify(t.data))
             window.location.reload()
