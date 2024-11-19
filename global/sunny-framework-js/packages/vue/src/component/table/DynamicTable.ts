@@ -1,4 +1,6 @@
 import {CSSProperties} from "vue";
+import {FormItemRule} from 'element-plus'
+import {VxeTableDefines} from 'vxe-table'
 
 declare module 'element-plus' {
     export interface TableColumnCtx<T> {
@@ -8,13 +10,12 @@ declare module 'element-plus' {
 
 export interface TableProps {
     columns: Array<TableColumn>,
+    rules: { [key: string]: FormItemRule[] } | { [key: string]: VxeTableDefines.ValidatorRule[] }
     data: Array<any>,
     dict: DictType,
     subTotal: SubTotalType
     editable?: boolean
-
     showSummary?: boolean
-
     handleInput?: any
     handleSelect?: any
     handleSelectSearch?: any

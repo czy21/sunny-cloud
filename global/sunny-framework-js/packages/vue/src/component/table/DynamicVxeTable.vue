@@ -3,6 +3,7 @@
              :data="props.data"
              :header-cell-style="headerCellStyle"
              @cell-click="handleCell"
+             :edit-rules="props.rules"
              border
              width="100%"
              height="100%"
@@ -19,8 +20,8 @@
       <template #default="{ prop, scope }">
         <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInputString(scope)"/>
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="updateFooterEvent" :type="scope.column.node.type"/>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" @change="(value)=>props.handleInput(value,scope)" v-if="isInputString(scope)"/>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>props.handleInput(value,scope)" :type="scope.column.node.type"/>
           <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
             <el-option v-for="t in props.dict[scope.column.node.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
@@ -56,6 +57,9 @@ const props = withDefaults(defineProps<TableProps>(), {
   columns: () => [],
   data: () => [],
   dict() {
+    return {}
+  },
+  rules() {
     return {}
   },
   subTotal() {
