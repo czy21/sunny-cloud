@@ -18,7 +18,9 @@
 <script lang="ts" setup>
 import {reactive, onMounted, ref} from "vue"
 import {DynamicVxeTable} from "@sunny-framework-js/vue";
+import util from "@sunny-framework-js/util";
 import * as meta from './meta'
+import _ from 'lodash'
 
 const tableRef = ref(null)
 
@@ -31,6 +33,7 @@ const tableDataRef = reactive({
 })
 
 const handleClick = () => {
+  console.log(util.object.isEmpty(1.2))
   console.log(tableRef.value.tableRef.data)
 }
 
