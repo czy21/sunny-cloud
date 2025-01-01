@@ -18,18 +18,18 @@
   >
     <dynamic-vxe-column :node="t" v-for="t in props.columns">
       <template #default="{ prop, scope }">
-        <slot :name="prop" :=scope v-if="scope.column.node.custom"/>
+        <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" @change="(value)=>props.handleInput(value,scope)" v-if="isInputString(scope)"/>
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>props.handleInput(value,scope)" :type="scope.column.node.type"/>
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
-            <el-option v-for="t in props.dict[scope.column.node.dictKey]" :label="t.label" :value="t.value"/>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>props.handleInput(value,scope)" :type="scope.column.params.type"/>
+          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" clearable v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
+            <el-option v-for="t in props.dict[scope.column.params.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
           <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]"
                           @blur="onExitEditMode(scope)"
-                          :type="scope.column.node.type"
+                          :type="scope.column.params.type"
                           size="default"
-                          :value-format="scope.column.node.format || 'YYYY-MM-DD HH:mm:ss'"
+                          :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
                           v-else-if="isDate(scope)"/>
         </template>
         <span v-else-if="props.editable && scope.column.property === 'action'">
@@ -68,13 +68,19 @@ const props = withDefaults(defineProps<TableProps>(), {
   editable() {
     return false
   },
+  handleInput() {
+  },
+  handleSelect() {
+  },
+  handleSelectSearch() {
+  }
 })
 
 const tableRef = ref()
 const editRef = ref()
 
 const headerCellStyle = ({column}) => {
-  return column.node?.style
+  return column.params?.style
 }
 
 const handleCellFocus = () => {
@@ -82,7 +88,7 @@ const handleCellFocus = () => {
 }
 
 const isInputString = (scope) => {
-  let val = (scope.column.node.type === 'string' || !scope.column.node.type)
+  let val = (scope.column.params.type === 'string' || !scope.column.params.type)
   if (val) {
     handleCellFocus()
   }
@@ -90,7 +96,7 @@ const isInputString = (scope) => {
 }
 
 const isInputNumber = (scope) => {
-  let val = scope.column.node.type === 'number'
+  let val = scope.column.params.type === 'number'
   if (val) {
     handleCellFocus()
   }
@@ -98,7 +104,7 @@ const isInputNumber = (scope) => {
 }
 
 const isSelect = (scope) => {
-  let val = scope.column.node.type === 'select'
+  let val = scope.column.params.type === 'select'
   if (val) {
     handleCellFocus()
   }
@@ -106,7 +112,7 @@ const isSelect = (scope) => {
 }
 
 const isDate = (scope) => {
-  let val = scope.column.node.type === 'date' || scope.column.node.type === 'datetime'
+  let val = scope.column.params.type === 'date' || scope.column.params.type === 'datetime'
   if (val) {
     handleCellFocus()
   }
@@ -119,30 +125,31 @@ const onExitEditMode = (scope) => {
 
 const ShowCell: FunctionalComponent<any> = (scope) => {
   let label = scope.row[scope.column.property]
-  if (scope.column.node.dictKey && props.dict) {
-    let value = props.dict[scope.column.node.dictKey]?.find(t => t.value === scope.row[scope.column.property])?.label
+  if (scope.column.params.dictKey && props.dict) {
+    let value = props.dict[scope.column.params.dictKey]?.find(t => t.value === scope.row[scope.column.property])?.label
     if (value) {
       label = value
     }
   }
-  if (scope.column.node.type === 'index') {
+  if (scope.column.params.type === 'index') {
     label = scope.row[scope.column.property] = scope.rowIndex + 1
   }
   return label
 }
 
 const handleCell = ({row, column}) => {
-  if (props.editable && (column.node.editable == true || util.object.getValueByExpression(row, column.node.editable))) {
+  if (props.editable && (column.params.editable == true || util.object.getValueByExpression(row, column.params.editable))) {
     row[`${column.property}_editable`] = true
   }
 }
 
 const handleSelect = (value: any, scope) => {
-  let dictPush = scope.column.node.dictPush
+  let dictPush = scope.column.params.dictPush
   if (dictPush) {
-    let dictValue = props.dict[scope.column.node.dictKey].find((t: any) => t.value === value)
+    let dictValue = props.dict[scope.column.params.dictKey].find((t: any) => t.value === value)
     Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictValue[v])
   }
+  props.handleSelect && props.handleSelect(value, scope, props.dict)
 }
 
 const showAddRow = (scope) => {
@@ -175,10 +182,10 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
     totalSummary[data.columns[0].property] = "合计"
     data.columns.forEach(c => {
       data.data.forEach(t => {
-        if (c.node?.rowTotal) {
-          t[c.property] = Number(util.object.getValueByExpression(t, c.node.rowTotal) || null).toFixed(2)
+        if (c.params?.rowTotal) {
+          t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2)
         }
-        if (c.node?.colTotal || c.node?.rowTotal) {
+        if (c.params?.colTotal || c.params?.rowTotal) {
           Object.keys(props.subTotal || {}).forEach(b => {
             if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
               let subItem = sums.find(p => p[data.columns[0].property] == b)

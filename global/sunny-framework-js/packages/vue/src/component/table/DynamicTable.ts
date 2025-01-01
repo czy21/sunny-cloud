@@ -10,15 +10,15 @@ declare module 'element-plus' {
 
 export interface TableProps {
     columns: Array<TableColumn>,
-    rules: { [key: string]: FormItemRule[] } | { [key: string]: VxeTableDefines.ValidatorRule[] }
     data: Array<any>,
-    dict: DictType,
-    subTotal: SubTotalType
+    dict?: DictType,
+    subTotal?: SubTotalType
+    rules?: { [key: string]: FormItemRule[] } | { [key: string]: VxeTableDefines.ValidatorRule[] }
     editable?: boolean
     showSummary?: boolean
-    handleInput?: any
-    handleSelect?: any
-    handleSelectSearch?: any
+    handleInput?: (value: any, scope: any) => void
+    handleSelect?: (value: any, scope: any, dict: object) => void
+    handleSelectSearch?: (value: any, scope: any, dict: object) => void
 }
 
 export interface TableColumn {

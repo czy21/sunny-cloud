@@ -37,6 +37,36 @@ export const fields: TableColumn[] = [
         "required": true
     },
     {
+        "prop": "province",
+        "name": "省",
+        "heads": [
+            "省"
+        ],
+        "type": "select",
+        "dictKey": "DICT_PROVINCE",
+        "editable": true
+    },
+    {
+        "prop": "city",
+        "name": "市",
+        "heads": [
+            "市"
+        ],
+        "type": "select",
+        "dictKey": "DICT_CITY",
+        "editable": true
+    },
+    {
+        "prop": "district",
+        "name": "区",
+        "heads": [
+            "区"
+        ],
+        "type": "select",
+        "dictKey": "DICT_DISTRICT",
+        "editable": true
+    },
+    {
         "prop": "address",
         "name": "a",
         "heads": [
@@ -276,6 +306,54 @@ export const getData = (length = 10) => {
 
 export const getDict = () => {
     return {
+        "DICT_PROVINCE": [
+            {
+                "label": "辽宁省",
+                "value": "辽宁省",
+                "children": [
+                    {
+                        "label": "沈阳市",
+                        "value": "沈阳市",
+                        "children": [
+                            {
+                                "label": "浑南区",
+                                "value": "浑南区"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "黑龙江",
+                "value": "黑龙江",
+                "children": [
+                    {
+                        "label": "哈尔滨",
+                        "value": "哈尔滨",
+                        "children": [
+                            {
+                                "label": "道里区",
+                                "value": "道里区"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "齐齐哈尔",
+                        "value": "齐齐哈尔",
+                        "children": [
+                            {
+                                "label": "龙沙区",
+                                "value": "龙沙区"
+                            },
+                            {
+                                "label": "建华区",
+                                "value": "建华区"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
         "HOBBY": [
             {"label": "唱歌", "value": "music"},
             {"label": "跳舞", "value": "dance"}

@@ -1,11 +1,12 @@
 <template>
 
   <dynamic-vxe-table ref="tableRef"
-                 :columns="tableDataRef.columns"
-                 :data="tableDataRef.data"
-                 :dict="tableDataRef.dict"
-                 :sub-total="tableDataRef.subTotal"
-                 :editable="tableDataRef.editable"
+                     :columns="tableDataRef.columns"
+                     :data="tableDataRef.data"
+                     :dict="tableDataRef.dict"
+                     :sub-total="tableDataRef.subTotal"
+                     :editable="tableDataRef.editable"
+                     :handle-select="handleSelect"
   >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
@@ -16,11 +17,10 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, onMounted, ref} from "vue"
+import {onMounted, reactive, ref} from "vue"
 import {DynamicVxeTable} from "@sunny-framework-js/vue";
 import util from "@sunny-framework-js/util";
 import * as meta from './meta'
-import _ from 'lodash'
 
 const tableRef = ref(null)
 
@@ -31,6 +31,24 @@ const tableDataRef = reactive({
   subTotal: {},
   editable: true
 })
+
+const handleSelect = (value, scope, dict) => {
+  if (!value) {
+    delete scope.row[scope.column.property]
+  }
+  if (scope.column.params.dictKey === 'DICT_PROVINCE') {
+    !value && scope.$table.getColumns()
+        .filter((t: any) => ['DICT_CITY', 'DICT_DISTRICT'].includes(t.params.dictKey))
+        .forEach((t: any) => delete scope.row[t.property])
+    dict["DICT_CITY"] = dict["DICT_PROVINCE"].find((t: any) => t.value === value)?.children
+  }
+  if (scope.column.params.dictKey === 'DICT_CITY') {
+    !value && scope.$table.getColumns()
+        .filter((t: any) => ['DICT_DISTRICT'].includes(t.params.dictKey))
+        .forEach((t: any) => delete scope.row[t.property])
+    dict["DICT_DISTRICT"] = dict["DICT_CITY"].find((t: any) => t.value === value)?.children
+  }
+}
 
 const handleClick = () => {
   console.log(util.object.isEmpty(1.2))
