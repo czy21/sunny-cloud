@@ -101,6 +101,7 @@ export const fields: TableColumn[] = [
                 }
             }
         ],
+        "width": "250"
     },
     {
         "prop": "hobby",

@@ -20,13 +20,15 @@
       <template #default="{ prop, scope }">
         <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" @change="(value)=>props.handleInput(value,scope)" v-if="isInputString(scope)"/>
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>props.handleInput(value,scope)" :type="scope.column.params.type"/>
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" clearable v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)">
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" @change="(value)=>handleInput(value,scope)" v-if="isInputString(scope)"/>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>handleInput(value,scope)" :type="scope.column.params.type"/>
+          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)" clearable>
             <el-option v-for="t in props.dict[scope.column.params.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
           <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]"
                           @blur="onExitEditMode(scope)"
+                          @change="(value:any)=>handleDate(value,scope)"
+                          clearable
                           :type="scope.column.params.type"
                           size="default"
                           :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
@@ -49,11 +51,14 @@
 import {FunctionalComponent, ref} from "vue"
 import DynamicVxeColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
-import {TableProps} from "./DynamicTable.ts";
+import {TableProps, TableEmits} from "./DynamicTable.ts";
 import {VxeTable} from "vxe-table";
 import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
+  defaultRowValue() {
+    return {}
+  },
   columns: () => [],
   data: () => [],
   dict() {
@@ -67,14 +72,10 @@ const props = withDefaults(defineProps<TableProps>(), {
   },
   editable() {
     return false
-  },
-  handleInput() {
-  },
-  handleSelect() {
-  },
-  handleSelectSearch() {
   }
 })
+
+const emit = defineEmits<TableEmits>()
 
 const tableRef = ref()
 const editRef = ref()
@@ -121,6 +122,9 @@ const isDate = (scope) => {
 
 const onExitEditMode = (scope) => {
   delete scope.row[`${scope.column.property}_editable`]
+  if (scope.column.params.type == 'number') {
+    tableRef.value.updateFooter?.()
+  }
 }
 
 const ShowCell: FunctionalComponent<any> = (scope) => {
@@ -137,10 +141,15 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
   return label
 }
 
-const handleCell = ({row, column}) => {
-  if (props.editable && (column.params.editable == true || util.object.getValueByExpression(row, column.params.editable))) {
-    row[`${column.property}_editable`] = true
+const handleCell = (scope) => {
+  if (props.editable && (scope.column.params.editable == true || util.object.getValueByExpression(scope.row, scope.column.params.editable))) {
+    scope.row[`${scope.column.property}_editable`] = true
+    emit("handleEdit", scope.row[scope.column.property], scope, props.dict)
   }
+}
+
+const handleInput = (value: any, scope) => {
+  emit('handleEditChange', value, scope, props.dict)
 }
 
 const handleSelect = (value: any, scope) => {
@@ -149,7 +158,11 @@ const handleSelect = (value: any, scope) => {
     let dictValue = props.dict[scope.column.params.dictKey].find((t: any) => t.value === value)
     Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictValue[v])
   }
-  props.handleSelect && props.handleSelect(value, scope, props.dict)
+  emit('handleEditChange', value, scope, props.dict)
+}
+
+const handleDate = (value: any, scope) => {
+  emit('handleEditChange', value, scope, props.dict)
 }
 
 const showAddRow = (scope) => {
@@ -157,18 +170,11 @@ const showAddRow = (scope) => {
 }
 
 const addRow = (scope) => {
-  props.data.splice(scope?.rowIndex + 1, 0, {})
+  props.data.splice(scope?.rowIndex + 1, 0, {...props.defaultRowValue})
 }
 
 const delRow = (scope) => {
   props.data.splice(scope.rowIndex, 1)
-}
-
-const updateFooterEvent = () => {
-  const $table = tableRef.value
-  if ($table) {
-    $table.updateFooter()
-  }
 }
 
 const handleScroll = () => {

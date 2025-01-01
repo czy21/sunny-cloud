@@ -6,7 +6,7 @@
       </template>
     </dynamic-vxe-column>
   </vxe-colgroup>
-  <vxe-column :title="props.node.name" :field="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||150" :params="props.node" v-else>
+  <vxe-column :title="props.node.name" :field="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||props.node.width||150" :params="props.node" v-else>
     <template #default="scope">
       <slot :prop="props.node.prop" :scope="scope"/>
     </template>

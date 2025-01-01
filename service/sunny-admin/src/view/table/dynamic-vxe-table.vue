@@ -6,7 +6,8 @@
                      :dict="tableDataRef.dict"
                      :sub-total="tableDataRef.subTotal"
                      :editable="tableDataRef.editable"
-                     :handle-select="handleSelect"
+                     @handle-edit="handleEdit"
+                     @handle-edit-change="handleEditChange"
   >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
@@ -32,21 +33,19 @@ const tableDataRef = reactive({
   editable: true
 })
 
-const handleSelect = (value, scope, dict) => {
-  if (!value) {
-    delete scope.row[scope.column.property]
-  }
-  if (scope.column.params.dictKey === 'DICT_PROVINCE') {
-    !value && scope.$table.getColumns()
-        .filter((t: any) => ['DICT_CITY', 'DICT_DISTRICT'].includes(t.params.dictKey))
-        .forEach((t: any) => delete scope.row[t.property])
-    dict["DICT_CITY"] = dict["DICT_PROVINCE"].find((t: any) => t.value === value)?.children
-  }
-  if (scope.column.params.dictKey === 'DICT_CITY') {
-    !value && scope.$table.getColumns()
-        .filter((t: any) => ['DICT_DISTRICT'].includes(t.params.dictKey))
-        .forEach((t: any) => delete scope.row[t.property])
-    dict["DICT_DISTRICT"] = dict["DICT_CITY"].find((t: any) => t.value === value)?.children
+const handleEdit = (value, scope, dict) => {
+
+  dict["DICT_CITY"] = (dict["DICT_PROVINCE"] || []).find((t: any) => t.value === scope.row["province"])?.children
+  dict["DICT_DISTRICT"] = (dict["DICT_CITY"] || []).find((t: any) => t.value === scope.row["city"])?.children
+
+}
+
+const handleEditChange = (value, scope, dict) => {
+  console.log(value)
+  const cascadeProps = ['province', "city", "district"]
+  if (!value && cascadeProps.includes(scope.column.property)) {
+    const cascadePropIndex = cascadeProps.findIndex(t => t === scope.column.property)
+    cascadeProps.slice(cascadePropIndex).forEach(t => delete scope.row[t])
   }
 }
 
