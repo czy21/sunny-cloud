@@ -29,7 +29,7 @@ const tableDataRef = reactive({
   columns: [],
   data: [],
   dict: {},
-  subTotal: {},
+  subTotal: [],
   editable: true
 })
 

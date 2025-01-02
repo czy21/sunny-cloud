@@ -13,7 +13,7 @@ export interface TableProps {
     columns: Array<TableColumn>,
     data: Array<object>,
     dict?: DictType,
-    subTotal?: SubTotalType
+    subTotal?: Array<SubTotalType>
     rules?: { [key: string]: FormItemRule[] } | { [key: string]: VxeTableDefines.ValidatorRule[] }
     editable?: boolean
     showSummary?: boolean
@@ -54,5 +54,9 @@ export interface DictType {
 }
 
 export interface SubTotalType {
-    [key: string]: { groupBy(item: Object, data: { columns: any[], data: any[] }): boolean, byValue: boolean }
+    key: string
+
+    groupBy(item: Object, data: { columns: any[], data: any[] }): boolean
+
+    byValue: boolean
 }

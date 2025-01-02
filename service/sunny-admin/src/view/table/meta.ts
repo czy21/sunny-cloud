@@ -363,13 +363,15 @@ export const getDict = () => {
 }
 
 export const getSubTotal = () => {
-    return {
-        "一月<105": {
+    return [
+        {
+            "key": "一月<105",
             "groupBy": (item: any, data: any[]) => item.m1 < 105
         },
-        "地址": {
+        {
+            "key": "地址",
             "groupBy": (item: any, data: any[]) => item.address,
             "byValue": true
         }
-    }
+    ]
 }

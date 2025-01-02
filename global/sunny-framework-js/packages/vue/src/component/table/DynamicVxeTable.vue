@@ -68,7 +68,7 @@ const props = withDefaults(defineProps<TableProps>(), {
     return {}
   },
   subTotal() {
-    return {}
+    return []
   },
   editable() {
     return false
@@ -183,6 +183,7 @@ const handleScroll = () => {
 
 const summaryMethod = (data: { columns: any[], data: any[] }) => {
   const sums: any[] = []
+  const subTotal = new Map((props.subTotal || []).map(t => [t.key, t]));
   if (data.columns && data.columns.length > 0) {
     const totalSummary: any = {}
     totalSummary[data.columns[0].property] = "合计"
@@ -192,18 +193,19 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
           t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2)
         }
         if (c.params?.colTotal || c.params?.rowTotal) {
-          Object.keys(props.subTotal || {}).forEach(b => {
-            if (!props.subTotal[b].byValue && props.subTotal[b].groupBy(t, data)) {
-              let subItem = sums.find(p => p[data.columns[0].property] == b)
+          subTotal.keys().forEach((k,i) => {
+            if (!subTotal.get(k).byValue && subTotal.get(k).groupBy(t, data)) {
+              let subItem = sums.find(p => p[data.columns[0].property] == k)
               if (!subItem) {
                 subItem = {}
-                subItem[data.columns[0].property] = b
+                subItem[data.columns[0].property] = k
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+              subItem["sort"] = i
             }
-            if (props.subTotal[b].byValue) {
-              let valItem = props.subTotal[b].groupBy(t, data)
+            if (subTotal.get(k).byValue) {
+              let valItem = subTotal.get(k).groupBy(t, data)
               let subItem = sums.find(p => p[data.columns[0].property] == valItem)
               if (!subItem) {
                 subItem = {}
@@ -211,13 +213,16 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+              subItem["sort"] = i
             }
           })
           totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
         }
       })
     })
+    totalSummary["sort"] = sums.length + 1
     sums.push(totalSummary)
+    sums.sort((a, b) => a.sort - b.sort)
   }
   return sums
 }

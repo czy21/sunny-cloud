@@ -73,7 +73,7 @@ const props = withDefaults(defineProps<TableProps>(), {
     return true
   },
   subTotal: () => {
-    return {}
+    return []
   },
 })
 
@@ -193,31 +193,46 @@ const delRow = (scope: RenderRowData<any>) => {
 
 const summaryMethod = (data: { columns: any[], data: any[] }) => {
   const sums: any[] = []
+  const subTotal = new Map((props.subTotal || []).map(t => [t.key, t]));
   if (data.columns && data.columns.length > 0) {
     const totalSummary: any = {}
     totalSummary[data.columns[0].property] = "合计"
     data.columns.forEach(c => {
       data.data.forEach(t => {
-        if (c.node.rowTotal) {
+        if (c.node?.rowTotal) {
           t[c.property] = Number(util.object.getValueByExpression(t, c.node.rowTotal) || null).toFixed(2)
         }
-        if (c.node.colTotal || c.node.rowTotal) {
-          Object.keys(props.subTotal || {}).forEach(b => {
-            let subItem = sums.find(p => p[data.columns[0].property] == b)
-            if (props.subTotal[b].groupBy && props.subTotal[b].groupBy(t, data)) {
+        if (c.node?.colTotal || c.node?.rowTotal) {
+          subTotal.keys().forEach((k,i) => {
+            if (!subTotal.get(k).byValue && subTotal.get(k).groupBy(t, data)) {
+              let subItem = sums.find(p => p[data.columns[0].property] == k)
               if (!subItem) {
                 subItem = {}
-                subItem[data.columns[0].property] = b
+                subItem[data.columns[0].property] = k
                 sums.push(subItem)
               }
               subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+              subItem["sort"] = i
+            }
+            if (subTotal.get(k).byValue) {
+              let valItem = subTotal.get(k).groupBy(t, data)
+              let subItem = sums.find(p => p[data.columns[0].property] == valItem)
+              if (!subItem) {
+                subItem = {}
+                subItem[data.columns[0].property] = valItem
+                sums.push(subItem)
+              }
+              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
+              subItem["sort"] = i
             }
           })
           totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
         }
       })
     })
+    totalSummary["sort"] = sums.length + 1
     sums.push(totalSummary)
+    sums.sort((a, b) => a.sort - b.sort)
     return data.columns.map(c => h('dl', {style: {"text-align": "center"}}, sums.map(t => h('dt', null, [Object.keys(totalSummary).includes(c.property) ? (t[c.property] || 0) : ""]))))
   }
 
