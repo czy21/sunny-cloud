@@ -23,6 +23,7 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     private String parentLabel;
     private T parentValue;
     private List<T> parentValues;
+    private Integer level;
     private Map<String, Object> extra;
     private List<SimpleItemModel<T>> children;
 

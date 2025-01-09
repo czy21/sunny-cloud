@@ -2,14 +2,9 @@ package com.sunny.framework.core.util;
 
 
 import com.sunny.framework.core.model.TreeNode;
-import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,31 +26,37 @@ public class TreeUtil {
         return buildByPath(supplier, all, null);
     }
 
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue) {
-        return buildByPath(supplier, all, rootValue, null);
-    }
-
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc) {
-        return buildByPath(supplier, all, rootValue, decoNodeFunc, null);
+    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, Consumer<T> decoNodeFunc) {
+        return buildByPath(supplier, all, decoNodeFunc, null);
     }
 
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
-        T root = supplier.get();
-        root.setId(rootValue);
+    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
 
-        for (T a : all) {
+        T root = supplier.get();
+
+        for (T t : all) {
+            if (t.getPathIds() == null) {
+                continue;
+            }
             T current = root;
-            for (V t : Optional.ofNullable(a.getPathIds()).orElse(new ArrayList<>())) {
-                V currentId = current.getId();
+            for (int i = 0; i < t.getPathIds().size(); i++) {
                 if (current.getChildren() == null) {
                     current.setChildren(new ArrayList<>());
                 }
-                T node = (T) current.getChildren().stream().filter(p -> t.equals(p.getId())).findFirst().orElse(null);
+                V p = t.getParentIds().get(i);
+                T node = null;
+                for (TreeNode<V> child : current.getChildren()) {
+                    if (Objects.equals(p, child.getId())) {
+                        node = (T) child;
+                        break;
+                    }
+                }
                 if (node == null) {
                     node = supplier.get();
-                    node.setId(t);
-                    node.setParentId(currentId);
+                    node.setId(p);
+                    node.setParentId(current.getId());
+                    node.setLevel(i + 1);
                     ((List<T>) current.getChildren()).add(node);
                 }
                 if (decoNodeFunc != null) {
@@ -67,7 +68,6 @@ public class TreeUtil {
                 current = node;
             }
         }
-
         return (List<T>) root.getChildren();
     }
 
@@ -75,36 +75,35 @@ public class TreeUtil {
         return build(supplier, all, null);
     }
 
-    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue) {
-        return build(supplier, all, rootValue, null);
-    }
-
-    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc) {
-        return build(supplier, all, rootValue, decoNodeFunc, null);
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, Consumer<T> decoNodeFunc) {
+        return build(supplier, all, decoNodeFunc, null);
     }
 
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
 
         T root = supplier.get();
-        root.setId(rootValue);
 
-        buildChildren(all, root, decoNodeFunc, sortComparator);
+        buildChildren(all, root, decoNodeFunc, sortComparator, 0);
 
         return (List<T>) root.getChildren();
     }
 
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> void buildChildren(List<T> all, T node, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
+    public static <V, T extends TreeNode<V>> void buildChildren(List<T> all, T node, Consumer<T> decoNodeFunc, Comparator<T> sortComparator, int level) {
 
         if (node.getChildren() == null) {
             node.setChildren(new ArrayList<>());
         }
 
-        for (T t : all.stream().filter(t -> (node.getId() == t.getParentId()) || (node.getId() != null && node.getId().equals(t.getParentId()))).collect(Collectors.toCollection(ArrayList::new))) {
-            buildChildren(all, t, decoNodeFunc, sortComparator);
-            ((List<T>) node.getChildren()).add(t);
+        for (T t : all) {
+            if (Objects.equals(node.getId(), t.getParentId())) {
+                buildChildren(all, t, decoNodeFunc, sortComparator, level + 1);
+                ((List<T>) node.getChildren()).add(t);
+            }
         }
+
+        node.setLevel(level);
 
         if (decoNodeFunc != null) {
             decoNodeFunc.accept(node);

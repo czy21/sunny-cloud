@@ -30,6 +30,12 @@ public interface TreeNode<T> extends Comparable<TreeNode<T>> {
     default void setPathIds(List<T> pathIds) {
     }
 
+    default Integer getLevel() {
+        return null;
+    }
+
+    void setLevel(Integer level);
+
     List<? extends TreeNode<T>> getChildren();
 
     default void setChildren(List<? extends TreeNode<T>> children) {
