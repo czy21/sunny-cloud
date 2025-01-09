@@ -2,9 +2,12 @@ package com.sunny.framework.core.util;
 
 
 import com.sunny.framework.core.model.TreeNode;
+import org.springframework.util.ObjectUtils;
 
-import javax.swing.text.html.Option;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -24,8 +27,28 @@ public class TreeUtil {
                 .collect(Collectors.toList());
     }
 
+    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all) {
+        return buildByPath(supplier, all, null);
+    }
+
+    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue) {
+        return buildByPath(supplier, all, rootValue, null, null);
+    }
+
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> void processPath(Supplier<T> supplier, T root, T item, Consumer<T> decoNodeFunc) {
+    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
+        T root = supplier.get();
+        root.setId(rootValue);
+
+        for (T t : all) {
+            processPath(supplier, root, t, decoNodeFunc, sortComparator);
+        }
+
+        return (List<T>) root.getChildren();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <V, T extends TreeNode<V>> void processPath(Supplier<T> supplier, T root, T item, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
         T current = root;
         for (V t : Optional.ofNullable(item.getPathIds()).orElse(new ArrayList<>())) {
             V currentId = current.getId();
@@ -39,62 +62,58 @@ public class TreeUtil {
                 node.setParentId(currentId);
                 ((List<T>) current.getChildren()).add(node);
             }
-            current = node;
             if (decoNodeFunc != null) {
-                decoNodeFunc.accept(current);
+                decoNodeFunc.accept(node);
             }
+            if (sortComparator != null) {
+                ((List<T>) node.getChildren()).sort(sortComparator);
+            }
+            current = node;
         }
     }
 
-
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all) {
-        return buildByPath(supplier, all, null);
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all) {
+        return build(supplier, all, null);
     }
 
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue) {
-        return buildByPath(supplier, all, rootValue, null);
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue) {
+        return build(supplier, all, rootValue, null);
+    }
+
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc) {
+        return build(supplier, all, rootValue, decoNodeFunc, null);
     }
 
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> List<T> buildByPath(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc) {
+    public static <V, T extends TreeNode<V>> List<T> build(Supplier<T> supplier, List<T> all, V rootValue, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
+
         T root = supplier.get();
         root.setId(rootValue);
-        root.setChildren(new ArrayList<>());
-        for (T t : all) {
-            processPath(supplier, root, t, decoNodeFunc);
-        }
+
+        buildChildren(all, root, decoNodeFunc, sortComparator);
+
         return (List<T>) root.getChildren();
     }
 
-    public static <V, T extends TreeNode<V>> List<T> build(List<T> all, Predicate<T> rootPredicate) {
-        return build(all, rootPredicate, null);
-    }
-
-    public static <V, T extends TreeNode<V>> List<T> build(List<T> all, Predicate<T> rootPredicate, Consumer<T> decoNodeFunc) {
-        return build(all, rootPredicate, decoNodeFunc, false);
-    }
-
-    public static <V, T extends TreeNode<V>> List<T> build(List<T> all, Predicate<T> rootPredicate, Consumer<T> decoNodeFunc, boolean isDesc) {
-        if (decoNodeFunc != null) {
-            all.forEach(decoNodeFunc);
-        }
-        Comparator<TreeNode<V>> sortComparator = !isDesc ? Comparator.naturalOrder() : Comparator.reverseOrder();
-        return all.stream()
-                .filter(rootPredicate)
-                .map(t -> buildChildren(all, t, sortComparator))
-                .sorted(sortComparator)
-                .collect(Collectors.toList());
-    }
-
     @SuppressWarnings("unchecked")
-    public static <V, T extends TreeNode<V>> T buildChildren(List<T> items, T node, Comparator<TreeNode<V>> sortComparator) {
-        List<T> children = items.stream()
-                .filter(t -> node.getId().equals(t.getParentId()))
-                .map(t -> buildChildren(items, t, sortComparator))
+    public static <V, T extends TreeNode<V>> T buildChildren(List<T> all, T node, Consumer<T> decoNodeFunc, Comparator<T> sortComparator) {
+
+        List<T> children = all.stream()
+                .filter(t -> (node.getId() == t.getParentId()) || (node.getId() != null && node.getId().equals(t.getParentId())))
+                .map(t -> buildChildren(all, t, decoNodeFunc, sortComparator))
                 .collect(Collectors.toList());
-        Optional.ofNullable(node.getChildren())
-                .ifPresentOrElse(t -> t.addAll((List) children), () -> node.setChildren(children));
-        node.getChildren().sort(sortComparator);
+
+        Optional.ofNullable((List<T>) node.getChildren())
+                .ifPresentOrElse(t -> t.addAll(children), () -> node.setChildren(children));
+
+        if (decoNodeFunc != null) {
+            decoNodeFunc.accept(node);
+        }
+
+        if (sortComparator != null) {
+            ((List<T>) node.getChildren()).sort(sortComparator);
+        }
+
         return node;
     }
 }

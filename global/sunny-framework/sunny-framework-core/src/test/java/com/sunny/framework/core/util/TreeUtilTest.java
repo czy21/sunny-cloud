@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 
 public class TreeUtilTest {
@@ -18,11 +19,11 @@ public class TreeUtilTest {
         URL url = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX + "tree.json");
         List<SimpleItemModel<String>> items = objectMapper.readValue(url, new TypeReference<List<SimpleItemModel<String>>>() {
         });
-        List<SimpleItemModel<String>> tree = TreeUtil.build(items,
-                t -> t.getParentValue() == null,
+        List<SimpleItemModel<String>> tree = TreeUtil.build(SimpleItemModel::new, items, null,
                 t -> {
                     t.setParentIds(TreeUtil.getParentIds(items, t));
-                }
+                },
+                Comparator.comparing(SimpleItemModel::getSort)
         );
         System.out.println();
     }

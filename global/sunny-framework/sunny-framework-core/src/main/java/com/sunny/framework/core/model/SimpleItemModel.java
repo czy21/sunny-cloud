@@ -1,6 +1,5 @@
 package com.sunny.framework.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -43,7 +42,6 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         return of(label, value, null, null);
     }
 
-    @JsonIgnore
     @Override
     public T getId() {
         return value;
@@ -54,7 +52,6 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         this.value = id;
     }
 
-    @JsonIgnore
     @Override
     public T getParentId() {
         return parentValue;
@@ -65,7 +62,6 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         this.parentValue = parentId;
     }
 
-    @JsonIgnore
     @Override
     public List<T> getParentIds() {
         return this.parentValues;
@@ -76,9 +72,10 @@ public class SimpleItemModel<T> implements TreeNode<T> {
         this.parentValues = parentIds;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void setChildren(List children) {
-        this.children = children;
+    public void setChildren(List<? extends TreeNode<T>> children) {
+        this.children = (List<SimpleItemModel<T>>) children;
     }
 
     public static <T> String translateByValue(List<SimpleItemModel<T>> list, T value) {
