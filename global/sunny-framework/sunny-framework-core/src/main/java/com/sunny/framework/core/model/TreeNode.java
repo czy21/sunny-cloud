@@ -34,7 +34,8 @@ public interface TreeNode<T> extends Comparable<TreeNode<T>> {
         return null;
     }
 
-    void setLevel(Integer level);
+    default void setLevel(Integer level) {
+    }
 
     List<? extends TreeNode<T>> getChildren();
 

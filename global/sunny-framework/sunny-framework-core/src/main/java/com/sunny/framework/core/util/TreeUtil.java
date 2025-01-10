@@ -44,7 +44,7 @@ public class TreeUtil {
                 if (current.getChildren() == null) {
                     current.setChildren(new ArrayList<>());
                 }
-                V p = t.getParentIds().get(i);
+                V p = t.getPathIds().get(i);
                 T node = null;
                 for (TreeNode<V> child : current.getChildren()) {
                     if (Objects.equals(p, child.getId())) {
