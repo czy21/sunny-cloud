@@ -85,8 +85,8 @@ public class FileTest {
     public void testWriteMapError() throws Exception {
         String filePath = ResourceUtils.getURL("classpath:excel/").getPath() + "user-import-error.xlsx";
         EasyExcelWriter<Map<String, Object>> writer = new EasyExcelWriter<>(objectMapper, stringRedisTemplate);
-        writer.token("4ca1a92117c341f182c7b4eccf5da1c6");
-        writer.doWrite(() -> EasyExcel.write(filePath), userNameProperty);
+        writer.token("4ffa7477ae8242389979ba7f979012fa");
+        writer.doWrite(EasyExcel.write(filePath), userNameProperty);
     }
 
     @Test
