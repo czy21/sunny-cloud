@@ -111,7 +111,7 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
                 ((BaseExcelModel) t).setRowIndex(rowIndex);
             } else {
                 Map<Integer, Object> tMap = (Map<Integer, Object>) t;
-                t = (T) nameProperty.entrySet().stream().collect(LinkedHashMap::new, (m, n) -> Optional.ofNullable(tMap.get(n.getValue().getIndex())).ifPresent(c -> m.put(n.getKey(), c)), Map::putAll);
+                t = (T) nameProperty.entrySet().stream().collect(LinkedHashMap::new, (m, n) -> m.put(n.getKey(), tMap.get(n.getValue().getIndex())), Map::putAll);
                 ((LinkedHashMap<String, Object>) t).put("rowIndex", rowIndex);
             }
             rows.add(t);
