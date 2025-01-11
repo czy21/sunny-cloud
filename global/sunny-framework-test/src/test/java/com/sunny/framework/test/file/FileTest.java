@@ -31,11 +31,11 @@ public class FileTest {
     @Autowired
     Validator validator;
 
-    static Map<String, EasyExcelProperty> userNameProperty = new HashMap<>();
+    static Map<String, EasyExcelProperty> userNameProperty = new LinkedHashMap<>();
 
     static {
         userNameProperty.put("name", EasyExcelProperty.of(0, List.of("姓名").stream().collect(Collectors.toList())));
-        userNameProperty.put("age", EasyExcelProperty.of(1, List.of("年龄").stream().collect(Collectors.toList())));
+        userNameProperty.put("age", EasyExcelProperty.of(1, List.of("年龄").stream().collect(Collectors.toList()), Integer.class));
         userNameProperty.put("birthDay", EasyExcelProperty.of(2, List.of("出生日期").stream().collect(Collectors.toList())));
     }
 
@@ -85,7 +85,7 @@ public class FileTest {
     public void testWriteMapError() throws Exception {
         String filePath = ResourceUtils.getURL("classpath:excel/").getPath() + "user-import-error.xlsx";
         EasyExcelWriter<Map<String, Object>> writer = new EasyExcelWriter<>(objectMapper, stringRedisTemplate);
-        writer.token("4ffa7477ae8242389979ba7f979012fa");
+        writer.token("c9601e48754747a4a75d6e6cedc2a315");
         writer.doWrite(EasyExcel.write(filePath), userNameProperty);
     }
 

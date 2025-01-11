@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -129,10 +130,26 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
         processRows();
     }
 
+    @SuppressWarnings("unchecked")
     private void processRows() {
         rows.stream().findFirst().ifPresent(r -> {
             if (r instanceof BaseExcelModel) {
                 rows.forEach(t -> validator.validate(t).forEach(e -> error.get(((BaseExcelModel) t).getRowIndex()).add(e.getMessage())));
+            } else {
+                rows.forEach(t -> {
+                    Map<String, Object> tMap = (Map<String, Object>) t;
+                    Integer rowIndex = (Integer) tMap.get("rowIndex");
+                    for (Map.Entry<String, EasyExcelProperty> propertyEntry : nameProperty.entrySet()) {
+                        if (propertyEntry.getValue().getJavaType() != null) {
+                            try {
+                                Object newVal = objectMapper.convertValue(tMap.get(propertyEntry.getKey()), propertyEntry.getValue().getJavaType());
+                                tMap.put(propertyEntry.getKey(), newVal);
+                            } catch (Exception e) {
+                                error.get(rowIndex).add(MessageFormat.format("{0}类型错误", propertyEntry.getValue().getHead().getLast()));
+                            }
+                        }
+                    }
+                });
             }
         });
         processContext.setRows(rows);
@@ -141,13 +158,13 @@ public class ExcelGenericDataEventListener<T> extends AnalysisEventListener<T> {
         processContext.setSuccessTotal(successTotal);
         processConsumer.accept(processContext);
         String errorKey = ERROR_KEY_PREFIX_FUNC.apply(token);
-        for (Map.Entry<Integer, List<String>> m : error.entrySet().stream().filter(t -> CollectionUtils.isNotEmpty(t.getValue())).toList()) {
+        error.entrySet().stream().filter(t -> CollectionUtils.isNotEmpty(t.getValue())).forEach(t -> {
             try {
-                redisTemplate.opsForHash().put(errorKey, String.valueOf(m.getKey()), objectMapper.writeValueAsString(m.getValue()));
+                redisTemplate.opsForHash().put(errorKey, String.valueOf(t.getKey()), objectMapper.writeValueAsString(t.getValue()));
             } catch (JsonProcessingException e) {
                 logger.error("excel存储校验失败", e);
             }
-        }
+        });
         redisTemplate.expire(errorKey, expireMinutes, TimeUnit.MINUTES);
         String dataKey = DATA_KEY_PREFIX_FUNC.apply(token);
         for (T t : rows) {
