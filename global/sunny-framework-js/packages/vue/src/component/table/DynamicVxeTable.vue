@@ -20,23 +20,25 @@
       <template #default="{ prop, scope }">
         <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)"
-                    @change="(value)=>handleInput(value,scope)"
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)" @change="(value)=>handleInput(value,scope)"
+                    clearable
                     :type="scope.column.params.type"
                     :precision="scope.column.params.precision !==null?scope.column.params.precision : 2"
                     :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
                     :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
           />
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)"
-                     @change="(value) => handleSelect(value, scope)"
-                     clearable>
+          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)"
+                     clearable
+                     filterable
+                     :remote="scope.column.params.remote"
+                     :remote-method="(value)=>emit('handleSelectSearch',value,scope,props.dict)"
+          >
             <el-option v-for="t in props.dict[scope.column.params.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
-          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isDate(scope)"
-                          @change="(value:any)=>handleDate(value,scope)"
+          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isDate(scope)" @change="(value)=>handleDate(value,scope)"
+                          size="default"
                           clearable
                           :type="scope.column.params.type"
-                          size="default"
                           :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
           />
         </template>
@@ -59,7 +61,7 @@ import DynamicVxeColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps, TableEmits} from "./DynamicTable.ts";
 import {VxeTable} from "vxe-table";
-import {ElButton, ElDatePicker, ElInput, ElInputNumber, ElOption, ElSelect} from "element-plus";
+import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
   defaultRowValue() {
