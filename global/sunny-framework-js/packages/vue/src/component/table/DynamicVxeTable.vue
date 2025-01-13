@@ -148,7 +148,17 @@ const handleCell = (scope) => {
   }
 }
 
+const changeColumn = (value, scope) => {
+  const changeColumns = scope.$table.getColumns().filter(t => t.params.changeByProps?.includes(scope.column.property))
+  changeColumns.forEach(c => {
+    if (c.params?.rowTotal) {
+      scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(2)
+    }
+  })
+}
+
 const handleInput = (value: any, scope) => {
+  changeColumn(value, scope)
   emit('handleEditChange', value, scope, props.dict)
 }
 
@@ -158,10 +168,12 @@ const handleSelect = (value: any, scope) => {
     let dictValue = props.dict[scope.column.params.dictKey].find((t: any) => t.value === value)
     Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictValue[v])
   }
+  changeColumn(value, scope)
   emit('handleEditChange', value, scope, props.dict)
 }
 
 const handleDate = (value: any, scope) => {
+  changeColumn(value, scope)
   emit('handleEditChange', value, scope, props.dict)
 }
 
@@ -189,11 +201,11 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
     totalSummary[data.columns[0].property] = "合计"
     data.columns.forEach(c => {
       data.data.forEach(t => {
-        if (c.params?.rowTotal) {
+        if (c.params?.rowTotal && !c.params.changeByProps) {
           t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2)
         }
         if (c.params?.colTotal || c.params?.rowTotal) {
-          subTotal.keys().forEach((k,i) => {
+          subTotal.keys().forEach((k, i) => {
             if (!subTotal.get(k).byValue && subTotal.get(k).groupBy(t, data)) {
               let subItem = sums.find(p => p[data.columns[0].property] == k)
               if (!subItem) {

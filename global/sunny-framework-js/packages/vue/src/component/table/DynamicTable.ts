@@ -1,6 +1,6 @@
-import {CSSProperties} from "vue";
-import {FormItemRule} from 'element-plus'
-import {VxeTableDefines} from 'vxe-table'
+import { CSSProperties } from "vue";
+import { FormItemRule } from 'element-plus'
+import { VxeTableDefines } from 'vxe-table'
 
 declare module 'element-plus' {
     export interface TableColumnCtx<T> {
@@ -37,6 +37,7 @@ export interface TableColumn {
     dictPush?: [string, object]
     rowTotal?: string
     colTotal?: boolean
+    changeByProps: string[]
     heads?: (string | TableHead)[]
     width?: number | string
     fixed?: string
