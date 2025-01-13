@@ -268,7 +268,8 @@ export const fields: TableColumn[] = [
         "prop": "action",
         "name": "操作",
         "heads": ["操作"],
-        "fixed": "right"
+        "fixed": "right",
+        "width": '200px'
     }
 ]
 

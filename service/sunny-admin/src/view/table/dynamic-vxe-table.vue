@@ -5,12 +5,16 @@
                      :data="tableDataRef.data"
                      :dict="tableDataRef.dict"
                      :sub-total="tableDataRef.subTotal"
-                     :editable="tableDataRef.editable"
+                     :show-add-row="true"
+                     :editable="true"
                      @handle-edit="handleEdit"
                      @handle-edit-change="handleEditChange"
   >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
+    </template>
+    <template #action="scope">
+      <el-button @click="console.log(scope)" link type="primary">查看</el-button>
     </template>
   </dynamic-vxe-table>
 
@@ -29,8 +33,7 @@ const tableDataRef = reactive({
   columns: [],
   data: [],
   dict: {},
-  subTotal: [],
-  editable: true
+  subTotal: []
 })
 
 const handleEdit = (value, scope, dict) => {
@@ -56,7 +59,7 @@ const handleClick = () => {
 
 onMounted(() => {
   tableDataRef.columns = meta.getColumns()
-  tableDataRef.data = meta.getData(200)
+  tableDataRef.data = meta.getData(20)
   tableDataRef.dict = meta.getDict()
   tableDataRef.subTotal = meta.getSubTotal()
 })

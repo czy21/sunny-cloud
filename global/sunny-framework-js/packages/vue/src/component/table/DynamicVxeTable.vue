@@ -12,7 +12,7 @@
              :scroll-x="{ enabled: true, gt: 0 }"
              :scroll-y="{ enabled: true, gt: 0 }"
              show-overflow
-             show-footer
+             :show-footer="props.showSummary"
              :footer-method="summaryMethod"
              @scroll="handleScroll"
   >
@@ -42,14 +42,15 @@
                           :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
           />
         </template>
-        <span v-else-if="props.editable && scope.column.property === 'action'">
-          <el-button @click="addRow(scope)" link type="primary" v-if="showAddRow(scope)">加行</el-button>
-          <el-button @click="delRow(scope)" link type="danger">删除</el-button>
+        <span v-else-if="scope.column.property === 'action'">
+          <slot :name="scope.column.property" :=scope />
+          <el-button @click="addRow(scope)" link type="primary" v-if="props.showAddRow && showAddRow(scope)">加行</el-button>
+          <el-button @click="delRow(scope)" link type="danger" v-if="props.showAddRow">删除</el-button>
         </span>
         <show-cell :="scope" v-else/>
       </template>
     </dynamic-vxe-column>
-    <template #empty>
+    <template #empty v-if="props.showAddRow">
       <el-button @click="addRow" type="primary">加行</el-button>
     </template>
   </vxe-table>
@@ -80,6 +81,12 @@ const props = withDefaults(defineProps<TableProps>(), {
   },
   editable() {
     return false
+  },
+  showSummary() {
+    return true
+  },
+  showAddRow() {
+    return true
   }
 })
 

@@ -17,6 +17,7 @@ export interface TableProps {
     rules?: { [key: string]: FormItemRule[] } | { [key: string]: VxeTableDefines.ValidatorRule[] }
     editable?: boolean
     showSummary?: boolean
+    showAddRow?: boolean
 }
 
 export interface TableEmits {
