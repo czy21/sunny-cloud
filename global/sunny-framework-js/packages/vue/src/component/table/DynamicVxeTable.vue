@@ -20,19 +20,25 @@
       <template #default="{ prop, scope }">
         <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" @change="(value)=>handleInput(value,scope)" v-if="isInputString(scope)"/>
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>handleInput(value,scope)" :type="scope.column.params.type"/>
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)" clearable>
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)"
+                    @change="(value)=>handleInput(value,scope)"
+                    :type="scope.column.params.type"
+                    :precision="scope.column.params.precision !==null?scope.column.params.precision : 2"
+                    :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
+                    :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
+          />
+          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)"
+                     @change="(value) => handleSelect(value, scope)"
+                     clearable>
             <el-option v-for="t in props.dict[scope.column.params.dictKey]" :label="t.label" :value="t.value"/>
           </el-select>
-          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]"
-                          @blur="onExitEditMode(scope)"
+          <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isDate(scope)"
                           @change="(value:any)=>handleDate(value,scope)"
                           clearable
                           :type="scope.column.params.type"
                           size="default"
                           :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
-                          v-else-if="isDate(scope)"/>
+          />
         </template>
         <span v-else-if="props.editable && scope.column.property === 'action'">
           <el-button @click="addRow(scope)" link type="primary" v-if="showAddRow(scope)">加行</el-button>
@@ -53,7 +59,7 @@ import DynamicVxeColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps, TableEmits} from "./DynamicTable.ts";
 import {VxeTable} from "vxe-table";
-import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
+import {ElButton, ElDatePicker, ElInput, ElInputNumber, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
   defaultRowValue() {
@@ -88,16 +94,8 @@ const handleCellFocus = () => {
   editRef.value?.forEach((t, i, a) => i === a.length - 1 && t.focus?.())
 }
 
-const isInputString = (scope) => {
-  let val = (scope.column.params.type === 'string' || !scope.column.params.type)
-  if (val) {
-    handleCellFocus()
-  }
-  return val
-}
-
-const isInputNumber = (scope) => {
-  let val = scope.column.params.type === 'number'
+const isInput = (scope) => {
+  let val = !scope.column.params.type || ['number', 'string'].includes(scope.column.params.type)
   if (val) {
     handleCellFocus()
   }
@@ -137,6 +135,9 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
   }
   if (scope.column.params.type === 'index') {
     label = scope.row[scope.column.property] = scope.rowIndex + 1
+  }
+  if (scope.column.params.type === 'number') {
+    label = scope.column.params.precision == 0 ? label : util.number.toMilliSeparator(label, true)
   }
   return label
 }
@@ -235,6 +236,7 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
     totalSummary["sort"] = sums.length + 1
     sums.push(totalSummary)
     sums.sort((a, b) => a.sort - b.sort)
+    data.columns.filter(t => t.params.type === 'number').forEach(c => sums.forEach(t => t[c.property] = util.number.toMilliSeparator(t[c.property])))
   }
   return sums
 }

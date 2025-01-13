@@ -33,8 +33,9 @@ export const fields: TableColumn[] = [
         "heads": ["年龄"],
         "type": "number",
         "editable": true,
-        "custom": true,
-        "required": true
+        "required": true,
+        "min": 1,
+        "precision": 0
     },
     {
         "prop": "province",
