@@ -368,11 +368,11 @@ export const getSubTotal = () => {
     return [
         {
             "key": "一月<105",
-            "groupBy": (item: any, data: any[]) => item.m1 < 105
+            "groupBy": (item: any, data?: any[]) => item.m1 < 105
         },
         {
             "key": "地址",
-            "groupBy": (item: any, data: any[]) => item.address,
+            "groupBy": (item: any, data?: any[]) => item.address,
             "byValue": true
         }
     ]

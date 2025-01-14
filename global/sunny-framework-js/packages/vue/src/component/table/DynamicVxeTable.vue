@@ -43,7 +43,7 @@
           />
         </template>
         <span v-else-if="scope.column.property === 'action'">
-          <slot :name="scope.column.property" :=scope />
+          <slot :name="scope.column.property" :=scope></slot>
           <el-button @click="addRow(scope)" link type="primary" v-if="props.showAddRow && showAddRow(scope)">加行</el-button>
           <el-button @click="delRow(scope)" link type="danger" v-if="props.showAddRow">删除</el-button>
         </span>
@@ -207,45 +207,33 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
   const sums: any[] = []
   const subTotal = new Map((props.subTotal || []).map(t => [t.key, t]));
   if (data.columns && data.columns.length > 0) {
-    const totalSummary: any = {}
-    totalSummary[data.columns[0].property] = "合计"
-    data.columns.forEach(c => {
-      data.data.forEach(t => {
-        if (c.params?.rowTotal && !c.params.changeByProps) {
-          t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2)
-        }
-        if (c.params?.colTotal || c.params?.rowTotal) {
-          subTotal.keys().forEach((k, i) => {
-            if (!subTotal.get(k).byValue && subTotal.get(k).groupBy(t, data)) {
-              let subItem = sums.find(p => p[data.columns[0].property] == k)
-              if (!subItem) {
-                subItem = {}
-                subItem[data.columns[0].property] = k
-                sums.push(subItem)
-              }
-              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
-              subItem["sort"] = i
-            }
-            if (subTotal.get(k).byValue) {
-              let valItem = subTotal.get(k).groupBy(t, data)
-              let subItem = sums.find(p => p[data.columns[0].property] == valItem)
-              if (!subItem) {
-                subItem = {}
-                subItem[data.columns[0].property] = valItem
-                sums.push(subItem)
-              }
-              subItem[c.property] = Number(Number(subItem[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
-              subItem["sort"] = i
-            }
-          })
-          totalSummary[c.property] = Number(Number(totalSummary[c.property] || null) + Number(t[c.property] || null)).toFixed(2)
-        }
-      })
+    const firstProperty = data.columns[0].property
+    let reduceColumns = data.columns.filter(c => c.params.rowTotal || c.params.colTotal)
+
+    reduceColumns.filter(c => c.params?.rowTotal && util.object.isEmpty(c.params.changeByProps)).forEach(c => {
+      data.data.forEach(t => t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2))
     })
-    totalSummary["sort"] = sums.length + 1
-    sums.push(totalSummary)
+
+    function reduceTotal(objs, sort) {
+      return Object.entries(objs).filter(([k, v]) => v.length > 0).map(([k, v]) => {
+        let subItem: any = {}
+        subItem[firstProperty] = k == 'undefined' ? '' : k
+        subItem["sort"] = sort
+        reduceColumns.forEach(c => subItem[c.property] = Number(v.reduce((a, b) => a + (Number(b[c.property]) || 0), 0)).toFixed(2))
+        return subItem
+      })
+    }
+
+    subTotal.keys().forEach((k, i) => {
+      const s = subTotal.get(k)
+      let objs = s.byValue ? Object.groupBy(data.data, t => s.groupBy(t, data)) : {[k]: data.data.filter(t => s.groupBy(t, data))}
+      sums.push(...reduceTotal(objs, i))
+    })
+
+    sums.push(...reduceTotal({"合计": data.data}, sums.length + 1))
+
     sums.sort((a, b) => a.sort - b.sort)
-    data.columns.filter(t => t.params.type === 'number').forEach(c => sums.forEach(t => t[c.property] = util.number.toMilliSeparator(t[c.property])))
+    reduceColumns.forEach(c => sums.forEach(t => t[c.property] = util.number.toMilliSeparator(t[c.property])))
   }
   return sums
 }

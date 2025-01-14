@@ -61,7 +61,7 @@ export interface DictType {
 export interface SubTotalType {
     key: string
 
-    groupBy(item: Object, data: { columns: any[], data: any[] }): boolean
+    groupBy(item: Object, data?: { columns: any[], data: any[] }): boolean
 
     byValue: boolean
 }
