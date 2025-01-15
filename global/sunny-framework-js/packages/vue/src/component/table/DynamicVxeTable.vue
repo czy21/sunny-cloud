@@ -21,7 +21,7 @@
         <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
           <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)" @change="(value)=>handleInput(value,scope)"/>
-          <el-input-number class="" ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>handleInput(value,scope)"
+          <el-input-number ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>handleInput(value,scope)"
                            size="default"
                            :controls="false"
                            :type="scope.column.params.type"
@@ -39,7 +39,6 @@
           </el-select>
           <el-date-picker ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isDate(scope)" @change="(value)=>handleDate(value,scope)"
                           size="default"
-                          clearable
                           :type="scope.column.params.type"
                           :value-format="scope.column.params.format || 'YYYY-MM-DD HH:mm:ss'"
           />
@@ -101,8 +100,13 @@ const headerCellStyle = ({column}) => {
   return column.params.style
 }
 
-const handleCellFocus = () => {
-  editRef.value?.forEach((t, i, a) => i === a.length - 1 && t.focus?.())
+const handleCellFocus = (callBackFn?: Function) => {
+  editRef.value?.forEach((t, i, a) => {
+    if (i === a.length - 1) {
+      t.focus?.()
+      callBackFn && callBackFn(t)
+    }
+  })
 }
 
 const isInput = (scope) => {
@@ -132,7 +136,7 @@ const isSelect = (scope) => {
 const isDate = (scope) => {
   let val = scope.column.params.type === 'date' || scope.column.params.type === 'datetime'
   if (val) {
-    handleCellFocus()
+    handleCellFocus(t => t.handleOpen())
   }
   return val
 }
@@ -147,9 +151,14 @@ const onExitEditMode = (scope) => {
 const ShowCell: FunctionalComponent<any> = (scope) => {
   let label = scope.row[scope.column.property]
   if (scope.column.params.dictKey && props.dict) {
-    let value = props.dict[scope.column.params.dictKey]?.find(t => t.value === scope.row[scope.column.property])?.label
+    const options = props.dict[scope.column.params.dictKey]
+    let value = options?.find(t => t.value === scope.row[scope.column.property])?.label
     if (value) {
       label = value
+    }
+    if (!label && !value && options?.length === 1 && scope.column.params.dictOnlyOneDefaultSelect) {
+      scope.row[scope.column.property] = options[0].value
+      handleExtra(scope.row[scope.column.property], scope)
     }
   }
   if (scope.column.params.type === 'index') {
@@ -182,12 +191,16 @@ const handleInput = (value: any, scope) => {
   emit('handleEditChange', value, scope, props.dict)
 }
 
-const handleSelect = (value: any, scope) => {
+const handleExtra = (value: any, scope) => {
   let dictPush = scope.column.params.dictPush
   if (dictPush) {
-    let dictValue = props.dict[scope.column.params.dictKey].find((t: any) => t.value === value)
-    Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictValue[v])
+    let dictExtra = (props.dict[scope.column.params.dictKey].find((t: any) => t.value === value)?.extra || {})
+    Object.entries(dictPush).forEach(([k, v]) => scope.row[k] = dictExtra[v])
   }
+}
+
+const handleSelect = (value: any, scope) => {
+  handleExtra(value, scope);
   changeColumn(value, scope)
   emit('handleEditChange', value, scope, props.dict)
 }

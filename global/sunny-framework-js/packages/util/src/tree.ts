@@ -33,7 +33,7 @@ export const buildChildren = (items: any[], node: any, attr: { idKey?: string, p
 
 export const buildByPath = (all: any[], rootValue: any = null,
                             attr: { idKey?: string, parentKey?: string, pathsKey?: string, sortKey?: string } = {},
-                            decoFunc: (item: any, node: any, pathIndex: number) => {}) => {
+                            decoFunc?: (item: any, node: any, pathIndex: number) => {}) => {
     attr = {idKey: "id", parentKey: "parentId", pathsKey: "paths", sortKey: "sort", ...attr}
     let root: any = {}
     root[attr.idKey] = rootValue

@@ -122,6 +122,27 @@ export const fields: TableColumn[] = [
         ],
     },
     {
+        "prop": "job",
+        "name": "工作",
+        "type": "select",
+        "dictKey": "JOB",
+        "dictPush": {
+            "jobCode": "code"
+        },
+        "dictOnlyOneDefaultSelect":true,
+        "editable": true,
+        "heads": [
+            "a1",
+            "a2",
+            {
+                name: "工作",
+                style: {
+                    backgroundColor: "JOB"
+                }
+            }
+        ],
+    },
+    {
         "prop": "m1",
         "name": "1月",
         "heads": [
@@ -360,6 +381,9 @@ export const getDict = () => {
         "HOBBY": [
             {"label": "唱歌", "value": "music"},
             {"label": "跳舞", "value": "dance"}
+        ],
+        "JOB": [
+            {"label": "IT", "value": "IT", "extra": {"code": "1"}}
         ]
     }
 }

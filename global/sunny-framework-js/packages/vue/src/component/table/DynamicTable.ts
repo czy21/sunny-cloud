@@ -35,7 +35,8 @@ export interface TableColumn {
     required?: boolean
     editable?: boolean | string
     dictKey?: string
-    dictPush?: [string, object]
+    dictPush?: DictPush
+    dictOnlyOneDefaultSelect?: boolean,
     rowTotal?: string
     colTotal?: boolean
     changeByProps?: string[]
@@ -56,6 +57,10 @@ export interface TableHead {
 
 export interface DictType {
     [key: string]: Array<{ label: string, value: Object, extra: Object }>
+}
+
+export interface DictPush {
+    [key: string]: string
 }
 
 export interface SubTotalType {
