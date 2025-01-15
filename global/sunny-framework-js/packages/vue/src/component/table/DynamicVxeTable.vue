@@ -20,12 +20,14 @@
       <template #default="{ prop, scope }">
         <slot :name="prop" :=scope v-if="scope.column.params.custom"/>
         <template v-else-if="scope.row[`${scope.column.property}_editable`]">
-          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)" @change="(value)=>handleInput(value,scope)"
-                    clearable
-                    :type="scope.column.params.type"
-                    :precision="scope.column.params.precision !==null?scope.column.params.precision : 2"
-                    :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
-                    :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
+          <el-input ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-if="isInput(scope)" @change="(value)=>handleInput(value,scope)"/>
+          <el-input-number class="" ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isInputNumber(scope)" @change="(value)=>handleInput(value,scope)"
+                           size="default"
+                           :controls="false"
+                           :type="scope.column.params.type"
+                           :precision="!util.object.isEmpty(scope.column.params.precision)?scope.column.params.precision : 2"
+                           :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
+                           :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
           />
           <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)"
                      clearable
@@ -62,7 +64,7 @@ import DynamicVxeColumn from "./DynamicVxeColumn.vue"
 import util from '@sunny-framework-js/util'
 import {TableProps, TableEmits} from "./DynamicTable.ts";
 import {VxeTable} from "vxe-table";
-import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect} from "element-plus";
+import {ElButton, ElDatePicker, ElInput, ElInputNumber, ElOption, ElSelect} from "element-plus";
 
 const props = withDefaults(defineProps<TableProps>(), {
   defaultRowValue() {
@@ -96,7 +98,7 @@ const tableRef = ref()
 const editRef = ref()
 
 const headerCellStyle = ({column}) => {
-  return column.params?.style
+  return column.params.style
 }
 
 const handleCellFocus = () => {
@@ -104,7 +106,15 @@ const handleCellFocus = () => {
 }
 
 const isInput = (scope) => {
-  let val = !scope.column.params.type || ['number', 'string'].includes(scope.column.params.type)
+  let val = !scope.column.params.type || scope.column.params.type === 'string'
+  if (val) {
+    handleCellFocus()
+  }
+  return val
+}
+
+const isInputNumber = (scope) => {
+  let val = scope.column.params.type === 'number'
   if (val) {
     handleCellFocus()
   }
@@ -146,7 +156,7 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
     label = scope.row[scope.column.property] = scope.rowIndex + 1
   }
   if (scope.column.params.type === 'number') {
-    label = scope.column.params.precision == 0 ? label : util.number.toMilliSeparator(label, true)
+    label = util.number.toMilliSeparator(label, true, !util.object.isEmpty(scope.column.params.precision) ? scope.column.params.precision : 2)
   }
   return label
 }
@@ -161,8 +171,8 @@ const handleCell = (scope) => {
 const changeColumn = (value, scope) => {
   const changeColumns = scope.$table.getColumns().filter(t => t.params.changeByProps?.includes(scope.column.property))
   changeColumns.forEach(c => {
-    if (c.params?.rowTotal) {
-      scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(2)
+    if (c.params.rowTotal) {
+      scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(!util.object.isEmpty(c.params.precision) ? c.params.precision : 2)
     }
   })
 }
@@ -210,7 +220,7 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
     const firstProperty = data.columns[0].property
     let reduceColumns = data.columns.filter(c => c.params.rowTotal || c.params.colTotal)
 
-    reduceColumns.filter(c => c.params?.rowTotal && util.object.isEmpty(c.params.changeByProps)).forEach(c => {
+    reduceColumns.filter(c => c.params.rowTotal && util.object.isEmpty(c.params.changeByProps)).forEach(c => {
       data.data.forEach(t => t[c.property] = Number(util.object.getValueByExpression(t, c.params.rowTotal) || null).toFixed(2))
     })
 
@@ -241,4 +251,10 @@ const summaryMethod = (data: { columns: any[], data: any[] }) => {
 defineExpose({
   tableRef
 })
+
 </script>
+<style scoped lang="scss">
+:deep(.el-input-number) {
+  width: unset;
+}
+</style>
