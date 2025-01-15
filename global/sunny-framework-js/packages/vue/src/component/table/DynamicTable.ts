@@ -4,7 +4,7 @@ import {VxeTableDefines} from 'vxe-table'
 
 declare module 'element-plus' {
     export interface TableColumnCtx<T> {
-        node: TableColumn
+        params: TableColumn
     }
 }
 

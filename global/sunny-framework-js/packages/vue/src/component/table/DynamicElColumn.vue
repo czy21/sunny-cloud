@@ -9,7 +9,7 @@
       </template>
     </dynamic-el-column>
   </el-table-column>
-  <el-table-column :label="props.node.name" :prop="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width" v-else>
+  <el-table-column :label="props.node.name" :prop="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||props.node.width||150" v-else>
     <template #header="scope">
       {{ renderHeader(props.node, scope) }}
     </template>
@@ -26,7 +26,7 @@ import { TableColumn } from "./DynamicTable";
 const props = defineProps(["node"])
 
 const renderHeader = (node: TableColumn, scope: RenderRowData<any>) => {
-  scope.column.node = node
+  scope.column.params = node
   return scope.column.label
 }
 </script>
