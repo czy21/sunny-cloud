@@ -129,7 +129,7 @@ export const fields: TableColumn[] = [
         "dictPush": {
             "jobCode": "code"
         },
-        "dictOnlyOneDefaultSelect":true,
+        "dictOnlyOneDefaultSelect": true,
         "editable": true,
         "heads": [
             "a1",
@@ -311,7 +311,7 @@ export const getColumns = () => {
         idKey: "name",
         parentKey: "parentName"
     })
-    console.log(tree)
+    // console.log(tree)
     return tree
 }
 

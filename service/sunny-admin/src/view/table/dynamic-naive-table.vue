@@ -1,14 +1,14 @@
 <template>
 
-  <dynamic-vxe-table ref="tableRef"
-                     :columns="tableMeta.columns"
-                     :data="tableData"
-                     :dict="tableMeta.dict"
-                     :sub-total="tableMeta.subTotal"
-                     :show-add-row="true"
-                     :editable="true"
-                     @handle-edit="handleEdit"
-                     @handle-edit-change="handleEditChange"
+  <dynamic-naive-table ref="tableRef"
+                       :columns="tableMeta.columns"
+                       :data="tableData"
+                       :dict="tableMeta.dict"
+                       :sub-total="tableMeta.subTotal"
+                       :show-add-row="true"
+                       :editable="true"
+                       @handle-edit="handleEdit"
+                       @handle-edit-change="handleEditChange"
   >
     <template #age="scope">
       <el-input v-model="scope.row['age']"/>
@@ -16,14 +16,14 @@
     <template #action="scope">
       <el-button @click="console.log(scope)" link type="primary">查看</el-button>
     </template>
-  </dynamic-vxe-table>
+  </dynamic-naive-table>
 
   <el-button @click="handleClick">确认</el-button>
 </template>
 
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from "vue"
-import {DynamicVxeTable} from "@sunny-framework-js/vue";
+import {DynamicNaiveTable} from "@sunny-framework-js/vue";
 import util from "@sunny-framework-js/util";
 import * as meta from './meta'
 
@@ -34,8 +34,6 @@ const tableMeta = reactive({
   dict: {},
   subTotal: []
 })
-
-
 const tableData = ref([])
 
 const handleEdit = (value, scope, dict) => {
@@ -46,7 +44,7 @@ const handleEdit = (value, scope, dict) => {
 }
 
 const handleEditChange = (value, scope, dict) => {
-  console.log(value)
+  // console.log(value)
   const cascadeProps = ['province', "city", "district"]
   if (!value && cascadeProps.includes(scope.column.property)) {
     const cascadePropIndex = cascadeProps.findIndex(t => t === scope.column.property)
@@ -63,7 +61,7 @@ onMounted(() => {
   tableMeta.columns = meta.getColumns()
   tableMeta.dict = meta.getDict()
   tableMeta.subTotal = meta.getSubTotal()
-  tableData.value = meta.getData(1000)
+  tableData.value = meta.getData(200)
 })
 
 </script>
