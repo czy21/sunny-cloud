@@ -255,6 +255,6 @@ defineExpose({
 </script>
 <style scoped lang="scss">
 :deep(.el-input-number) {
-  width: unset;
+  width: 100%;
 }
 </style>
