@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sunny-framework-js/util": "workspace:*",
+    "@sunny-framework-js/core": "workspace:*",
     "@sunny-framework-js/react": "workspace:*"
   }
 }
