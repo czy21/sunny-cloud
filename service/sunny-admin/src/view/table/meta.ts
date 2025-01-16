@@ -306,7 +306,7 @@ export const getColumns = () => {
             }
         }
     })
-    let tree = util.tree.buildByPath(fields, null, {
+    let tree = util.tree.buildByPath(fields, {
         pathsKey: "heads",
         idKey: "name",
         parentKey: "parentName"

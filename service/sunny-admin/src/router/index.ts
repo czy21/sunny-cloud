@@ -25,10 +25,6 @@ const routes = [
                 component: () => import('@v/table/dynamic-el-table.vue')
             },
             {
-                path: "/sys/table/dynamic-virtual-table",
-                component: () => import('@v/table/dynamic-virtual-table.vue')
-            },
-            {
                 path: "/sys/table/dynamic-vxe-table",
                 component: () => import('@v/table/dynamic-vxe-table.vue')
             },
