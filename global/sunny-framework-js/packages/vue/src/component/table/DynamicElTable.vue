@@ -55,7 +55,7 @@
 import {FunctionalComponent, h, ref} from "vue"
 import DynamicElColumn from "./DynamicElColumn.vue"
 import {ElButton, ElDatePicker, ElInput, ElOption, ElSelect, ElTable, RenderRowData} from "element-plus";
-import util from '@sunny-framework-js/util'
+import {util} from "@sunny-framework-js/core"
 import {TableEmits, TableProps} from "./DynamicTable.ts";
 
 const props = withDefaults(defineProps<TableProps>(), {

@@ -15,7 +15,7 @@
 import {reactive, ref} from 'vue'
 import router from "@/router";
 import {helper} from '@sunny-framework-js/vue';
-import util from "@sunny-framework-js/util"
+import {util} from "@sunny-framework-js/core"
 import type {FormInstance, FormRules} from "element-plus";
 
 const form = reactive<FormRule>({

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import util from '@sunny-framework-js/util'
+import {util} from '@sunny-framework-js/core'
 import {ElMessageBox} from "element-plus";
 
 export const inform = function (text: string, callback?: Function) {

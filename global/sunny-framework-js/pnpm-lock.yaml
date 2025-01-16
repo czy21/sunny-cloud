@@ -8,15 +8,33 @@ importers:
 
   .:
     dependencies:
+      '@sunny-framework-js/core':
+        specifier: workspace:*
+        version: link:packages/core
       '@sunny-framework-js/react':
         specifier: workspace:*
         version: link:packages/react
-      '@sunny-framework-js/util':
-        specifier: workspace:*
-        version: link:packages/util
       '@sunny-framework-js/vue':
         specifier: workspace:*
         version: link:packages/vue
+
+  packages/core:
+    dependencies:
+      '@types/js-cookie':
+        specifier: ^3.0.6
+        version: 3.0.6
+      '@types/lodash':
+        specifier: ^4.17.13
+        version: 4.17.14
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.9
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
 
   packages/react:
     dependencies:
@@ -51,24 +69,6 @@ importers:
       vite:
         specifier: ^5.4.10
         version: 5.4.11(@types/node@22.10.6)(sass@1.83.3)
-
-  packages/util:
-    dependencies:
-      '@types/js-cookie':
-        specifier: ^3.0.6
-        version: 3.0.6
-      '@types/lodash':
-        specifier: ^4.17.13
-        version: 4.17.14
-      axios:
-        specifier: ^1.7.7
-        version: 1.7.9
-      js-cookie:
-        specifier: ^3.0.5
-        version: 3.0.5
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
 
   packages/vue:
     dependencies:

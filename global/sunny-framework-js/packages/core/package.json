@@ -2,8 +2,8 @@
   "name": "@sunny-framework-js/core",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
+  "main": "index.ts",
+  "module": "index.ts",
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.13",

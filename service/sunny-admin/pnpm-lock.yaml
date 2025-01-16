@@ -8,14 +8,14 @@ importers:
 
   .:
     dependencies:
-      '@sunny-framework-js/util':
+      '@sunny-framework-js/core':
         specifier: workspace:*
-        version: link:../../global/sunny-framework-js/packages/util
+        version: link:../../global/sunny-framework-js/packages/core
       '@sunny-framework-js/vue':
         specifier: workspace:*
         version: link:../../global/sunny-framework-js/packages/vue
 
-  ../../global/sunny-framework-js/packages/util:
+  ../../global/sunny-framework-js/packages/core:
     dependencies:
       '@types/js-cookie':
         specifier: ^3.0.6

@@ -1,5 +1,5 @@
 import type {TableColumn} from "@sunny-framework-js/vue";
-import util from "@sunny-framework-js/util";
+import {util} from "@sunny-framework-js/core";
 
 export const fields: TableColumn[] = [
     {

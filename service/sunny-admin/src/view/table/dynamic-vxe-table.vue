@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from "vue"
 import {DynamicVxeTable} from "@sunny-framework-js/vue";
-import util from "@sunny-framework-js/util";
+import {util} from "@sunny-framework-js/core";
 import * as meta from './meta'
 
 const tableRef = ref(null)

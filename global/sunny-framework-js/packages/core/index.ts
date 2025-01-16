@@ -1,5 +1,1 @@
-import util from './src/util'
-
-export default {
-    util
-}
+export * as util from './src/util'
