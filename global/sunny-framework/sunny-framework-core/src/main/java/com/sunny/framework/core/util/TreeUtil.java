@@ -48,6 +48,7 @@ public class TreeUtil {
                     child = supplier.get();
                     child.setId(p);
                     child.setParentId(current.getId());
+                    child.setParentIds(t.getPathIds().subList(0, i));
                     child.setLevel(i + 1);
                     ((List<T>) current.getChildren()).add(child);
                 }
