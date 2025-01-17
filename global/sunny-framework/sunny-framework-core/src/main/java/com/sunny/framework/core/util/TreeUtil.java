@@ -4,8 +4,7 @@ package com.sunny.framework.core.util;
 import com.sunny.framework.core.model.TreeNode;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,5 +100,24 @@ public class TreeUtil {
                 }
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <V, T extends TreeNode<V>> List<T> filter(Supplier<T> supplier, List<T> tree, boolean keepChildren, Predicate<T> predicate, BiConsumer<T, T> decoNodeFunc) {
+        if (tree == null) {
+            return null;
+        }
+        List<T> filteredTree = new ArrayList<>();
+        for (T t : tree) {
+            boolean predicateResult = predicate.test(t);
+            List<T> filteredChildren = keepChildren && predicateResult ? (List<T>) t.getChildren() : filter(supplier, (List<T>) t.getChildren(), keepChildren, predicate, decoNodeFunc);
+            if (predicateResult || (filteredChildren != null && !filteredChildren.isEmpty())) {
+                T node = supplier.get();
+                node.setChildren(filteredChildren);
+                decoNodeFunc.accept(t, node);
+                filteredTree.add(node);
+            }
+        }
+        return filteredTree;
     }
 }

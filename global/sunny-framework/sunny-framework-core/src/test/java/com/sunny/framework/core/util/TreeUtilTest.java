@@ -25,6 +25,15 @@ public class TreeUtilTest {
                 },
                 Comparator.comparing(SimpleItemModel::getSort)
         );
+
+        List<SimpleItemModel<String>> filteredTree = TreeUtil.filter(SimpleItemModel::new, tree,false,
+                t -> "a3-2".equals(t.getId()),
+                (item, node) -> {
+                    node.setId(item.getId());
+                    node.setParentId(item.getParentId());
+                    node.setLabel(item.getLabel());
+                    System.out.println();
+                });
         System.out.println();
     }
 
