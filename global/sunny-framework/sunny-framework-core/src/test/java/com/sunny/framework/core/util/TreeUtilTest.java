@@ -27,4 +27,18 @@ public class TreeUtilTest {
         );
         System.out.println();
     }
+
+    @Test
+    public void test2() throws Exception {
+        URL url = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX + "path.json");
+        List<SimpleItemModel<String>> items = objectMapper.readValue(url, new TypeReference<List<SimpleItemModel<String>>>() {
+        });
+        List<SimpleItemModel<String>> tree = TreeUtil.buildByPath(SimpleItemModel::new, items,
+                t -> {
+                    t.setParentIds(TreeUtil.getParentIds(items, t));
+                },
+                Comparator.comparing(SimpleItemModel::getSort)
+        );
+        System.out.println();
+    }
 }

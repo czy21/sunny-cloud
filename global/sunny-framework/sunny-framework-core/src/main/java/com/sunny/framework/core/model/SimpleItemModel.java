@@ -23,6 +23,7 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     private String parentLabel;
     private T parentValue;
     private List<T> parentValues;
+    private List<T> pathValues;
     private Integer level;
     private Map<String, Object> extra;
     private List<SimpleItemModel<T>> children;
@@ -71,6 +72,16 @@ public class SimpleItemModel<T> implements TreeNode<T> {
     @Override
     public void setParentIds(List<T> parentIds) {
         this.parentValues = parentIds;
+    }
+
+    @Override
+    public List<T> getPathIds() {
+        return pathValues;
+    }
+
+    @Override
+    public void setPathIds(List<T> pathIds) {
+        this.pathValues = pathIds;
     }
 
     @SuppressWarnings("unchecked")

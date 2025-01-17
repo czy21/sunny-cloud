@@ -171,8 +171,22 @@ const handleCell = (row: any, column: any) => {
   }
 }
 
+const getLeafColumns = () => {
+
+  function recursiveNode(node) {
+    let arr = []
+    for (var t of node.children) {
+      arr = [...arr, ...(t.children ? recursiveNode(t) : [t])]
+    }
+    return arr
+  }
+
+  return recursiveNode({children: tableRef.value.columns})
+
+}
+
 const changeColumn = (value, scope) => {
-  const changeColumns = scope.$table.getColumns().filter(t => t.params.changeByProps?.includes(scope.column.property))
+  const changeColumns = getLeafColumns().filter(t => t.params.changeByProps?.includes(scope.column.property))
   changeColumns.forEach(c => {
     if (c.params.rowTotal) {
       scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(!util.object.isEmpty(c.params.precision) ? c.params.precision : 2)

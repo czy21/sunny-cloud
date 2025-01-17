@@ -41,31 +41,23 @@ public class TreeUtil {
             }
             T current = root;
             for (int i = 0; i < t.getPathIds().size(); i++) {
-                if (current.getChildren() == null) {
-                    current.setChildren(new ArrayList<>());
-                }
+                current.setChildren(Optional.ofNullable(current.getChildren()).orElse(new ArrayList<>()));
                 V p = t.getPathIds().get(i);
-                T node = null;
-                for (TreeNode<V> child : current.getChildren()) {
-                    if (Objects.equals(p, child.getId())) {
-                        node = (T) child;
-                        break;
-                    }
-                }
-                if (node == null) {
-                    node = supplier.get();
-                    node.setId(p);
-                    node.setParentId(current.getId());
-                    node.setLevel(i + 1);
-                    ((List<T>) current.getChildren()).add(node);
+                T child = (T) current.getChildren().stream().filter(c -> Objects.equals(p, c.getId())).findFirst().orElse(null);
+                if (child == null) {
+                    child = supplier.get();
+                    child.setId(p);
+                    child.setParentId(current.getId());
+                    child.setLevel(i + 1);
+                    ((List<T>) current.getChildren()).add(child);
                 }
                 if (decoNodeFunc != null) {
-                    decoNodeFunc.accept(node);
+                    decoNodeFunc.accept(child);
                 }
                 if (sortComparator != null) {
-                    ((List<T>) node.getChildren()).sort(sortComparator);
+                    ((List<T>) current.getChildren()).sort(sortComparator);
                 }
-                current = node;
+                current = child;
             }
         }
         return (List<T>) root.getChildren();
@@ -92,25 +84,21 @@ public class TreeUtil {
     @SuppressWarnings("unchecked")
     public static <V, T extends TreeNode<V>> void buildChildren(List<T> all, T node, Consumer<T> decoNodeFunc, Comparator<T> sortComparator, int level) {
 
-        if (node.getChildren() == null) {
-            node.setChildren(new ArrayList<>());
-        }
-
-        for (T t : all) {
-            if (Objects.equals(node.getId(), t.getParentId())) {
-                buildChildren(all, t, decoNodeFunc, sortComparator, level + 1);
-                ((List<T>) node.getChildren()).add(t);
-            }
-        }
-
-        node.setLevel(level);
-
         if (decoNodeFunc != null) {
             decoNodeFunc.accept(node);
         }
 
-        if (sortComparator != null) {
-            ((List<T>) node.getChildren()).sort(sortComparator);
+        node.setLevel(level);
+
+        for (T t : all) {
+            if (Objects.equals(node.getId(), t.getParentId())) {
+                buildChildren(all, t, decoNodeFunc, sortComparator, level + 1);
+                node.setChildren(Optional.ofNullable(node.getChildren()).orElse(new ArrayList<>()));
+                ((List<T>) node.getChildren()).add(t);
+                if (sortComparator != null) {
+                    ((List<T>) node.getChildren()).sort(sortComparator);
+                }
+            }
         }
     }
 }
