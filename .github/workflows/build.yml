@@ -15,10 +15,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
       - name: Build framework
         working-directory: global/sunny-framework
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal -x test
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
       - name: Build service
         working-directory: service
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build -x test
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
   find_frontend:
     runs-on: ubuntu-latest
     outputs:
