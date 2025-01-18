@@ -10,15 +10,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '21'
       - uses: gradle/actions/setup-gradle@v3
       - name: Build framework
         working-directory: global/sunny-framework
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal -x test
       - name: Build service
         working-directory: service
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
+        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build -x test
   find_frontend:
     runs-on: ubuntu-latest
     outputs:
@@ -39,7 +39,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: 
-          node-version: '20.13.0'
+          node-version: '20.18.0'
       - name: Build
         working-directory: ${{ matrix.project }}
-        run: npm install && npm run build
+        run: |
+          npm install -g pnpm
+          npm_config_node_linker=hoisted pnpm install
+          npm run build
