@@ -1,15 +1,19 @@
+plugins {
+    id "com.github.node-gradle.node" apply false
+}
+
 ["clean", "build"].each { t ->
     tasks.register("${t}") {
         group = "build"
         gradle.getIncludedBuilds().each { p ->
-            def modules = p.properties.get("target").availableModules
-            if (modules.size() == 1) {
-                dependsOn p.task(":${t}")
-            } else {
-                modules.findAll { m -> m.right.projectPath != ":" }.each { m ->
-                    dependsOn p.task(":${m.right.projectName}:${t}")
-                }
-            }
+            dependsOn p.task(":${t}")
         }
+    }
+}
+
+this.subprojects {
+    if (it.file("/package.json").exists()) {
+        apply plugin: 'com.github.node-gradle.node'
+        apply from: "${projectDir}/../../global/sunny-framework/buildSrc/src/main/groovy/node.build.gradle"
     }
 }

@@ -8,6 +8,8 @@ def publish_modules = [
         "sunny-auth-security"
 ]
 
+apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/root.build.gradle"
+
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
@@ -26,7 +28,7 @@ subprojects {
 
     apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/common.build.gradle"
     apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
-    
+
     if (project.name in publish_modules) {
         apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/publish.build.gradle"
     }

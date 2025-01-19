@@ -13,36 +13,12 @@ jobs:
           distribution: 'graalvm'
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v3
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: '20.18.0'
       - name: Build framework
         working-directory: global/sunny-framework
         run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
       - name: Build service
         working-directory: service
-        run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
-  find_frontend:
-    runs-on: ubuntu-latest
-    outputs:
-      projects: ${{ steps.find.outputs.projects }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: find
-        run: |
-          projects=[$(find service -maxdepth 2 ! -path service/package.json -name "package.json" -exec sh -c 'd=$(dirname {});echo "\"$d\""' \;| paste -sd ',')]
-          echo "projects=${projects}" >> "$GITHUB_OUTPUT"
-  build_frontend:
-    runs-on: ubuntu-latest
-    needs: [find_frontend]
-    strategy:
-      matrix:
-        project: ${{fromJson(needs.find_frontend.outputs.projects)}}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: 
-          node-version: '20.18.0'
-      - name: Build
-        working-directory: ${{ matrix.project }}
-        run: |
-          npm install -g pnpm
-          npm_config_node_linker=hoisted pnpm install
-          npm run build
+        run: npm_config_node_linker=hoisted ./gradlew -I ${{ github.workspace }}/.github/init.gradle build

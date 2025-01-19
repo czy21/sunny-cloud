@@ -1,5 +1,15 @@
-def exclude = ["sunny-native"]
+pluginManagement {
+    plugins {
+        id "com.github.node-gradle.node" version "7.1.0"
+    }
+}
 
-file("${settingsDir}").list().findAll { file("${it}/build.gradle").exists() && !exclude.contains(it) }.each {
+def includeModules = ["sunny-admin", "sunny-auth-web", "sunny-product-web"]
+def excludeModules = ["sunny-native"]
+excludeModules.addAll(includeModules)
+
+file("${settingsDir}").list().findAll { file("${it}/build.gradle").exists() && !excludeModules.contains(it) }.each {
     includeBuild("${it}")
 }
+
+includeModules.forEach { include("${it}") }

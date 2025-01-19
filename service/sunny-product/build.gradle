@@ -6,6 +6,8 @@ def publish_modules = [
         "sunny-product-api"
 ]
 
+apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/root.build.gradle"
+
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
