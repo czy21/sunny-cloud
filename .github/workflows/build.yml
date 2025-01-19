@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_backend:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -12,7 +12,6 @@ jobs:
         with:
           distribution: 'graalvm'
           java-version: '21'
-      - uses: gradle/actions/setup-gradle@v3
       - uses: actions/setup-node@v4
         with: 
           node-version: '20.18.0'
