@@ -20,4 +20,6 @@ jobs:
         run: ./gradlew -I ${{ github.workspace }}/.github/init.gradle publishToMavenLocal
       - name: Build service
         working-directory: service
-        run: npm_config_node_linker=hoisted ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
+        run: |
+          npm install -g pnpm
+          npm_config_node_linker=hoisted ./gradlew -I ${{ github.workspace }}/.github/init.gradle build
