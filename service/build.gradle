@@ -6,7 +6,14 @@ plugins {
     tasks.register("${t}") {
         group = "build"
         gradle.getIncludedBuilds().each { p ->
-            dependsOn p.task(":${t}")
+            def modules = p.properties.get("target").availableModules
+            if (modules.size() == 1) {
+                dependsOn p.task(":${t}")
+            } else {
+                modules.findAll { m -> m.right.projectPath != ":" }.each { m ->
+                    dependsOn p.task(":${m.right.projectName}:${t}")
+                }
+            }
         }
     }
 }

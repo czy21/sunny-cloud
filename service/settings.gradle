@@ -4,12 +4,12 @@ pluginManagement {
     }
 }
 
-def includeModules = ["sunny-admin", "sunny-auth-web", "sunny-product-web"]
-def excludeModules = ["sunny-native"]
-excludeModules.addAll(includeModules)
+def excludeBuilds = ["sunny-native"]
 
-file("${settingsDir}").list().findAll { file("${it}/build.gradle").exists() && !excludeModules.contains(it) }.each {
+settingsDir.list().findAll { file("${it}/build.gradle").exists() && !excludeBuilds.contains(it) }.each {
     includeBuild("${it}")
 }
 
-includeModules.forEach { include("${it}") }
+settingsDir.list().findAll { file("${it}/package.json").exists() }.each {
+    include("${it}")
+}
