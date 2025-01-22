@@ -4,9 +4,7 @@ pluginManagement {
     }
 }
 
-def excludeBuilds = ["sunny-native"]
-
-settingsDir.list().findAll { file("${it}/build.gradle").exists() && !excludeBuilds.contains(it) }.each {
+settingsDir.list().findAll { file("${it}/build.gradle").exists() }.each {
     includeBuild("${it}")
 }
 
