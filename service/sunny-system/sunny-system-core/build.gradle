@@ -1,14 +1,9 @@
 dependencies {
     api project(":sunny-system-api")
-    api ("com.sunny:sunny-framework-bundle"){
-        exclude group:'org.springframework.boot',module: 'spring-boot-starter-undertow'
-    }
+    api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
 //    api 'com.alibaba:easyexcel'
     api 'com.sunny:sunny-auth-security'
     api "org.springframework.boot:spring-boot-starter-jooq"
     api 'com.alibaba.cola:cola-component-statemachine:5.0.0'
-    api 'org.springframework.boot:spring-boot-starter-tomcat'
-    api "org.springframework.boot:spring-boot-starter-websocket"
-
 }
