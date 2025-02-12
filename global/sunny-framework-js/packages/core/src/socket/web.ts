@@ -29,7 +29,6 @@ export class Socket {
 
     constructor(options: Options) {
         this.options = {...this.options, ...options}
-        this.connect()
     }
 
     connect() {
@@ -49,7 +48,7 @@ export class Socket {
             if (this.onclose) {
                 this.onclose(ev)
             } else {
-                this.reconnect()
+                this.reConnect()
             }
         }
 
@@ -57,7 +56,7 @@ export class Socket {
             if (this.onerror) {
                 this.onerror(ev)
             } else {
-                this.reconnect()
+                this.reConnect()
             }
         }
 
@@ -70,7 +69,11 @@ export class Socket {
         }
     }
 
-    reconnect() {
+    disConnect() {
+        this.ws.close()
+    }
+
+    reConnect() {
 
         if (this.lockReConnect || this.reConnectCount >= this.options.maxReconnectCount) {
             return

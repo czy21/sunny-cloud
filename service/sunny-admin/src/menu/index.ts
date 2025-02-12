@@ -12,6 +12,11 @@ const menus: Array<MenuModel> = [
         icon: "User"
     },
     {
+        name: "聊天管理",
+        path: "/sys/chat",
+        icon: "Chat"
+    },
+    {
         name: "系统管理",
         icon: "Setting",
         children: [

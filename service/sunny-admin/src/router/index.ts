@@ -17,6 +17,10 @@ const routes = [
                 component: () => import('@v/user/index.vue')
             },
             {
+                path: "/sys/chat",
+                component: () => import('@v/chat/index.vue')
+            },
+            {
                 path: "/sys/menu",
                 component: () => import('@v/menu/index.vue')
             },
