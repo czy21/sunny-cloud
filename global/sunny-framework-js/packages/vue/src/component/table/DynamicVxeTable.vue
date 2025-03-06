@@ -25,7 +25,7 @@
                            size="default"
                            :controls="false"
                            :type="scope.column.params.type"
-                           :precision="!util.object.isEmpty(scope.column.params.precision)?scope.column.params.precision : 2"
+                           :precision="util.object.isNotEmpty(scope.column.params.precision)?scope.column.params.precision : 2"
                            :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
                            :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
           />
@@ -204,7 +204,7 @@ const handleExtra = (value: any, scope) => {
 }
 
 const handleSelect = (value: any, scope) => {
-  handleExtra(value, scope);
+  handleExtra(value, scope)
   changeColumn(value, scope)
   if (scope.column.params.multiple) {
     scope.row[scope.column.property] = value.join(" ")
