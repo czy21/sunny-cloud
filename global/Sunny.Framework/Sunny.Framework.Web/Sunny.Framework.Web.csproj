@@ -9,6 +9,7 @@
 
   <ItemGroup>
       <ProjectReference Include="..\Sunny.Framework.Core\Sunny.Framework.Core.csproj" />
+      <ProjectReference Include="..\Sunny.Framework.NLog\Sunny.Framework.NLog.csproj" />
   </ItemGroup>
 
   <ItemGroup>
