@@ -3,3 +3,4 @@
 - Gradle >= 8.5
 - Nacos >= 2.2.3
 - Node >= 20.13.0
+- .Net SDK >=9 
