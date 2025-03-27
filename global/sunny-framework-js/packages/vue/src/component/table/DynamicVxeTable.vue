@@ -25,13 +25,14 @@
                            size="default"
                            :controls="false"
                            :type="scope.column.params.type"
-                           :precision="!util.object.isEmpty(scope.column.params.precision)?scope.column.params.precision : 2"
+                           :precision="util.object.isNotEmpty(scope.column.params.precision)?scope.column.params.precision : 2"
                            :min="scope.column.params.min !==null?scope.column.params.min : -Infinity"
                            :max="scope.column.params.max !==null?scope.column.params.max : Infinity"
           />
-          <el-select ref="editRef" v-model="scope.row[scope.column.property]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)"
+          <el-select ref="editRef" v-model="scope.row[`${scope.column.property}${scope.column.params.multiple?'List':''}`]" @blur="onExitEditMode(scope)" v-else-if="isSelect(scope)" @change="(value) => handleSelect(value, scope)"
                      clearable
                      filterable
+                     :multiple="scope.column.params.multiple"
                      :remote="scope.column.params.remote"
                      :remote-method="(value)=>emit('handleSelectSearch',value,scope,props.dict)"
           >
@@ -165,7 +166,7 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
     label = scope.row[scope.column.property] = scope.rowIndex + 1
   }
   if (scope.column.params.type === 'number') {
-    label = util.number.toMilliSeparator(label, true, !util.object.isEmpty(scope.column.params.precision) ? scope.column.params.precision : 2)
+    label = util.number.toMilliSeparator(label, true, util.object.isNotEmpty(scope.column.params.precision) ? scope.column.params.precision : 2)
   }
   return label
 }
@@ -173,6 +174,9 @@ const ShowCell: FunctionalComponent<any> = (scope) => {
 const handleCell = (scope) => {
   if (props.editable && (scope.column.params.editable == true || util.object.getValueByExpression(scope.row, scope.column.params.editable))) {
     scope.row[`${scope.column.property}_editable`] = true
+    if (scope.column.params.multiple && scope.row[scope.column.property]) {
+      scope.row[`${scope.column.property}List`] = scope.row[scope.column.property].split(" ")
+    }
     emit("handleEdit", scope.row[scope.column.property], scope, props.dict)
   }
 }
@@ -181,7 +185,7 @@ const changeColumn = (value, scope) => {
   const changeColumns = scope.$table.getColumns().filter(t => t.params.changeByProps?.includes(scope.column.property))
   changeColumns.forEach(c => {
     if (c.params.rowTotal) {
-      scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(!util.object.isEmpty(c.params.precision) ? c.params.precision : 2)
+      scope.row[c.property] = Number(util.object.getValueByExpression(scope.row, c.params.rowTotal) || null).toFixed(util.object.isNotEmpty(c.params.precision) ? c.params.precision : 2)
     }
   })
 }
@@ -200,8 +204,11 @@ const handleExtra = (value: any, scope) => {
 }
 
 const handleSelect = (value: any, scope) => {
-  handleExtra(value, scope);
+  handleExtra(value, scope)
   changeColumn(value, scope)
+  if (scope.column.params.multiple) {
+    scope.row[scope.column.property] = value.join(" ")
+  }
   emit('handleEditChange', value, scope, props.dict)
 }
 

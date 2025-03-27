@@ -36,6 +36,7 @@ export interface TableColumn {
     editable?: boolean | string
     dictKey?: string
     dictPush?: DictPush
+    multiple?: boolean
     dictOnlyOneDefaultSelect?: boolean,
     rowTotal?: string
     colTotal?: boolean
