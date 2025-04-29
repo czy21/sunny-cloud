@@ -9,7 +9,7 @@ export interface Options {
 
 export class Socket {
     ws: WebSocket
-    options: Options = {
+    options: Options | any = {
         server: '',
         heartbeat: {
             interval: 20,
@@ -28,7 +28,7 @@ export class Socket {
     onopen: ((ev: Event) => any) | null;
 
     constructor(options: Options) {
-        this.options = {...this.options, ...options}
+        this.options = { ...this.options, ...options }
     }
 
     connect() {
@@ -37,6 +37,7 @@ export class Socket {
 
         this.ws.onopen = ev => {
             this.reConnectCount = 0
+            this.lockReConnect = false
             if (this.onopen) {
                 this.onopen(ev)
             } else {
@@ -64,7 +65,7 @@ export class Socket {
             if (ev.data === 'pong') {
                 this.ping()
             } else {
-                this.onmessage(ev)
+                this.onmessage && this.onmessage(ev)
             }
         }
     }
@@ -78,6 +79,8 @@ export class Socket {
         if (this.lockReConnect || this.reConnectCount >= this.options.maxReconnectCount) {
             return
         }
+        
+        this.lockReConnect = true
 
         this.reConnectCount++
 
