@@ -18,7 +18,6 @@ export class Socket {
         maxReconnectCount: 5
     }
     reConnectCount: number = 0
-    lockReConnect: boolean
     heartTimer: number
     serverTimer: number
 
@@ -28,7 +27,7 @@ export class Socket {
     onopen: ((ev: Event) => any) | null;
 
     constructor(options: Options) {
-        this.options = { ...this.options, ...options }
+        this.options = {...this.options, ...options}
     }
 
     connect() {
@@ -37,7 +36,6 @@ export class Socket {
 
         this.ws.onopen = ev => {
             this.reConnectCount = 0
-            this.lockReConnect = false
             if (this.onopen) {
                 this.onopen(ev)
             } else {
@@ -76,11 +74,9 @@ export class Socket {
 
     reConnect() {
 
-        if (this.lockReConnect || this.reConnectCount >= this.options.maxReconnectCount) {
+        if (this.reConnectCount >= this.options.maxReconnectCount) {
             return
         }
-        
-        this.lockReConnect = true
 
         this.reConnectCount++
 
