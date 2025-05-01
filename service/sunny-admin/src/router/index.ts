@@ -10,7 +10,7 @@ const routes = [
             {
                 name: "Dashboard",
                 path: "dashboard",
-                component: () => import('@v/Dashboard.vue')
+                component: () => import('@v/dashboard.vue')
             },
             {
                 path: "/sys/user",
