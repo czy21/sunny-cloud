@@ -9,7 +9,7 @@ export interface Options {
 
 export class Socket {
     ws: WebSocket
-    options: Options = {
+    options: Options | any = {
         server: '',
         heartbeat: {
             interval: 20,
@@ -18,7 +18,6 @@ export class Socket {
         maxReconnectCount: 5
     }
     reConnectCount: number = 0
-    lockReConnect: boolean
     heartTimer: number
     serverTimer: number
 
@@ -64,7 +63,7 @@ export class Socket {
             if (ev.data === 'pong') {
                 this.ping()
             } else {
-                this.onmessage(ev)
+                this.onmessage && this.onmessage(ev)
             }
         }
     }
@@ -75,7 +74,7 @@ export class Socket {
 
     reConnect() {
 
-        if (this.lockReConnect || this.reConnectCount >= this.options.maxReconnectCount) {
+        if (this.reConnectCount >= this.options.maxReconnectCount) {
             return
         }
 

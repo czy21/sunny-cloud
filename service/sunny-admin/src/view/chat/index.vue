@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-import Simple from './Simple.vue'
+import Simple from './simple.vue'
 
 const sampleType = ref('Simple')
 

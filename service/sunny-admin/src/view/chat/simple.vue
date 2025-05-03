@@ -4,12 +4,14 @@
   <p v-for="t in messages">
     {{ t }}
   </p>
+
+  <el-button @click="pageIteratorFunc">分页迭代</el-button>
 </template>
 
 
 <script setup lang="ts">
 import {ref} from "vue";
-import {socket} from '@sunny-framework-js/core'
+import {socket, util} from '@sunny-framework-js/core'
 
 const status = ref()
 const messages = ref([])
@@ -33,8 +35,19 @@ const onConnect = () => {
     socketObj.value.onmessage = ev => messages.value.push(ev.data)
     status.value = "success"
   }
-
 }
+
+const pageIteratorFunc = async () => {
+  let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  await util.page.forEachPage((pageIndex, pageSize) => {
+    return new Promise(resolve => {
+      return resolve(data.slice((pageIndex - 1) * pageSize, ((pageIndex - 1) * pageSize) + pageSize))
+    })
+  }, async (pageIndex, pageSize, list) => {
+    console.log(pageIndex, pageSize, list)
+  }, 3)
+}
+
 </script>
 
 <style scoped>
