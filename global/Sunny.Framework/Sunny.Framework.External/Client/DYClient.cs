@@ -3,7 +3,7 @@ using Sunny.Framework.External.Client.DY;
 
 namespace Sunny.Framework.External.Client
 {
-    public interface DYClient
+    public interface IDYClient
     {
         // 直播信息 https://developer.open-douyin.com/docs/resource/zh-CN/interaction/develop/server/live/webcastinfo
         [Headers("content-type: application/json")]

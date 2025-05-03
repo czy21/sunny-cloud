@@ -3,7 +3,7 @@ using Sunny.Framework.External.Client.KS;
 
 namespace Sunny.Framework.External.Client
 {
-    public interface KSClient
+    public interface IKSClient
     {
         [Headers("content-type: application/json")]
         [Get("/oauth2/access_token")]

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sunny.Framework.Core.Util;
+using System.Linq.Expressions;
 
 namespace Sunny.Framework.DB.Repository
 {
@@ -25,17 +27,22 @@ namespace Sunny.Framework.DB.Repository
                 var entry = _dbContext.Entry(po);
 
                 string idColumnName = entry.Property("Id").Metadata.GetColumnName();
+                bool primaryIsString = typeof(string) == typeof(K);
 
-                var props = entry.Properties.Where(p => p.CurrentValue != null && p.Metadata.GetColumnName() != idColumnName).ToList();
+                var props = entry.Properties.Where(p => p.CurrentValue != null && (primaryIsString || p.Metadata.GetColumnName() != idColumnName)).ToList();
 
                 string columns = string.Join(",", props.Select(p => p.Metadata.GetColumnName()));
 
                 string values = string.Join(",", Enumerable.Range(0, props.Count).Select(t => $"@p{t}").ToList());
-
-                string sql = $"INSERT INTO {entry.Metadata.GetTableName()} ({columns}) VALUES ({values});SELECT LAST_INSERT_ID() as {idColumnName};";
-
                 object[] parameters = props.Select(p => p.CurrentValue ?? DBNull.Value).ToArray();
+                string sql = $"INSERT INTO {entry.Metadata.GetTableName()} ({columns}) VALUES ({values});";
 
+                if (primaryIsString)
+                {
+                    return await _dbContext.Database.ExecuteSqlRawAsync(sql, parameters);
+                }
+
+                sql += $"SELECT LAST_INSERT_ID() as {idColumnName};";
                 var result = await _dbContext.Database.SqlQueryRaw<K>(sql, parameters).ToListAsync();
                 entry.Property("Id").CurrentValue = result.FirstOrDefault();
                 return await Task.FromResult(result.Count).ConfigureAwait(false);
@@ -102,6 +109,48 @@ namespace Sunny.Framework.DB.Repository
                 if (autoCommit) return await SaveChangesAsync();
             }
             return await Task.FromResult(0).ConfigureAwait(false);
+        }
+
+        public async Task<int> Upsert(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true)
+        {
+
+            var entry = _dbContext.Entry(po);
+
+            string idColumnName = entry.Property("Id").Metadata.GetColumnName();
+            bool primaryIsString = typeof(string) == typeof(K);
+
+            var props = entry.Properties.Where(p => p.CurrentValue != null && (primaryIsString || p.Metadata.GetColumnName() != idColumnName)).ToList();
+
+            string columns = string.Join(",", props.Select(p => p.Metadata.GetColumnName()));
+
+            string values = string.Join(",", Enumerable.Range(0, props.Count).Select(t => $"@p{t}").ToList());
+
+            var updateSets = new HashSet<string>();
+            foreach (var u in updators)
+            {
+                string propName = ReflectionUtil.GetPropertyName(u.Key);
+                string? columnName = props.Where(t => t.Metadata.Name == propName)?.FirstOrDefault()?.Metadata.GetColumnName();
+                updateSets.Add($"{columnName} = {u.Value}");
+            }
+
+            if (!primaryIsString)
+            {
+                updateSets.Add($"{idColumnName} = LAST_INSERT_ID({idColumnName})");
+            }
+
+            var updateSetStr = string.Join(",", updateSets);
+            string sql = $"INSERT INTO {entry.Metadata.GetTableName()} ({columns}) VALUES ({values}) ON DUPLICATE KEY UPDATE {updateSetStr};";
+
+            object[] parameters = props.Select(p => p.CurrentValue ?? DBNull.Value).ToArray();
+
+            if (primaryIsString)
+            {
+                return await _dbContext.Database.ExecuteSqlRawAsync(sql, parameters);
+            }
+            sql += $"SELECT LAST_INSERT_ID() as {idColumnName};";
+            var result = await _dbContext.Database.SqlQueryRaw<K>(sql, parameters).ToListAsync();
+            entry.Property("Id").CurrentValue = result.FirstOrDefault();
+            return await Task.FromResult(result.Count).ConfigureAwait(false);
         }
 
         public async Task<T?> SelectByIdAsync(K id)

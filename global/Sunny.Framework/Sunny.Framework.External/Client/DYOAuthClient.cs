@@ -3,7 +3,7 @@ using Sunny.Framework.External.Client.DY;
 
 namespace Sunny.Framework.External.Client
 {
-    public interface DYOAuthClient
+    public interface IDYOAuthClient
     {
         [Headers("content-type: application/json")]
         [Post("/apps/v2/token")]

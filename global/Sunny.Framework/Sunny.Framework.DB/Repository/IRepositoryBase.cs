@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Sunny.Framework.DB.Repository;
 
@@ -11,6 +12,8 @@ public interface IRepositoryBase<K, T> where T : class
     Task<int> BatchInsertAsync(List<T> pos);
 
     Task<int> UpdateAsync(T po, bool ignoreNull = true, bool autoCommit = true);
+
+    Task<int> Upsert(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true);
 
     Task<T?> SelectByIdAsync(K id);
 
