@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.DependencyInjection;
-using EntityFrameworkCore.Scaffolding.Handlebars;
-using System.Text.Json;
+﻿using EntityFrameworkCore.Scaffolding.Handlebars.Internal;
 using HandlebarsDotNet;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 public class ScaffoldingDesignTimeServices : IDesignTimeServices
 {
@@ -18,9 +15,11 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
             {
             };
         });
-        
+
         var myHelper = (helperName: "json", helperFunction: (Action<EncodedTextWriter, Context, Arguments>)JsonHbsHelper);
         services.AddHandlebarsHelpers(myHelper);
+        services.AddSingleton<ICSharpEntityTypeGenerator, MyHbsCSharpEntityTypeGenerator>();
+        services.AddHandlebarsTransformers2(entityTypeNameTransformer: t => t + "PO",entityFileNameTransformer: t => t + "PO");
     }
 
     private void JsonHbsHelper(EncodedTextWriter writer, Context context, Arguments arg3)

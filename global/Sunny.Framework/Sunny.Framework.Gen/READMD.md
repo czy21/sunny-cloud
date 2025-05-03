@@ -1,9 +1,9 @@
 ```shell
-dotnet ef dbcontext scaffold "Server=" \
-Pomelo.EntityFrameworkCore.MySql \
+rm -rf Generator && dotnet ef dbcontext scaffold "Server=" \
+MySql.EntityFrameworkCore \
 --context-dir Generator/Data \
 --output-dir Generator/Models \
 --context AppDbContext \
---force
+--force \
 -d
 ```

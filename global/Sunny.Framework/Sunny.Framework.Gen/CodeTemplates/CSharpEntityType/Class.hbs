@@ -1,0 +1,14 @@
+﻿{{> imports}}
+
+namespace {{namespace}}
+{
+    {{#if comment}}
+{{comment}}
+    {{/if}}
+    [Table("{{table-name}}")]
+    public class {{class}} : BaseEntity<{{primary-key-type}},string>
+    {
+        {{{> constructor}}}
+        {{{> properties}}}
+    }
+}
