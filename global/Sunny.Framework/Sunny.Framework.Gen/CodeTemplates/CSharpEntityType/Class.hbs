@@ -1,14 +1,13 @@
 ﻿{{> imports}}
 
-namespace {{namespace}}
+namespace {{namespace}}.Domain
 {
     {{#if comment}}
 {{comment}}
     {{/if}}
     [Table("{{table-name}}")]
-    public class {{class}} : BaseEntity<{{primary-key-type}},string>
+    public class {{class}} : BaseEntity<{{primary-key-type}}, string>
     {
-        {{{> constructor}}}
         {{{> properties}}}
     }
 }

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+      <ProjectReference Include="..\Sunny.Framework.DB\Sunny.Framework.DB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0"/>
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0" />

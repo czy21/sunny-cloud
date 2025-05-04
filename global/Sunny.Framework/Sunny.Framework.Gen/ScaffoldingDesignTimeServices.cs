@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars.Internal;
 using HandlebarsDotNet;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 
@@ -18,8 +19,10 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
 
         var myHelper = (helperName: "json", helperFunction: (Action<EncodedTextWriter, Context, Arguments>)JsonHbsHelper);
         services.AddHandlebarsHelpers(myHelper);
-        services.AddSingleton<ICSharpEntityTypeGenerator, MyHbsCSharpEntityTypeGenerator>();
+        services.AddSingleton<IModelCodeGenerator, MyModelGenerator>();
+        services.AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>();
         services.AddHandlebarsTransformers2(entityTypeNameTransformer: t => t + "PO",entityFileNameTransformer: t => t + "PO");
+
     }
 
     private void JsonHbsHelper(EncodedTextWriter writer, Context context, Arguments arg3)

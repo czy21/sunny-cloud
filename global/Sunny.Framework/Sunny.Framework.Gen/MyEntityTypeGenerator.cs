@@ -4,16 +4,21 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 
-public class MyHbsCSharpEntityTypeGenerator : HbsCSharpEntityTypeGenerator
+public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
 {
-    public MyHbsCSharpEntityTypeGenerator(IAnnotationCodeGenerator annotationCodeGenerator, ICSharpHelper cSharpHelper, IEntityTypeTemplateService entityTypeTemplateService, IEntityTypeTransformationService entityTypeTransformationService, IOptions<HandlebarsScaffoldingOptions> options) : base(annotationCodeGenerator, cSharpHelper, entityTypeTemplateService, entityTypeTransformationService, options)
+    private Dictionary<IEntityType, Dictionary<string, object>> EntityTypeTemplateProperties = new Dictionary<IEntityType, Dictionary<string, object>>();
+
+    public MyEntityTypeGenerator(IAnnotationCodeGenerator annotationCodeGenerator, ICSharpHelper cSharpHelper, IEntityTypeTemplateService entityTypeTemplateService, IEntityTypeTransformationService entityTypeTransformationService, IOptions<HandlebarsScaffoldingOptions> options) : base(annotationCodeGenerator, cSharpHelper, entityTypeTemplateService, entityTypeTransformationService, options)
     {
+
     }
 
     protected override void GenerateClass(IEntityType entityType)
     {
         base.GenerateClass(entityType);
+        TemplateData.Add("entity-name", entityType.Name);
         TemplateData.Add("table-name", entityType.GetTableName());
+        EntityTypeTemplateProperties.Add(entityType, TemplateData);
     }
 
     protected override void GenerateProperties(IEntityType entityType)
@@ -40,8 +45,13 @@ public class MyHbsCSharpEntityTypeGenerator : HbsCSharpEntityTypeGenerator
         }
 
         TemplateData.Add("primary-key-type", entityType.GetProperties().Where(t => t.IsPrimaryKey()).Select(t => base.CSharpHelper.Reference(t.ClrType)).FirstOrDefault());
-        
+
         List<string> excludePropertyNames = ["Id", "CreateTime", "CreateUser", "UpdateTime", "UpdateUser", "Deleted"];
         properties.RemoveAll(t => excludePropertyNames.Contains(t["property-name"]));
+    }
+
+    public Dictionary<IEntityType, Dictionary<string, object>> GetEntityTypeTemplateProperties()
+    {
+        return EntityTypeTemplateProperties;
     }
 }
