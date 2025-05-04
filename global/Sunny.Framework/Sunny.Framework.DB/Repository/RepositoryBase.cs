@@ -111,7 +111,7 @@ namespace Sunny.Framework.DB.Repository
             return await Task.FromResult(0).ConfigureAwait(false);
         }
 
-        public async Task<int> Upsert(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true)
+        public async Task<int> UpsertAsync(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true)
         {
 
             var entry = _dbContext.Entry(po);
@@ -125,20 +125,23 @@ namespace Sunny.Framework.DB.Repository
 
             string values = string.Join(",", Enumerable.Range(0, props.Count).Select(t => $"@p{t}").ToList());
 
-            var updateSets = new HashSet<string>();
-            foreach (var u in updators)
-            {
-                string propName = ReflectionUtil.GetPropertyName(u.Key);
-                string? columnName = props.Where(t => t.Metadata.Name == propName)?.FirstOrDefault()?.Metadata.GetColumnName();
-                updateSets.Add($"{columnName} = {u.Value}");
-            }
+            var updateSets = new Dictionary<string, string>();
 
             if (!primaryIsString)
             {
-                updateSets.Add($"{idColumnName} = LAST_INSERT_ID({idColumnName})");
+                updateSets[idColumnName] = $"LAST_INSERT_ID({idColumnName})";
             }
 
-            var updateSetStr = string.Join(",", updateSets);
+            foreach (var u in updators)
+            {
+                string propertyName = ReflectionUtil.GetPropertyName(u.Key);
+                string? columnName = props.Where(t => t.Metadata.Name == propertyName)?.FirstOrDefault()?.Metadata.GetColumnName();
+                if (columnName != null)
+                {
+                    updateSets[columnName] = u.Value;
+                }
+            }
+            var updateSetStr =  string.Join(",", updateSets.Select(t => $"{t.Key} = {t.Value}"));
             string sql = $"INSERT INTO {entry.Metadata.GetTableName()} ({columns}) VALUES ({values}) ON DUPLICATE KEY UPDATE {updateSetStr};";
 
             object[] parameters = props.Select(p => p.CurrentValue ?? DBNull.Value).ToArray();

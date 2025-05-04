@@ -41,10 +41,15 @@ public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
                 {
                     p["property-type"] = propertyType + "?";
                 }
+                p["field-type"] = ((string)p["property-type"]).Replace("?", "");
             }
         }
 
-        TemplateData.Add("primary-key-type", entityType.GetProperties().Where(t => t.IsPrimaryKey()).Select(t => base.CSharpHelper.Reference(t.ClrType)).FirstOrDefault());
+        TemplateData.Add("primary-key-type", entityType.GetProperties().Where(t => t.IsPrimaryKey()).Select(t => base.CSharpHelper.Reference(t.ClrType)).FirstOrDefault()+"?");
+
+        List<Dictionary<string, object>> propertiesAll = new List<Dictionary<string, object>>((List<Dictionary<string, object>>)TemplateData["properties"]);
+
+        TemplateData.Add("propertiesAll", propertiesAll);
 
         List<string> excludePropertyNames = ["Id", "CreateTime", "CreateUser", "UpdateTime", "UpdateUser", "Deleted"];
         properties.RemoveAll(t => excludePropertyNames.Contains(t["property-name"]));

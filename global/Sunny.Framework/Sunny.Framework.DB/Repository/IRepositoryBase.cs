@@ -13,7 +13,7 @@ public interface IRepositoryBase<K, T> where T : class
 
     Task<int> UpdateAsync(T po, bool ignoreNull = true, bool autoCommit = true);
 
-    Task<int> Upsert(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true);
+    Task<int> UpsertAsync(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true);
 
     Task<T?> SelectByIdAsync(K id);
 
