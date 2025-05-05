@@ -1,9 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nacos.V2.DependencyInjection;
 using NLog.Web;
+using Sunny.Framework.Web.Json;
+using System.Text.Json.Serialization;
 
 namespace Sunny.Framework.Web
 {
@@ -15,13 +20,30 @@ namespace Sunny.Framework.Web
 
             builder.ConfigureLogging(c => c.ClearProviders()).UseNLog();
 
+            builder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
             return builder;
         }
 
         public static IServiceCollection AddWebConfigure(this IServiceCollection services, IConfiguration config)
         {
             services.AddNacosV2Config(config, null, "NacosConfig");
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingDateTimeParse("yyyy-MM-dd HH:mm:ss"));
+            });
+
+            services.AddHealthChecks();
+
             return services;
         }
+
+        public static IEndpointConventionBuilder UseWebHealthCheck(this IEndpointRouteBuilder endpoints)
+        {
+            return endpoints.MapHealthChecks("/actuator/health");
+        }
+
     }
 }

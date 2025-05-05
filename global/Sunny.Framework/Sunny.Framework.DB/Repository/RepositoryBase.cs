@@ -6,7 +6,7 @@ namespace Sunny.Framework.DB.Repository
 {
     public class RepositoryBase<K, T> : IRepositoryBase<K, T> where T : class
     {
-        protected readonly DbContext _dbContext;
+        DbContext _dbContext;
         protected readonly DbSet<T> _dbSet;
 
         public RepositoryBase(DbContext context)
@@ -141,7 +141,7 @@ namespace Sunny.Framework.DB.Repository
                     updateSets[columnName] = u.Value;
                 }
             }
-            var updateSetStr =  string.Join(",", updateSets.Select(t => $"{t.Key} = {t.Value}"));
+            var updateSetStr = string.Join(",", updateSets.Select(t => $"{t.Key} = {t.Value}"));
             string sql = $"INSERT INTO {entry.Metadata.GetTableName()} ({columns}) VALUES ({values}) ON DUPLICATE KEY UPDATE {updateSetStr};";
 
             object[] parameters = props.Select(p => p.CurrentValue ?? DBNull.Value).ToArray();
