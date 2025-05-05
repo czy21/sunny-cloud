@@ -24,13 +24,4 @@ namespace {{namespace}}.Domain
             };
         }
     }
-    public class {{class}}Map : EntityMap<{{class}}>
-    {
-        public {{class}}Map()
-        {
-          {{#each propertiesAll}}
-            Map(m => m.{{property-name}}).ToColumn("{{column-name}}");
-          {{/each}}
-        }
-    }
 }
