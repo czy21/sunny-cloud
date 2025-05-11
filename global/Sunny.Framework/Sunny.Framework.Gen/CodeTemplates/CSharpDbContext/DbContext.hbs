@@ -6,14 +6,5 @@ namespace {{namespace}}.Repository
     {
 {{{> dbconstructor}}}
 {{{> dbsets}}}
-
-        public static void InitMap(){
-            FluentMapper.Initialize(t =>
-            {
-                {{#each dbsets}}
-                t.AddMap(new {{set-property-type}}Map());
-                {{/each}}
-            });
-        }
     }
 }
