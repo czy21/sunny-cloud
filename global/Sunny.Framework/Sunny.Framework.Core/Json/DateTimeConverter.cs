@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sunny.Framework.Web.Json
+namespace Sunny.Framework.Core.Json
 {
     public class DateTimeConverterUsingDateTimeParse(string format) : JsonConverter<DateTime>
     {

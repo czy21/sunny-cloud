@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nacos.V2.DependencyInjection;
 using NLog.Web;
-using Sunny.Framework.Web.Json;
+using Sunny.Framework.Core.Json;
 using System.Text.Json.Serialization;
 
 namespace Sunny.Framework.Web

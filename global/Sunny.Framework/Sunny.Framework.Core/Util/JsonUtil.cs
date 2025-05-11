@@ -1,5 +1,7 @@
-﻿using System.Text.Encodings.Web;
+﻿using Sunny.Framework.Core.Json;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WishServer.Util
 {
@@ -9,8 +11,13 @@ namespace WishServer.Util
         public static readonly JsonSerializerOptions JSON_SERIALIZER_OPTIONS = new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            //DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         };
+
+        static JsonUtil()
+        {
+            JSON_SERIALIZER_OPTIONS.Converters.Add(new DateTimeConverterUsingDateTimeParse("yyyy-MM-dd HH:mm:ss"));
+        }
 
         public static string Serialize<TValue>(TValue value)
         {
