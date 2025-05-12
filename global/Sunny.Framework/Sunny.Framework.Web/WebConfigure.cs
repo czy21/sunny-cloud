@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Nacos.V2.DependencyInjection;
 using NLog.Web;
 using Sunny.Framework.Core.Json;
+using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 
 namespace Sunny.Framework.Web
@@ -31,6 +32,7 @@ namespace Sunny.Framework.Web
 
             services.AddControllers().AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 options.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingDateTimeParse("yyyy-MM-dd HH:mm:ss"));
             });
