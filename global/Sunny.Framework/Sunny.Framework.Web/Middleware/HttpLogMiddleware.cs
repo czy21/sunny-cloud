@@ -26,7 +26,7 @@ namespace Sunny.Framework.Web.Middleware
                 context.Request.Method,
                 context.Request.Path,
                 JsonUtil.Serialize(context.Request.Headers),
-                context.Request.Headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.ToString().ToLower().Contains("application/json") ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody)) : requestBody);
+                context.Request.Headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.ToString().Contains("application/json", StringComparison.CurrentCultureIgnoreCase) ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody)) : requestBody);
 
             var originalBodyStream = context.Response.Body;
             using var responseBody = new MemoryStream();

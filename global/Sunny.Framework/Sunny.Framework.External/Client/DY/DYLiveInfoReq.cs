@@ -1,6 +1,6 @@
 ﻿namespace Sunny.Framework.External.Client.DY
 {
-    public class DYWebCastInfoReq
+    public class DYLiveInfoReq
     {
         public string token { get; set; }
     }

@@ -9,8 +9,19 @@ namespace Sunny.Framework.External.Client
         [Get("/oauth2/access_token")]
         Task<KSAccessTokenRes> GetAccessToken([Query] KSAccessTokenReq param);
 
+        // 直播信息: https://docs.qingque.cn/d/home/eZQDI-eILgkZm7C_1srSIhO8Y?identityId=20QDYkVmxXQ#section=h.hkhux256an8q
+        [Headers("content-type: application/json")]
+        [Post("/openapi/developer/live/data/interactive/live/stream/info")]
+        Task<KSLiveInfoRes> GetLiveInfo([Query("app_id")] string appId, [Query("access_token")] string accessToken, [Body] Dictionary<string, object> param);
+
+        // 推送任务: https://docs.qingque.cn/d/home/eZQD5kc0s4EA3C-XlYKi-9_-M?identityId=20QDYkVmxXQ#section=h.m0gicdoofhrp
         [Headers("content-type: application/json")]
         [Post("/openapi/developer/live/smallPlay/bind")]
-        Task<KSBindRes> Bind([Query("app_id")] string appId, [Query("access_token")] string accessToken, [Body] Dictionary<string, object> req);
+        Task<KSResult> Bind([Query("app_id")] string appId, [Query("access_token")] string accessToken, [Body] Dictionary<string, object> param);
+
+        // 消息确认: https://docs.qingque.cn/d/home/eZQBAXkHcoW9Zs2Xu9JaNDTTw?identityId=20QDYkVmxXQ#section=h.wybd5zfvl9nt
+        [Headers("content-type: application/json")]
+        [Post("/openapi/developer/live/data/interactive/ack/receive")]
+        Task<KSResult> Ack([Query("app_id")] string appId, [Query("access_token")] string accessToken, [Body] Dictionary<string, object> param);
     }
 }
