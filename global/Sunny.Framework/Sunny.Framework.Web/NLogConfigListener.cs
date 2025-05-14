@@ -1,18 +1,14 @@
-﻿using System.Collections;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Config;
-using NLog.Targets;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using LogLevel = NLog.LogLevel;
 
 namespace Sunny.Framework.Web;
 
 public class NLogConfigListener(IOptionsMonitor<LoggerFilterOptions> logLevelOptions) : BackgroundService
 {
-    
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logLevelOptions.OnChange(_ => { ReloadRules(); });
@@ -31,14 +27,14 @@ public class NLogConfigListener(IOptionsMonitor<LoggerFilterOptions> logLevelOpt
         foreach (var r in logLevelOptions.CurrentValue.Rules.Where(t => !string.IsNullOrEmpty(t.CategoryName)))
         {
             var mLogLevel = (int?)r.LogLevel;
-            var nLogLevel = NLog.LogLevel.AllLevels.FirstOrDefault(t => t.Ordinal.Equals(mLogLevel));
+            var nLogLevel = LogLevel.AllLevels.FirstOrDefault(t => t.Ordinal.Equals(mLogLevel));
 
             foreach (var dr in configDefaultRules)
             {
                 var nLogRule = new LoggingRule
                 {
                     LoggerNamePattern = r.CategoryName,
-                    FinalMinLevel = nLogLevel,
+                    FinalMinLevel = nLogLevel
                 };
                 dr.Targets.ToList().ForEach(t => nLogRule.Targets.Add(t));
                 dr.Filters.ToList().ForEach(t => nLogRule.Filters.Add(t));

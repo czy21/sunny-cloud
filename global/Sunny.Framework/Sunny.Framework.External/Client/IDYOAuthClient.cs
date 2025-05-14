@@ -1,12 +1,11 @@
 ﻿using Refit;
 using Sunny.Framework.External.Client.DY;
 
-namespace Sunny.Framework.External.Client
+namespace Sunny.Framework.External.Client;
+
+public interface IDYOAuthClient
 {
-    public interface IDYOAuthClient
-    {
-        [Headers("content-type: application/json")]
-        [Post("/apps/v2/token")]
-        Task<DYAccessTokenRes> GetAccessToken([Body] DYAccessTokenReq param);
-    }
+    [Headers("content-type: application/json")]
+    [Post("/apps/v2/token")]
+    Task<DYAccessTokenRes> GetAccessToken([Body] DYAccessTokenReq param);
 }

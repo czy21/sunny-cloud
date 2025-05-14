@@ -1,12 +1,11 @@
-﻿using EntityFrameworkCore.Scaffolding.Handlebars;
+﻿using System.Text.Json;
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using EntityFrameworkCore.Scaffolding.Handlebars.Internal;
 using HandlebarsDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
 public class ScaffoldingDesignTimeServices : IDesignTimeServices
 {
@@ -15,9 +14,7 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
         services.AddHandlebarsScaffolding(options =>
         {
             options.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
-            options.TemplateData = new Dictionary<string, object>
-            {
-            };
+            options.TemplateData = new Dictionary<string, object>();
         });
 
         var jsonHelper = (helperName: "json", helperFunction: (Action<EncodedTextWriter, Context, Arguments>)JsonHbsHelper);
@@ -27,29 +24,24 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
         services.AddSingleton<IModelCodeGenerator, MyModelGenerator>();
         services.AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>();
         services.AddHandlebarsTransformers2(
-            entityTypeNameTransformer: t => t + "PO",
-            entityFileNameTransformer: t => t + "PO",
+            t => t + "PO",
+            t => t + "PO",
             propertyTransformer: (m, p) =>
             {
-                IProperty property = m.GetProperties().Where(t => t.Name == p.PropertyName).FirstOrDefault();
+                var property = m.GetProperties().Where(t => t.Name == p.PropertyName).FirstOrDefault();
                 if (property != null)
                 {
-                    if (property.GetColumnType().StartsWith("bit"))
-                    {
-                        return new EntityPropertyInfo("bool", p.PropertyName, p.PropertyIsNullable);
-                    }
-                    if (property.GetColumnType().StartsWith("tinyint")) {
-                        return new EntityPropertyInfo("int", p.PropertyName, p.PropertyIsNullable);
-                    }
+                    if (property.GetColumnType().StartsWith("bit")) return new EntityPropertyInfo("bool", p.PropertyName, p.PropertyIsNullable);
+                    if (property.GetColumnType().StartsWith("tinyint")) return new EntityPropertyInfo("int", p.PropertyName, p.PropertyIsNullable);
                 }
+
                 return new EntityPropertyInfo(p.PropertyType, p.PropertyName, p.PropertyIsNullable);
             });
-
     }
 
     private void JsonHbsHelper(EncodedTextWriter writer, Context context, Arguments arguments)
     {
-        var json = System.Text.Json.JsonSerializer.Serialize(arguments[0], new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(arguments[0], new JsonSerializerOptions { WriteIndented = true });
         writer.WriteSafeString(json);
     }
 
@@ -65,12 +57,8 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
         var val2 = arguments[1]?.ToString();
 
         if (val1 == val2)
-        {
             options.Template(writer, context); // render the block
-        }
         else
-        {
             options.Inverse(writer, context); // render the {{else}} block
-        }
     }
 }

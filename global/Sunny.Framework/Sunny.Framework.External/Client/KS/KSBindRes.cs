@@ -1,6 +1,5 @@
-﻿namespace Sunny.Framework.External.Client.KS
+﻿namespace Sunny.Framework.External.Client.KS;
+
+public class KSBindRes : KSResult
 {
-    public class KSBindRes : KSResult
-    {
-    }
 }

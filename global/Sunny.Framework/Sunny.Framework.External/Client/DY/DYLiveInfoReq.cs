@@ -1,7 +1,6 @@
-﻿namespace Sunny.Framework.External.Client.DY
+﻿namespace Sunny.Framework.External.Client.DY;
+
+public class DYLiveInfoReq
 {
-    public class DYLiveInfoReq
-    {
-        public string token { get; set; }
-    }
+    public string token { get; set; }
 }

@@ -8,8 +8,8 @@ using Microsoft.Extensions.Options;
 
 public class MyModelGenerator : HbsCSharpModelGenerator
 {
-    IOptions<HandlebarsScaffoldingOptions> _options;
-    MyEntityTypeGenerator _entityTypeGenerator;
+    private readonly MyEntityTypeGenerator _entityTypeGenerator;
+    private readonly IOptions<HandlebarsScaffoldingOptions> _options;
 
     public MyModelGenerator(ModelCodeGeneratorDependencies dependencies, ICSharpDbContextGenerator cSharpDbContextGenerator, ICSharpEntityTypeGenerator cSharpEntityTypeGenerator, IHbsHelperService handlebarsHelperService, IHbsBlockHelperService handlebarsBlockHelperService, IDbContextTemplateService dbContextTemplateService, IEntityTypeTemplateService entityTypeTemplateService, IEntityTypeTransformationService entityTypeTransformationService, IContextTransformationService contextTransformationService, ICSharpHelper cSharpHelper, IOptions<HandlebarsScaffoldingOptions> options) : base(dependencies, cSharpDbContextGenerator, cSharpEntityTypeGenerator, handlebarsHelperService, handlebarsBlockHelperService, dbContextTemplateService, entityTypeTemplateService, entityTypeTransformationService, contextTransformationService, cSharpHelper, options)
     {
@@ -34,9 +34,9 @@ public class MyModelGenerator : HbsCSharpModelGenerator
     {
         return Handlebars.Compile(File.ReadAllText("CodeTemplates/Repository/IRepository.hbs"))(data);
     }
+
     private string GenerateRepositoryCode(IEntityType entityType, Dictionary<string, object> data)
     {
         return Handlebars.Compile(File.ReadAllText("CodeTemplates/Repository/Repository.hbs"))(data);
     }
 }
-

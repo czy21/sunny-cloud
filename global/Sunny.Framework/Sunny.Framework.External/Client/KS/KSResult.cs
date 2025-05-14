@@ -1,8 +1,7 @@
-﻿namespace Sunny.Framework.External.Client.KS
+﻿namespace Sunny.Framework.External.Client.KS;
+
+public class KSResult
 {
-    public class KSResult
-    {
-        public int? result { get; set; }
-        public string errorMsg { get; set; }
-    }
+    public int? result { get; set; }
+    public string errorMsg { get; set; }
 }

@@ -1,65 +1,54 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using WishServer.Util;
 
-namespace Sunny.Framework.Web.Middleware
+namespace Sunny.Framework.Web.Middleware;
+
+public class RefitLogHandler : DelegatingHandler
 {
-    using Microsoft.Extensions.Logging;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Net.Http;
-    using WishServer.Util;
+    private readonly ILogger<RefitLogHandler> _logger;
 
-    public class RefitLogHandler : DelegatingHandler
+    public RefitLogHandler(ILogger<RefitLogHandler> logger)
     {
-        private readonly ILogger<RefitLogHandler> _logger;
+        _logger = logger;
+    }
 
-        public RefitLogHandler(ILogger<RefitLogHandler> logger)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        var headers = new SortedDictionary<string, string>();
+        string requestBody = null;
+
+        foreach (var t in request.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
+
+        if (request.Content != null)
         {
-            _logger = logger;
+            foreach (var t in request.Content.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
+
+            requestBody = await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var stopwatch = Stopwatch.StartNew();
+        _logger.LogDebug("[Refit Request] {Method} {Path}\nHeaders: {Headers}\nBody: {Body}",
+            request.Method,
+            request.RequestUri,
+            JsonUtil.Serialize(headers, true),
+            headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.Contains("application/json", StringComparison.CurrentCultureIgnoreCase) ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody), true) : requestBody
+        );
 
-            var headers = new SortedDictionary<string, string>();
-            string requestBody = null;
+        var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            foreach (var t in request.Headers)
-            {
-                headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
-            }
+        var responseBody = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-            if (request.Content != null)
-            {
-                foreach (var t in request.Content.Headers)
-                {
-                    headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
-                }
+        stopwatch.Stop();
+        _logger.LogDebug("[Refit Response] {Method} {Path} - {StatusCode} {Duration}ms \nBody: {Body}",
+            request.Method,
+            request.RequestUri,
+            (int)response.StatusCode,
+            stopwatch.ElapsedMilliseconds,
+            responseBody
+        );
 
-                requestBody = await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-            }
-
-            _logger.LogDebug("[Refit Request] {Method} {Path}\nHeaders: {Headers}\nBody: {Body}",
-                request.Method,
-                request.RequestUri,
-                JsonUtil.Serialize(headers, true),
-                headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.Contains("application/json", StringComparison.CurrentCultureIgnoreCase) ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody), true) : requestBody
-            );
-
-            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-
-            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
-            stopwatch.Stop();
-            _logger.LogDebug("[Refit Response] {Method} {Path} - {StatusCode} {Duration}ms \nBody: {Body}",
-                request.Method,
-                request.RequestUri,
-                (int)response.StatusCode,
-                stopwatch.ElapsedMilliseconds,
-                responseBody
-            );
-
-            return response;
-        }
+        return response;
     }
 }

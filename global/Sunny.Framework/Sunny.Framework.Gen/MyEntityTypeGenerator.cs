@@ -6,11 +6,10 @@ using Microsoft.Extensions.Options;
 
 public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
 {
-    private Dictionary<IEntityType, Dictionary<string, object>> EntityTypeTemplateProperties = new Dictionary<IEntityType, Dictionary<string, object>>();
+    private readonly Dictionary<IEntityType, Dictionary<string, object>> EntityTypeTemplateProperties = new();
 
     public MyEntityTypeGenerator(IAnnotationCodeGenerator annotationCodeGenerator, ICSharpHelper cSharpHelper, IEntityTypeTemplateService entityTypeTemplateService, IEntityTypeTransformationService entityTypeTransformationService, IOptions<HandlebarsScaffoldingOptions> options) : base(annotationCodeGenerator, cSharpHelper, entityTypeTemplateService, entityTypeTransformationService, options)
     {
-
     }
 
     protected override void GenerateClass(IEntityType entityType)
@@ -25,32 +24,22 @@ public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
     {
         base.GenerateProperties(entityType);
         var propertyNameColumnNameDict = entityType.GetProperties().ToDictionary(p => p.Name, p => p.GetColumnName());
-        List<Dictionary<string, object>> properties = (List<Dictionary<string, object>>)TemplateData["properties"];
+        var properties = (List<Dictionary<string, object>>)TemplateData["properties"];
         foreach (var t in propertyNameColumnNameDict)
+        foreach (var p in properties)
         {
-            foreach (var p in properties)
-            {
-                string propertyName = (string)p["property-name"];
-                string propertyType = (string)p["property-type"];
-                if (propertyName == t.Key)
-                {
-                    p["column-name"] = t.Value;
-                }
+            var propertyName = (string)p["property-name"];
+            var propertyType = (string)p["property-type"];
+            if (propertyName == t.Key) p["column-name"] = t.Value;
 
-                if (!propertyType.EndsWith("?"))
-                {
-                    p["property-type"] = propertyType + "?";
-                }
-                if (propertyType.StartsWith("string")){
-                    p["property-type"] = "string";
-                }
-                p["field-type"] = ((string)p["property-type"]).Replace("?", "");
-            }
+            if (!propertyType.EndsWith("?")) p["property-type"] = propertyType + "?";
+            if (propertyType.StartsWith("string")) p["property-type"] = "string";
+            p["field-type"] = ((string)p["property-type"]).Replace("?", "");
         }
 
-        TemplateData.Add("primary-key-type", entityType.GetProperties().Where(t => t.IsPrimaryKey()).Select(t => base.CSharpHelper.Reference(t.ClrType)).FirstOrDefault()+"?");
+        TemplateData.Add("primary-key-type", entityType.GetProperties().Where(t => t.IsPrimaryKey()).Select(t => CSharpHelper.Reference(t.ClrType)).FirstOrDefault() + "?");
 
-        List<Dictionary<string, object>> propertiesAll = new List<Dictionary<string, object>>((List<Dictionary<string, object>>)TemplateData["properties"]);
+        var propertiesAll = new List<Dictionary<string, object>>((List<Dictionary<string, object>>)TemplateData["properties"]);
 
         TemplateData.Add("propertiesAll", propertiesAll);
 
