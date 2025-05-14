@@ -18,7 +18,7 @@ namespace Sunny.Framework.Web
         public static IHostBuilder UseWebConfigure(this IHostBuilder builder)
         {
             builder.UseNacosConfig("NacosConfig");
-
+            
             builder.ConfigureLogging(c => c.ClearProviders()).UseNLog();
 
             builder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -30,6 +30,7 @@ namespace Sunny.Framework.Web
         {
             services.AddNacosV2Config(config, null, "NacosConfig");
 
+            services.AddHostedService<NLogConfigListener>();
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;

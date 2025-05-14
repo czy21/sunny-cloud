@@ -13,21 +13,23 @@ namespace Sunny.Framework.External.Client
         #region 消息推送任务: https://bytedance.larkoffice.com/wiki/wikcnQe5jesCAbyUzsGx8xQeBNh
         [Headers("content-type: application/json")]
         [Post("/live_data/task/start")]
-        Task<DYLiveDataTaskRes> StartTaskPush([Body] DYLiveDataTaskReq param, [Header("X-Token")] string accessToken);
+        Task<DYLiveDataTaskRes> StartTaskPush([Body] DYLiveDataTaskReq param, [Header("access-token")] string accessToken);
 
         [Headers("content-type: application/json")]
         [Post("/live_data/task/stop")]
-        Task<DYLiveDataTaskRes> StopTaskPush([Body] DYLiveDataTaskReq param, [Header("X-Token")] string accessToken);
+        Task<DYLiveDataTaskRes> StopTaskPush([Body] DYLiveDataTaskReq param, [Header("access-token")] string accessToken);
 
         [Headers("content-type: application/json")]
         [Post("/live_data/task/get")]
-        Task<DYLiveDataTaskRes> GetTaskStatus([Body] DYLiveDataTaskReq param, [Header("X-Token")] string accessToken);
+        Task<DYLiveDataTaskRes> GetTaskStatus([Body] DYLiveDataTaskReq param, [Header("access-token")] string accessToken);
+
         #endregion
 
         // 履约上报: https://developer.open-douyin.com/docs/resource/zh-CN/interaction/develop/server/live/ack-ability
         [Headers("content-type: application/json")]
         [Post("/live_data/ack")]
         Task<DYLiveDataAckRes> Ack([Body] DYLiveDataAckReq param, [Header("access-token")] string accessToken);
+        
 
         #region 用户战绩与排行榜: https://developer.open-douyin.com/docs/resource/zh-CN/interaction/develop/server/live/user-records-rankings
         // 设置当前生效的世界榜单版本
