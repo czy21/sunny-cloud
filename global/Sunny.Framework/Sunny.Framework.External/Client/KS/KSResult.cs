@@ -3,6 +3,6 @@
     public class KSResult
     {
         public int? result { get; set; }
-        public string? errorMsg { get; set; }
+        public string errorMsg { get; set; }
     }
 }

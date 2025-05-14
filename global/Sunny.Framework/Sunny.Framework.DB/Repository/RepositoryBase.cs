@@ -68,7 +68,7 @@ namespace Sunny.Framework.DB.Repository
             int i = 0;
 
             var vars = new List<string>();
-            var vals = new List<object?>();
+            var vals = new List<object>();
 
             foreach (var t in pos)
             {
@@ -87,7 +87,7 @@ namespace Sunny.Framework.DB.Repository
             {
                 var entry = _dbContext.Entry(po);
 
-                object? idValue = entry.Property("Id").CurrentValue;
+                object idValue = entry.Property("Id").CurrentValue;
 
                 if (idValue == null) return await Task.FromResult(0).ConfigureAwait(false);
 
@@ -111,7 +111,7 @@ namespace Sunny.Framework.DB.Repository
             return await Task.FromResult(0).ConfigureAwait(false);
         }
 
-        public async Task<int> UpsertAsync(T po, Dictionary<Expression<Func<T, object?>>, string> updators, bool ignoreNull = true, bool autoCommit = true)
+        public async Task<int> UpsertAsync(T po, Dictionary<Expression<Func<T, object>>, string> updators, bool ignoreNull = true, bool autoCommit = true)
         {
 
             var entry = _dbContext.Entry(po);
@@ -135,7 +135,7 @@ namespace Sunny.Framework.DB.Repository
             foreach (var u in updators)
             {
                 string propertyName = ReflectionUtil.GetPropertyName(u.Key);
-                string? columnName = props.Where(t => t.Metadata.Name == propertyName)?.FirstOrDefault()?.Metadata.GetColumnName();
+                string columnName = props.Where(t => t.Metadata.Name == propertyName)?.FirstOrDefault()?.Metadata.GetColumnName();
                 if (columnName != null)
                 {
                     updateSets[columnName] = u.Value;
@@ -156,7 +156,7 @@ namespace Sunny.Framework.DB.Repository
             return await Task.FromResult(result.Count).ConfigureAwait(false);
         }
 
-        public async Task<T?> SelectByIdAsync(K id)
+        public async Task<T> SelectByIdAsync(K id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }

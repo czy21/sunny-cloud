@@ -33,17 +33,17 @@ namespace WishServer.Util
             return JsonSerializer.Serialize(value, writeIndented? JSON_SERIALIZER_FORMATED_OPTIONS:JSON_SERIALIZER_OPTIONS);
         }
 
-        public static TValue? Deserialize<TValue>(string json)
+        public static TValue Deserialize<TValue>(string json)
         {
             return JsonSerializer.Deserialize<TValue>(json, JSON_SERIALIZER_OPTIONS);
         }
 
-        public static TValue? Deserialize<TValue>(JsonElement element)
+        public static TValue Deserialize<TValue>(JsonElement element)
         {
             return JsonSerializer.Deserialize<TValue>(element, JSON_SERIALIZER_OPTIONS);
         }
 
-        public static object? Deserialize(JsonElement element, Type returnType)
+        public static object Deserialize(JsonElement element, Type returnType)
         {
             return JsonSerializer.Deserialize(element, returnType, JSON_SERIALIZER_OPTIONS);
         }

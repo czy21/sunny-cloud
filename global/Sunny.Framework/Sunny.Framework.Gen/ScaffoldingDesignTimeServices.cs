@@ -31,7 +31,7 @@ public class ScaffoldingDesignTimeServices : IDesignTimeServices
             entityFileNameTransformer: t => t + "PO",
             propertyTransformer: (m, p) =>
             {
-                IProperty? property = m.GetProperties().Where(t => t.Name == p.PropertyName).FirstOrDefault();
+                IProperty property = m.GetProperties().Where(t => t.Name == p.PropertyName).FirstOrDefault();
                 if (property != null)
                 {
                     if (property.GetColumnType().StartsWith("bit"))

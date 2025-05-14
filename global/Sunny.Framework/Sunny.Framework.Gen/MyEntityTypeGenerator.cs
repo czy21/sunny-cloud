@@ -41,6 +41,9 @@ public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
                 {
                     p["property-type"] = propertyType + "?";
                 }
+                if (propertyType.StartsWith("string")){
+                    p["property-type"] = "string";
+                }
                 p["field-type"] = ((string)p["property-type"]).Replace("?", "");
             }
         }
