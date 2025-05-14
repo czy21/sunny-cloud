@@ -25,8 +25,8 @@ namespace Sunny.Framework.Web.Middleware
             _logger.LogDebug("[HTTP Request] {Method} {Path}\nHeaders: {Headers}\nBody: {Body}",
                 context.Request.Method,
                 context.Request.Path,
-                JsonUtil.Serialize(context.Request.Headers),
-                context.Request.Headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.ToString().Contains("application/json", StringComparison.CurrentCultureIgnoreCase) ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody)) : requestBody);
+                JsonUtil.Serialize(context.Request.Headers.ToDictionary(t => t.Key, t => string.Join("; ", t.Value.ToArray())), true),
+                context.Request.Headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.ToString().Contains("application/json", StringComparison.CurrentCultureIgnoreCase) ? JsonUtil.Serialize(JsonUtil.Deserialize<object>(requestBody), true) : requestBody);
 
             var originalBodyStream = context.Response.Body;
             using var responseBody = new MemoryStream();
