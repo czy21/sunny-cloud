@@ -31,11 +31,11 @@ public class NLogConfigListener(IOptionsMonitor<LoggerFilterOptions> logLevelOpt
 
             foreach (var dr in configDefaultRules)
             {
-                var nLogRule = new LoggingRule
+                var nLogRule = new LoggingRule(r.CategoryName, nLogLevel, null)
                 {
-                    LoggerNamePattern = r.CategoryName,
                     FinalMinLevel = nLogLevel
                 };
+                nLogRule.Targets.Clear();
                 dr.Targets.ToList().ForEach(t => nLogRule.Targets.Add(t));
                 dr.Filters.ToList().ForEach(t => nLogRule.Filters.Add(t));
                 config.LoggingRules.Add(nLogRule);

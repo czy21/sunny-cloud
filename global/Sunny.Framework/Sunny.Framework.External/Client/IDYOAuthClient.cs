@@ -5,7 +5,6 @@ namespace Sunny.Framework.External.Client;
 
 public interface IDYOAuthClient
 {
-    [Headers("content-type: application/json")]
     [Post("/apps/v2/token")]
     Task<DYAccessTokenRes> GetAccessToken([Body] DYAccessTokenReq param);
 }
