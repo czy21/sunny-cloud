@@ -5,8 +5,6 @@ namespace Sunny.Framework.Core.Json;
 
 public class DateTimeConverterUsingDateTimeParse(string format) : JsonConverter<DateTime>
 {
-    private readonly string _format = format;
-
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return DateTime.Parse(reader.GetString()!);
@@ -14,6 +12,6 @@ public class DateTimeConverterUsingDateTimeParse(string format) : JsonConverter<
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue(value.ToString(_format));
+        writer.WriteStringValue(value.ToString(format));
     }
 }

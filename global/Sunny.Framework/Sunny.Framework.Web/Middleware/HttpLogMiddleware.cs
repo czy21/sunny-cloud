@@ -19,6 +19,12 @@ public class HttpLogMiddleware
 
     public async Task Invoke(HttpContext context)
     {
+        if (_logger.IsEnabled(LogLevel.None))
+        {
+            await _next(context);
+            return;
+        }
+
         var stopwatch = Stopwatch.StartNew();
 
         var headers = context.Request.Headers
@@ -37,7 +43,7 @@ public class HttpLogMiddleware
             }
         }
 
-        var requestMsg = "[HTTP Request] {Method} {Path}";
+        var requestMsg = "[HTTP Request ] {Method} {Path}";
         var requestMsgArgs = new ArrayList { context.Request.Method, context.Request.Path };
 
         if (_logger.IsEnabled(LogLevel.Debug))

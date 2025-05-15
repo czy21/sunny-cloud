@@ -16,6 +16,11 @@ public class RefitLogHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        if (_logger.IsEnabled(LogLevel.None))
+        {
+            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        }
+        
         var stopwatch = Stopwatch.StartNew();
 
         var headers = new SortedDictionary<string, string>();
@@ -36,7 +41,7 @@ public class RefitLogHandler : DelegatingHandler
             }
         }
 
-        var requestMsg = "[Refit Request] {Method} {Path}";
+        var requestMsg = "[Refit Request ] {Method} {Path}";
         var requestMsgArgs = new ArrayList { request.Method, request.RequestUri };
         
         if (_logger.IsEnabled(LogLevel.Debug))
