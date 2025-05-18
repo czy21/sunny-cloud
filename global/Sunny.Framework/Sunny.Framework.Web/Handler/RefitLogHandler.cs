@@ -16,41 +16,33 @@ public class RefitLogHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        if (_logger.IsEnabled(LogLevel.None))
-        {
-            return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        }
-        
+        var traceId = Guid.NewGuid().ToString();
         var stopwatch = Stopwatch.StartNew();
 
-        var headers = new SortedDictionary<string, string>();
-        var requestBody = "";
-
-        foreach (var t in request.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
-
-        if (request.Content != null)
-        {
-            foreach (var t in request.Content.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
-            if (_logger.IsEnabled(LogLevel.Debug))
-            {
-                requestBody = await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                if (headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.Contains("application/json", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    requestBody = JsonUtil.Serialize(JsonUtil.Deserialize<dynamic>(requestBody));
-                }
-            }
-        }
-
-        var requestMsg = "[Refit Request ] {Method} {Path}";
-        var requestMsgArgs = new ArrayList { request.Method, request.RequestUri };
-        
         if (_logger.IsEnabled(LogLevel.Debug))
         {
-            requestMsg += "\nHeaders: {Headers}\nBody: {Body}";
-            requestMsgArgs.AddRange(new ArrayList { JsonUtil.Serialize(headers, true), requestBody });
+            var headers = new SortedDictionary<string, string>();
+            var requestBody = "";
+
+            foreach (var t in request.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
+
+            if (request.Content != null)
+            {
+                foreach (var t in request.Content.Headers) headers.Add(t.Key, string.Join("; ", t.Value.ToList()));
+                if (_logger.IsEnabled(LogLevel.Debug))
+                {
+                    requestBody = await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                    if (headers.TryGetValue("Content-Type", out var requestContentType) && requestContentType.Contains("application/json", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        requestBody = JsonUtil.Serialize(JsonUtil.Deserialize<dynamic>(requestBody));
+                    }
+                }
+            }
+
+            var requestFormat = "[Refit Request {TraceId}] {Method} {Path} \nHeaders: {Headers}\nBody: {Body}";
+            var requestFormatArgs = new ArrayList { traceId, request.Method, request.RequestUri, JsonUtil.Serialize(headers, true), requestBody };
+            _logger.LogInformation(requestFormat, requestFormatArgs.ToArray());
         }
-        
-        _logger.LogInformation(requestMsg, requestMsgArgs.ToArray());
 
         var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -61,17 +53,17 @@ public class RefitLogHandler : DelegatingHandler
         }
 
         stopwatch.Stop();
-        
-        var responseMsg = "[Refit Response] {Method} {Path} - {StatusCode} {Duration}ms";
-        var responseMsgArgs = new ArrayList { request.Method, request.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds };
-        
+
+        var responseFormat = "[Refit Response {TraceId}] {Method} {Path} - {StatusCode} - {Duration}ms";
+        var responseFormatArgs = new ArrayList { traceId, request.Method, request.RequestUri, (int)response.StatusCode, stopwatch.ElapsedMilliseconds };
+
         if (_logger.IsEnabled(LogLevel.Debug))
         {
-            responseMsg += "\nBody: {Body}";
-            responseMsgArgs.Add(responseBody);
+            responseFormat += "\nBody: {Body}";
+            responseFormatArgs.Add(responseBody);
         }
 
-        _logger.LogInformation(responseMsg, responseMsgArgs.ToArray());
+        _logger.LogInformation(responseFormat, responseFormatArgs.ToArray());
 
         return response;
     }

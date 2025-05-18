@@ -19,21 +19,14 @@ public class HttpLogMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        if (_logger.IsEnabled(LogLevel.None))
-        {
-            await _next(context);
-            return;
-        }
-
+        var traceId = Guid.NewGuid().ToString();
         var stopwatch = Stopwatch.StartNew();
 
-        var headers = context.Request.Headers
-            .OrderBy(t => t.Key)
-            .ToDictionary(t => t.Key, t => string.Join("; ", t.Value.ToArray()));
-
-        var requestBody = "";
         if (_logger.IsEnabled(LogLevel.Debug))
         {
+            var headers = context.Request.Headers.OrderBy(t => t.Key).ToDictionary(t => t.Key, t => string.Join("; ", t.Value.ToArray()));
+            var requestBody = "";
+
             context.Request.EnableBuffering();
             requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync().ConfigureAwait(false);
             context.Request.Body.Position = 0;
@@ -41,18 +34,11 @@ public class HttpLogMiddleware
             {
                 requestBody = JsonUtil.Serialize(JsonUtil.Deserialize<dynamic>(requestBody));
             }
+
+            var requestFormat = "[HTTP Request  {TraceId}] {Method} {Path}\nHeaders: {Headers}\nBody: {Body}";
+            var requestFormatArgs = new ArrayList { traceId, context.Request.Method, context.Request.Path, JsonUtil.Serialize(headers, true), requestBody };
+            _logger.LogInformation(requestFormat, requestFormatArgs.ToArray());
         }
-
-        var requestMsg = "[HTTP Request ] {Method} {Path}";
-        var requestMsgArgs = new ArrayList { context.Request.Method, context.Request.Path };
-
-        if (_logger.IsEnabled(LogLevel.Debug))
-        {
-            requestMsg += "\nHeaders: {Headers}\nBody: {Body}";
-            requestMsgArgs.AddRange(new ArrayList { JsonUtil.Serialize(headers, true), requestBody });
-        }
-
-        _logger.LogInformation(requestMsg, requestMsgArgs.ToArray());
 
         var originalBodyStream = context.Response.Body;
         using var responseStream = new MemoryStream();
@@ -71,14 +57,14 @@ public class HttpLogMiddleware
         await responseStream.CopyToAsync(originalBodyStream);
 
         stopwatch.Stop();
-        var responseMsg = "[HTTP Response] {Method} {Path} - {StatusCode} {Duration}ms";
-        var responseMsgArgs = new ArrayList { context.Request.Method, context.Request.Path, context.Response.StatusCode, stopwatch.ElapsedMilliseconds };
+        var responseFormat = "[HTTP Response {TraceId}] {Method} {Path} - {StatusCode} - {Duration}ms";
+        var responseFormatArgs = new ArrayList { traceId, context.Request.Method, context.Request.Path, context.Response.StatusCode, stopwatch.ElapsedMilliseconds };
         if (_logger.IsEnabled(LogLevel.Debug))
         {
-            responseMsg += "\nBody: {Body}";
-            responseMsgArgs.Add(responseBody);
+            responseFormat += "\nBody: {Body}";
+            responseFormatArgs.Add(responseBody);
         }
 
-        _logger.LogInformation(responseMsg, responseMsgArgs.ToArray());
+        _logger.LogInformation(responseFormat, responseFormatArgs.ToArray());
     }
 }
