@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Sunny.Framework.Core\Sunny.Framework.Core.csproj"/>
+        <ProjectReference Include="..\Sunny.Framework.Core\Sunny.Framework.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StackExchange.Redis" Version="2.8.31"/>
+        <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
     </ItemGroup>
 
 </Project>
