@@ -9,13 +9,11 @@ import com.github.pagehelper.PageInfo;
 import com.sunny.framework.core.exception.CommonException;
 import com.sunny.framework.core.model.PagingResult;
 import com.sunny.framework.core.model.SimpleItemModel;
-import com.sunny.framework.core.util.PageUtil;
 import com.sunny.system.core.automap.DictAutoMap;
 import com.sunny.system.core.constant.CacheConstant;
 import com.sunny.system.core.kind.DictValueKind;
 import com.sunny.system.core.mapper.DictMapper;
 import com.sunny.system.core.model.dto.DictDTO;
-import com.sunny.system.core.model.dto.DictValueDTO;
 import com.sunny.system.core.model.po.DictPO;
 import com.sunny.system.core.model.query.DictQuery;
 import com.sunny.system.core.model.query.SimpleQuery;
@@ -115,7 +113,7 @@ public class DictServiceImpl implements DictService {
                     Optional.ofNullable(DICT_VALUE_KIND_MAP.get(t.getValueType())).ifPresent(p -> t.setValueTypeName(p.getLabel()));
                 });
             }
-            return PageUtil.convert(pageInfo);
+            return PagingResult.convert(pageInfo);
         }
     }
 

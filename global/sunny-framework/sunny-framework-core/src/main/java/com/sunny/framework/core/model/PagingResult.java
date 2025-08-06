@@ -1,65 +1,68 @@
 package com.sunny.framework.core.model;
 
+import com.github.pagehelper.PageInfo;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
+import java.util.function.Function;
 
-
+@Data
+@NoArgsConstructor
 public class PagingResult<E> {
-    private final static int DEFAULT_CURRENT = 1;
-    private final static int DEFAULT_PAGE_SIZE = 10;
-    private int total;
+
     private int page;
     private int pageSize;
+    private int total;
     private List<E> list;
 
-    public PagingResult() {
-        this(DEFAULT_CURRENT, DEFAULT_PAGE_SIZE);
-    }
+    private boolean isHeadPage;
+    private boolean isLastPage;
 
-    public PagingResult(int current, int pageSize) {
-        this.page = current;
+    public PagingResult(int page, int pageSize) {
+        this.page = page;
         this.pageSize = pageSize;
     }
 
-    public PagingResult(int current, int pageSize, int total) {
-        this.page = current;
+    public PagingResult(int page, int pageSize, int total) {
+        this.page = page;
         this.pageSize = pageSize;
         this.setTotal(total);
     }
 
-    public int getTotal() {
-        return this.total;
+    public boolean getIsHeadPage() {
+        return isHeadPage;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setIsHeadPage(boolean headPage) {
+        isHeadPage = headPage;
     }
 
-    public int getPage() {
-        return this.page;
+    public boolean getIsLastPage() {
+        return isLastPage;
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getPageSize() {
-        return this.pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public List<E> getList() {
-        return this.list;
-    }
-
-    public void setList(List<E> list) {
-        this.list = list;
+    public void setIsLastPage(boolean lastPage) {
+        isLastPage = lastPage;
     }
 
     public int getTotalPage() {
         return (this.getTotal() + this.getPageSize() - 1) / this.getPageSize();
+    }
+
+    public static <T> PagingResult<T> convert(PageInfo<T> pageInfo) {
+        return convert(pageInfo, s -> s);
+    }
+
+    public static <S, T> PagingResult<T> convert(PageInfo<S> pageInfo, Function<List<S>, List<T>> convertListFunc) {
+        if (pageInfo == null) {
+            return null;
+        }
+        PagingResult<T> pagingResult = new PagingResult<>(pageInfo.getPageNum(), pageInfo.getPageSize(), (int) pageInfo.getTotal());
+        pagingResult.setList(convertListFunc.apply(pageInfo.getList()));
+        pagingResult.setIsHeadPage(pageInfo.isIsFirstPage());
+        pagingResult.setIsLastPage(pageInfo.isIsLastPage());
+        return pagingResult;
     }
 }
 
