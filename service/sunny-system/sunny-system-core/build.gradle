@@ -2,7 +2,7 @@ dependencies {
     api project(":sunny-system-api")
     api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
-//    api 'com.alibaba:easyexcel'
+    api 'com.sunny:sunny-framework-file'
     api 'com.sunny:sunny-auth-security'
     api "org.springframework.boot:spring-boot-starter-jooq"
     api 'com.alibaba.cola:cola-component-statemachine:5.0.0'

@@ -24,14 +24,12 @@ public class DictPO extends BasePO<Long, Long> {
     private String name;
 
     /**
-     * 描述
-     */
-    private String remark;
-
-    /**
      * 值类型;0-Int,1-String
      */
     private Integer valueType;
 
-
+    /**
+     * 描述
+     */
+    private String remark;
 }

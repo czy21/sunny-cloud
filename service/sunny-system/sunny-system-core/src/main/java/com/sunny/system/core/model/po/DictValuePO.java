@@ -32,5 +32,4 @@ public class DictValuePO extends BasePO<Long, Long> {
      */
     private Long dictId;
 
-
 }

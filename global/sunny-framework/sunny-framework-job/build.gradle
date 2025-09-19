@@ -3,6 +3,5 @@ plugins {
 }
 dependencies {
     api "com.xuxueli:xxl-job-core"
-    api "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

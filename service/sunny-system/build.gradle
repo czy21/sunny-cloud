@@ -6,8 +6,6 @@ def publish_modules = [
         "sunny-system-api"
 ]
 
-
-
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'

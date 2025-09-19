@@ -2,14 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sunny.system.core.mapper.FileTargetPOMapper">
-    <insert id="insert" keyColumn="key" keyProperty="key" parameterType="com.sunny.system.core.model.po.FileTargetPO" useGeneratedKeys="true">
-        insert into sys_file_target
+<mapper namespace="com.sunny.framework.file.repository.FileRepository">
+
+    <insert id="insert" parameterType="com.sunny.framework.file.model.FileEntity">
+        insert into sys_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="key != null">key,</if>
-            <if test="rootUrl != null">root_url,</if>
-            <if test="rootPath != null">root_path,</if>
-            <if test="targetKind != null">target_kind,</if>
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="path != null">path,</if>
+            <if test="type != null">type,</if>
+            <if test="targetKey != null">target_key,</if>
             <if test="createTime != null">create_time,</if>
             <if test="createUser != null">create_user,</if>
             <if test="updateTime != null">update_time,</if>
@@ -17,10 +19,11 @@
             <if test="deleted != null">deleted,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="key != null">#{key},</if>
-            <if test="rootUrl != null">#{rootUrl},</if>
-            <if test="rootPath != null">#{rootPath},</if>
-            <if test="targetKind != null">#{targetKind},</if>
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="path != null">#{path},</if>
+            <if test="type != null">#{type},</if>
+            <if test="targetKey != null">#{targetKey},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="createUser != null">#{createUser},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -28,17 +31,20 @@
             <if test="deleted != null">#{deleted},</if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.system.core.model.po.FileTargetPO">
-        update sys_file_target
+    <update id="update" parameterType="com.sunny.framework.file.model.FileEntity">
+        update sys_file
         <set>
-            <if test="rootUrl != null">
-                root_url = #{rootUrl},
+            <if test="name != null">
+                name = #{name},
             </if>
-            <if test="rootPath != null">
-                root_path = #{rootPath},
+            <if test="path != null">
+                path = #{path},
             </if>
-            <if test="targetKind != null">
-                target_kind = #{targetKind},
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="targetKey != null">
+                target_key = #{targetKey},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},
@@ -56,6 +62,6 @@
                 deleted = #{deleted},
             </if>
         </set>
-        where key = #{key}
+        where id = #{id}
     </update>
 </mapper>

@@ -1,0 +1,8 @@
+
+param_main_db_host: "192.168.20.18"
+param_main_db_username: "admin"
+
+param_main_db_mysql_host: "{{ param_main_db_host }}"
+param_main_db_mysql_port: "3306"
+param_main_db_mysql_username: "{{ param_main_db_username }}"
+param_main_db_mysql_password: <secret_value>

@@ -42,3 +42,12 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Output #
+___output/
+
+# Shell #
+__pycache__/
+
+# cicd
+.jenkins

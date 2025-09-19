@@ -1,0 +1,2 @@
+param_main_db_mysql_database: sunny_system
+param_main_db_mysql_file_path: "{{ source_db }}/mysql/system/1_version"
