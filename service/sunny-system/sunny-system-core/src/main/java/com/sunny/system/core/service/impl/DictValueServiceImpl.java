@@ -38,7 +38,7 @@ public class DictValueServiceImpl implements DictValueService {
     public void edit(DictValueVO vo) {
         DictValuePO po = dictValueAutoMap.mapToPO(vo);
         checkUnique(po, true);
-        dictValueMapper.update(po);
+        dictValueMapper.updateByPrimaryKeySelective(po);
     }
 
     private void checkUnique(DictValuePO po, boolean includeId) {

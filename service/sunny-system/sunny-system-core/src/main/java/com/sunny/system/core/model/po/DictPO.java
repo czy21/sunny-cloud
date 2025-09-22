@@ -40,7 +40,7 @@ public class DictPO {
     /**
      * 值类型;0-Int,1-String
      */
-    private Boolean valueType;
+    private Integer valueType;
 
     /**
      * 创建时间
