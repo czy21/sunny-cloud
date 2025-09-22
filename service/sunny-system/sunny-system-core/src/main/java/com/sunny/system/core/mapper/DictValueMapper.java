@@ -10,10 +10,17 @@ import java.util.List;
 
 public interface DictValueMapper {
 
+    int deleteByPrimaryKey(Long id);
 
-    int insert(DictValuePO entity);
+    int insert(DictValuePO row);
 
-    int update(DictValuePO entity);
+    int insertSelective(DictValuePO row);
+
+    DictValuePO selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(DictValuePO row);
+
+    int updateByPrimaryKey(DictValuePO row);
 
     boolean exists(@Param("po") DictValuePO po, @Param("includeId") boolean includeId);
 

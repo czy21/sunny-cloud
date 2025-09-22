@@ -10,19 +10,25 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 public interface DictMapper {
-    int insert(DictPO entity);
 
-    int update(DictPO entity);
+    int deleteByPrimaryKey(Long id);
 
-    DictDTO selectOneByCode(String code);
+    int insert(DictPO row);
 
-    boolean exists(@Param("po") DictPO po, @Param("includeId") boolean includeId);
+    int insertSelective(DictPO row);
+
+    DictPO selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(DictPO row);
+
+    int updateByPrimaryKey(DictPO row);
 
     @Update("update sys_dict set deleted = 1 where id = #{id}")
     void deleteById(Long id);
 
+    DictDTO selectOneByCode(String code);
+    boolean exists(@Param("po") DictPO po, @Param("includeId") boolean includeId);
     List<DictDTO> selectList(@Param("query") DictQuery query);
-
     DictDTO selectById(Long id);
     @Select("select code from sys_dict where id = #{id}")
     String selectCodeById(Long id);

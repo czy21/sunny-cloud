@@ -4,19 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
 @Data
+@Accessors(chain=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class FileEntity {
 
     private String id;
+
     private String name;
-    private String type;
+
     private String path;
+
+    private String type;
+
     private String targetKey;
 
     /**
@@ -27,7 +33,7 @@ public class FileEntity {
     /**
      * 创建人
      */
-    private Long createUser;
+    private String createUser;
 
     /**
      * 更新时间
@@ -37,7 +43,7 @@ public class FileEntity {
     /**
      * 更新人
      */
-    private Long updateUser;
+    private String updateUser;
 
     /**
      * 是否删除

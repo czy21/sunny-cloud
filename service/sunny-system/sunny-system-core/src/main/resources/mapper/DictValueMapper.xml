@@ -3,65 +3,154 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sunny.system.core.mapper.DictValueMapper">
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sunny.system.core.model.po.DictValuePO" useGeneratedKeys="true">
+    <resultMap id="BaseResultMap" type="com.sunny.system.core.model.po.DictValuePO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="value" jdbcType="VARCHAR" property="value" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="dict_id" jdbcType="BIGINT" property="dictId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="deleted" jdbcType="BIT" property="deleted" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, value, sort, dict_id, create_time, create_user, update_time, update_user,
+    deleted
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict_value
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_dict_value
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.sunny.system.core.model.po.DictValuePO">
+        insert into sys_dict_value (id, name, value,
+                                                  sort, dict_id, create_time,
+                                                  create_user, update_time, update_user,
+                                                  deleted)
+        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR},
+                #{sort,jdbcType=INTEGER}, #{dictId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+                #{deleted,jdbcType=BIT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.sunny.system.core.model.po.DictValuePO">
         insert into sys_dict_value
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="name != null">name,</if>
-            <if test="value != null">value,</if>
-            <if test="sort != null">sort,</if>
-            <if test="dictId != null">dict_id,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="createUser != null">create_user,</if>
-            <if test="updateTime != null">update_time,</if>
-            <if test="updateUser != null">update_user,</if>
-            <if test="deleted != null">deleted,</if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="value != null">
+                value,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="dictId != null">
+                dict_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="name != null">#{name},</if>
-            <if test="value != null">#{value},</if>
-            <if test="sort != null">#{sort},</if>
-            <if test="dictId != null">#{dictId},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="createUser != null">#{createUser},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-            <if test="updateUser != null">#{updateUser},</if>
-            <if test="deleted != null">#{deleted},</if>
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="dictId != null">
+                #{dictId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
+            </if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.system.core.model.po.DictValuePO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sunny.system.core.model.po.DictValuePO">
         update sys_dict_value
         <set>
             <if test="name != null">
-                name = #{name},
+                name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="value != null">
-                value = #{value},
+                value = #{value,jdbcType=VARCHAR},
             </if>
             <if test="sort != null">
-                sort = #{sort},
+                sort = #{sort,jdbcType=INTEGER},
             </if>
             <if test="dictId != null">
-                dict_id = #{dictId},
+                dict_id = #{dictId,jdbcType=BIGINT},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime},
+                create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createUser != null">
-                create_user = #{createUser},
+                create_user = #{createUser,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime},
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateUser != null">
-                update_user = #{updateUser},
+                update_user = #{updateUser,jdbcType=VARCHAR},
             </if>
             <if test="deleted != null">
-                deleted = #{deleted},
+                deleted = #{deleted,jdbcType=BIT},
             </if>
         </set>
-        where id = #{id}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sunny.system.core.model.po.DictValuePO">
+        update sys_dict_value
+        set name = #{name,jdbcType=VARCHAR},
+            value = #{value,jdbcType=VARCHAR},
+            sort = #{sort,jdbcType=INTEGER},
+            dict_id = #{dictId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_user = #{createUser,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+            deleted = #{deleted,jdbcType=BIT}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="exists" resultType="boolean">

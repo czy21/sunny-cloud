@@ -169,10 +169,10 @@ public class LombokPlugin extends PluginAdapter {
             if (annotation == null) {
                 continue;
             }
-            if (!properties.stringPropertyNames().contains(annotationName+".")) {
+            String optionsPrefix = annotationName + ".";
+            if (!properties.stringPropertyNames().contains(optionsPrefix)) {
                 annotations.add(annotation);
             }
-            String optionsPrefix = annotationName + ".";
             for (String propertyName : properties.stringPropertyNames()) {
                 if (!propertyName.startsWith(optionsPrefix)) {
                     // A property not related to this annotation

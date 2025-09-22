@@ -1,19 +1,22 @@
 package com.sunny.system.core.model.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
- * 用户
- * @TableName sys_user
+ * 用户表
  */
 @Data
+@Accessors(chain=true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserPO {
-    /**
-     * 主键自增
-     */
     private Long id;
 
     /**
@@ -22,17 +25,12 @@ public class UserPO {
     private String username;
 
     /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 名字
      */
     private String name;
 
     /**
-     * 手机号
+     * 手机
      */
     private String phone;
 
@@ -54,7 +52,7 @@ public class UserPO {
     /**
      * 创建人
      */
-    private Long createUser;
+    private String createUser;
 
     /**
      * 更新时间
@@ -64,10 +62,15 @@ public class UserPO {
     /**
      * 更新人
      */
-    private Long updateUser;
+    private String updateUser;
 
     /**
      * 是否删除
      */
     private Boolean deleted;
+
+    /**
+     * 密码
+     */
+    private String password;
 }

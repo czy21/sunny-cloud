@@ -4,64 +4,153 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sunny.framework.file.repository.FileRepository">
 
+    <resultMap id="BaseResultMap" type="com.sunny.framework.file.model.FileEntity">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="path" jdbcType="VARCHAR" property="path" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="target_key" jdbcType="VARCHAR" property="targetKey" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="deleted" jdbcType="BIT" property="deleted" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, path, type, target_key, create_time, create_user, update_time, update_user, 
+    deleted
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_file
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_file
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
     <insert id="insert" parameterType="com.sunny.framework.file.model.FileEntity">
+        insert into sys_file (id, name, path,
+                                            type, target_key, create_time,
+                                            create_user, update_time, update_user,
+                                            deleted)
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+                #{type,jdbcType=VARCHAR}, #{targetKey,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+                #{deleted,jdbcType=BIT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.sunny.framework.file.model.FileEntity">
         insert into sys_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="name != null">name,</if>
-            <if test="path != null">path,</if>
-            <if test="type != null">type,</if>
-            <if test="targetKey != null">target_key,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="createUser != null">create_user,</if>
-            <if test="updateTime != null">update_time,</if>
-            <if test="updateUser != null">update_user,</if>
-            <if test="deleted != null">deleted,</if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="path != null">
+                path,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="targetKey != null">
+                target_key,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="name != null">#{name},</if>
-            <if test="path != null">#{path},</if>
-            <if test="type != null">#{type},</if>
-            <if test="targetKey != null">#{targetKey},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="createUser != null">#{createUser},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-            <if test="updateUser != null">#{updateUser},</if>
-            <if test="deleted != null">#{deleted},</if>
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="targetKey != null">
+                #{targetKey,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
+            </if>
         </trim>
     </insert>
-    <update id="update" parameterType="com.sunny.framework.file.model.FileEntity">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sunny.framework.file.model.FileEntity">
         update sys_file
         <set>
             <if test="name != null">
-                name = #{name},
+                name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="path != null">
-                path = #{path},
+                path = #{path,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
-                type = #{type},
+                type = #{type,jdbcType=VARCHAR},
             </if>
             <if test="targetKey != null">
-                target_key = #{targetKey},
+                target_key = #{targetKey,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime},
+                create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createUser != null">
-                create_user = #{createUser},
+                create_user = #{createUser,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime},
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateUser != null">
-                update_user = #{updateUser},
+                update_user = #{updateUser,jdbcType=VARCHAR},
             </if>
             <if test="deleted != null">
-                deleted = #{deleted},
+                deleted = #{deleted,jdbcType=BIT},
             </if>
         </set>
-        where id = #{id}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sunny.framework.file.model.FileEntity">
+        update sys_file
+        set name = #{name,jdbcType=VARCHAR},
+            path = #{path,jdbcType=VARCHAR},
+            type = #{type,jdbcType=VARCHAR},
+            target_key = #{targetKey,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_user = #{createUser,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_user = #{updateUser,jdbcType=VARCHAR},
+            deleted = #{deleted,jdbcType=BIT}
+        where id = #{id,jdbcType=VARCHAR}
     </update>
 </mapper>

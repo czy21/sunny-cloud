@@ -6,12 +6,6 @@ import com.sunny.system.core.model.po.UserPO;
 
 import java.util.List;
 
-/**
-* @author chenzhaoyu
-* @description 针对表【sys_user(用户)】的数据库操作Mapper
-* @createDate 2024-07-28 13:48:46
-* @Entity generator.model.po.UserPO
-*/
 public interface UserMapper {
 
     int deleteByPrimaryKey(Long id);

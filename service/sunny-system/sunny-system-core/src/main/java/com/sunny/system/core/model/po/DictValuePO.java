@@ -1,17 +1,27 @@
 package com.sunny.system.core.model.po;
 
-import com.sunny.framework.core.model.BasePO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  * 字典值
- *
- * @TableName sys_dict_value
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class DictValuePO extends BasePO<Long, Long> {
+@Accessors(chain=true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class DictValuePO {
+    /**
+     * 主键自增
+     */
+    private Long id;
+
     /**
      * 名称
      */
@@ -32,4 +42,28 @@ public class DictValuePO extends BasePO<Long, Long> {
      */
     private Long dictId;
 
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 创建人
+     */
+    private String createUser;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 更新人
+     */
+    private String updateUser;
+
+    /**
+     * 是否删除
+     */
+    private Boolean deleted;
 }

@@ -137,7 +137,7 @@ public class DictServiceImpl implements DictService {
     public void edit(DictVO dto) {
         DictPO po = dictAutoMap.mapToPO(dto);
         checkUnique(po, true);
-        dictMapper.update(po);
+        dictMapper.updateByPrimaryKeySelective(po);
     }
 
     private void checkUnique(DictPO po, boolean includeId) {

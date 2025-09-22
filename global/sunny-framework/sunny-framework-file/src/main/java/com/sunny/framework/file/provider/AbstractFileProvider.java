@@ -31,7 +31,7 @@ public abstract class AbstractFileProvider implements FileProvider {
             FileEntity fileEntity = generateFileEntity(file);
             FileResult fileResult = generateFileResult(fileEntity);
             fileResult = upload(file, fileEntity, fileResult);
-            fileRepository.insert(fileEntity);
+            fileRepository.insertSelective(fileEntity);
             return fileResult;
         } catch (Exception e) {
             log.error("upload error", e);
