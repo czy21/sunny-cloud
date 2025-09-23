@@ -12,14 +12,11 @@
             <property name="accessors" value="true"/>
             <property name="accessors.chain" value="true"/>
         </plugin>
-        <plugin type="com.sunny.mybatis.generator.plugins.RenameModelPlugin"/>
-        <plugin type="com.sunny.mybatis.generator.plugins.OpenApiModelPlugin"/>
-        <commentGenerator type="com.sunny.mybatis.generator.internal.CommentGenerator">
-            <property name="suppressAllComments" value="false"/>
-            <property name="addRemarkComments" value="true"/>
-            <property name="suppressDate" value="false"/>
-        </commentGenerator>
-        <!--数据库链接地址账号密码-->
+        <plugin type="com.sunny.mybatis.generator.plugins.DomainPlugin">
+            <property name="openapi3" value="true"/>
+            <property name="openapi3InModel" value="true"/>
+        </plugin>
+        <commentGenerator type="com.sunny.mybatis.generator.internal.CommentGenerator"/>
         <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}">
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
