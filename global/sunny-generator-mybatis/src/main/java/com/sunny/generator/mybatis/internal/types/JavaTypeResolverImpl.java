@@ -1,4 +1,4 @@
-package com.sunny.mybatis.generator.internal.types;
+package com.sunny.generator.mybatis.internal.types;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;

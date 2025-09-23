@@ -1,4 +1,4 @@
-package com.sunny.mybatis.generator.internal;
+package com.sunny.generator.mybatis.internal;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

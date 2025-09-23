@@ -1,4 +1,4 @@
-package com.sunny.mybatis.generator.plugins;
+package com.sunny.generator.mybatis.plugins;
 
 
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -10,6 +10,7 @@ import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
@@ -19,6 +20,7 @@ public class DomainPlugin extends PluginAdapter {
     private boolean enabledOpenapi3InModel;
     private boolean enabledSwagger;
     private boolean enabledSwaggerInModel;
+    private Set<String> openapiExcludeColumns;
 
     @Override
     public boolean validate(List<String> warnings) {
@@ -58,7 +60,8 @@ public class DomainPlugin extends PluginAdapter {
         apiClass.setVisibility(JavaVisibility.PUBLIC);
         oriClass.getImportedTypes().forEach(apiClass::addImportedType);
         oriClass.getAnnotations().forEach(apiClass::addAnnotation);
-        oriClass.getFields().forEach(t -> apiClass.addField(new Field(t)));
+        oriClass.getFields().forEach(apiClass::addField);
+        apiClass.getMethods().forEach(apiClass::addMethod);
         addOpenAPI(introspectedTable, apiClass);
         generatedFiles.add(new GeneratedJavaFile(apiClass, context.getJavaModelGeneratorConfiguration().getTargetProject(), context.getJavaFormatter()));
         return generatedFiles;
@@ -69,8 +72,10 @@ public class DomainPlugin extends PluginAdapter {
         for (Field f : topLevelClass.getFields()) {
             introspectedTable.getAllColumns().stream()
                     .filter(c -> c.getJavaProperty().equals(f.getName()))
+                    .filter(c -> !openapiExcludeColumns.contains(c.getActualColumnName()))
                     .findFirst()
                     .ifPresent(c -> {
+                        f.getJavaDocLines().clear();
                         if (c.getRemarks() != null && !c.getRemarks().isEmpty()) {
                             if (enabledOpenApi3 | enabledOpenapi3InModel) {
                                 Annotations schemaAnnotation = Annotations.SCHEMA;
@@ -78,7 +83,6 @@ public class DomainPlugin extends PluginAdapter {
                                 schemaAnnotation.options.add("description = %s".formatted("\"" + c.getRemarks() + "\""));
                                 String schemaAnnotationString = schemaAnnotation.asAnnotation();
                                 if (f.getAnnotations().stream().noneMatch(t -> t.equals(schemaAnnotationString))) {
-                                    f.getJavaDocLines().clear();
                                     f.addAnnotation(schemaAnnotation.asAnnotation());
                                     annotations.add(schemaAnnotation);
                                 }
@@ -100,6 +104,8 @@ public class DomainPlugin extends PluginAdapter {
 
         enabledSwagger = isTrue(properties.getProperty("swagger"));
         enabledSwaggerInModel = isTrue(properties.getProperty("swaggerInModel"));
+
+        openapiExcludeColumns = new HashSet<>(Arrays.asList(properties.getProperty("openapiExcludeColumns", "").split(",")));
     }
 
     private enum Annotations {

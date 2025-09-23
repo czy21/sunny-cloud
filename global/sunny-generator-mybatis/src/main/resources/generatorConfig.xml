@@ -5,22 +5,23 @@
     <properties resource="generator.properties"/>
     <context id="simple" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
-        <plugin type="com.sunny.mybatis.generator.plugins.LombokPlugin">
+        <plugin type="com.sunny.generator.mybatis.plugins.LombokPlugin">
             <property name="builder" value="true"/>
             <property name="noArgsConstructor" value="true"/>
             <property name="allArgsConstructor" value="true"/>
             <property name="accessors" value="true"/>
             <property name="accessors.chain" value="true"/>
         </plugin>
-        <plugin type="com.sunny.mybatis.generator.plugins.DomainPlugin">
+        <plugin type="com.sunny.generator.mybatis.plugins.DomainPlugin">
             <property name="openapi3" value="true"/>
             <property name="openapi3InModel" value="true"/>
+            <property name="openapiExcludeColumns" value="id,create_time,create_user,update_time,update_user,deleted"/>
         </plugin>
-        <commentGenerator type="com.sunny.mybatis.generator.internal.CommentGenerator"/>
+        <commentGenerator type="com.sunny.generator.mybatis.internal.CommentGenerator"/>
         <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}">
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
-        <javaTypeResolver type="com.sunny.mybatis.generator.internal.types.JavaTypeResolverImpl">
+        <javaTypeResolver type="com.sunny.generator.mybatis.internal.types.JavaTypeResolverImpl">
             <!--是否使用bigDecimal，默认false。
                 false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
                 true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
@@ -45,6 +46,10 @@
                enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="true">
             <domainObjectRenamingRule searchString="^Sys(.*)$" replaceString="$1"/>
         </table>
+
+<!--        <table tableName="sys_file" domainObjectName="FilePO" mapperName="FileMapper"-->
+<!--               enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="true">-->
+<!--        </table>-->
 
     </context>
 </generatorConfiguration>
