@@ -4,6 +4,7 @@ package com.sunny.framework.web.handler;
 import com.sunny.framework.core.exception.CommonException;
 import com.sunny.framework.core.exception.kind.CommonCodeEnum;
 import com.sunny.framework.core.model.CommonResult;
+import com.sunny.framework.web.controller.BaseController;
 import com.sunny.framework.web.feign.FeignCommonException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = BaseController.class)
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
