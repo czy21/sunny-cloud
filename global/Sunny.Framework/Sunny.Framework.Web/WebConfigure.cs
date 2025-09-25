@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -45,8 +46,15 @@ public static class WebConfigure
         {
             services.AddNacosV2Config(config, null, "Nacos:Config");
         }
-
+        
         services.AddHostedService<NLogConfigListener>();
+        
+        services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields = HttpLoggingFields.All;
+            logging.CombineLogs = true;
+        });
+        
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
