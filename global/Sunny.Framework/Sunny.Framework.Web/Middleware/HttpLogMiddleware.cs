@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using WishServer.Util;
+using Sunny.Framework.Core.Util;
 
 namespace Sunny.Framework.Web.Middleware;
 

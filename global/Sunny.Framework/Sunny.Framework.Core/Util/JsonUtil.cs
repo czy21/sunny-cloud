@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sunny.Framework.Core.Json;
 
-namespace WishServer.Util;
+namespace Sunny.Framework.Core.Util;
 
 public class JsonUtil
 {

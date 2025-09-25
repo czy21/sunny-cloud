@@ -2,7 +2,7 @@
 rm -rf Generator && dotnet ef dbcontext scaffold "Server=" \
 MySql.EntityFrameworkCore \
 --context-dir Generator/Repository \
---output-dir Generator/Domain \
+--output-dir Generator/Model \
 --context AppDbContext \
 --force \
 -d \

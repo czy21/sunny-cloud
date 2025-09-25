@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 
+namespace Sunny.Generator.EFCore;
+
 public class MyEntityTypeGenerator : HbsCSharpEntityTypeGenerator
 {
     private readonly Dictionary<IEntityType, Dictionary<string, object>> EntityTypeTemplateProperties = new();

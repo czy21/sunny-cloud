@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.Options;
 
+namespace Sunny.Generator.EFCore;
+
 public class MyModelGenerator : HbsCSharpModelGenerator
 {
     private readonly MyEntityTypeGenerator _entityTypeGenerator;

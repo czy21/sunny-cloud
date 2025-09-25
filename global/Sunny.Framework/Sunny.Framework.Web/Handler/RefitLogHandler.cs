@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using WishServer.Util;
+using Sunny.Framework.Core.Util;
 
-namespace Sunny.Framework.Web.Middleware;
+namespace Sunny.Framework.Web.Handler;
 
 public class RefitLogHandler : DelegatingHandler
 {

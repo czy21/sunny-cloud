@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace Sunny.Generator.EFCore;
+
 public class ScaffoldingDesignTimeServices : IDesignTimeServices
 {
     public void ConfigureDesignTimeServices(IServiceCollection services)

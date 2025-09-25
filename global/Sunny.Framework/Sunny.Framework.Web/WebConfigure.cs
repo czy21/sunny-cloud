@@ -14,7 +14,6 @@ using Nacos.V2.DependencyInjection;
 using NLog.Web;
 using Refit;
 using Sunny.Framework.Core.Json;
-using WishServer.Util;
 
 namespace Sunny.Framework.Web;
 
@@ -22,7 +21,15 @@ public static class WebConfigure
 {
     public static IHostBuilder UseWebConfigure(this IHostBuilder builder)
     {
-        builder.UseNacosConfig("NacosConfig");
+        builder.ConfigureAppConfiguration((Action<HostBuilderContext, IConfigurationBuilder>)((_, cfb) =>
+        {
+            var configurationRoot = cfb.Build();
+            var nacosConfigEnabled = configurationRoot.GetValue("Nacos:Config:Enabled", false);
+            if (nacosConfigEnabled)
+            {
+                cfb.AddNacosV2Configuration(configurationRoot.GetSection("Nacos:Config"), parser: null, logAction: null);
+            }
+        }));
 
         builder.ConfigureLogging(c => c.ClearProviders()).UseNLog();
 
@@ -33,7 +40,11 @@ public static class WebConfigure
 
     public static IServiceCollection AddWebConfigure(this IServiceCollection services, IConfiguration config)
     {
-        services.AddNacosV2Config(config, null, "NacosConfig");
+        var nacosConfigEnabled = config.GetValue("Nacos:Config:Enabled", false);
+        if (nacosConfigEnabled)
+        {
+            services.AddNacosV2Config(config, null, "Nacos:Config");
+        }
 
         services.AddHostedService<NLogConfigListener>();
         services.AddControllers().AddJsonOptions(options =>
@@ -43,7 +54,7 @@ public static class WebConfigure
             options.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingDateTimeParse("yyyy-MM-dd HH:mm:ss"));
         });
 
-        services.AddSingleton(provider  =>
+        services.AddSingleton(provider =>
         {
             var jsonOptions = provider.GetService<IOptions<JsonOptions>>();
             return new RefitSettings
