@@ -22,8 +22,4 @@
         <PackageReference Include="nacos-sdk-csharp.Extensions.ServiceDiscovery" Version="1.3.10"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Middleware\" />
-    </ItemGroup>
-
 </Project>

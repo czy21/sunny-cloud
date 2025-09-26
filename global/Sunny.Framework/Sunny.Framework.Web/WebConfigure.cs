@@ -1,5 +1,4 @@
 ﻿using System.Text.Encodings.Web;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -54,11 +53,9 @@ public static class WebConfigure
             logging.LoggingFields = HttpLoggingFields.All;
             logging.CombineLogs = true;
         });
-        
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             options.JsonSerializerOptions.Converters.Add(new DateTimeConverterUsingDateTimeParse("yyyy-MM-dd HH:mm:ss"));
         });
 

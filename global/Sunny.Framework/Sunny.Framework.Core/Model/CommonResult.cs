@@ -1,18 +1,30 @@
-﻿namespace Sunny.Framework.Core.Model;
+﻿using Sunny.Framework.Core.Exceptions;
 
-public class CommonResult<T>
+namespace Sunny.Framework.Core.Model;
+
+public class CommonResult<T>(int code, string message, T data)
 {
-    public int Code { get; set; }
-    public string Message { get; set; } = "success";
-    public T Data { get; set; }
+    public int Code { get; set; } = code;
+    public string Message { get; set; } = message;
+    public T Data { get; set; } = data;
 
-    public static CommonResult<T> Ok(T data, string message = "success")
+    public static CommonResult<T> Ok(T data = default)
     {
-        return new CommonResult<T> { Data = data, Message = message };
+        return new CommonResult<T>((int)CommonCodeEnum.Success, "success", data);
     }
 
-    public static CommonResult<T> Fail(int code, string message)
+    public static CommonResult<T> Error(string msg)
     {
-        return new CommonResult<T> { Code = code, Message = message };
+        return Error((int)CommonCodeEnum.Error, msg);
+    }
+
+    public static CommonResult<T> Error(int code, string msg)
+    {
+        return new CommonResult<T>(code, msg, default);
+    }
+
+    public static CommonResult<T> Create(int code, string message, T data)
+    {
+        return new CommonResult<T>(code, message, data);
     }
 }

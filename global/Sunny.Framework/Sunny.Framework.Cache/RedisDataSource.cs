@@ -11,7 +11,7 @@ namespace Sunny.Framework.Cache
         {
             var redisProperties = config.GetSection("Data:Redis").Get<RedisProperties>();
             _instances["Default"] = ConnectionMultiplexer.Connect(redisProperties.Url);
-            foreach (var t in redisProperties.Instances)
+            foreach (var t in redisProperties.Instances??new Dictionary<string, RedisOption>())
             {
                 _instances[t.Key] = ConnectionMultiplexer.Connect(t.Value.Url);
             }
