@@ -2,7 +2,7 @@ package com.sunny.framework.web.handler;
 
 
 import com.sunny.framework.core.exception.CommonException;
-import com.sunny.framework.core.exception.kind.CommonCodeEnum;
+import com.sunny.framework.core.model.CommonCodeEnum;
 import com.sunny.framework.core.model.CommonResult;
 import com.sunny.framework.web.controller.BaseController;
 import com.sunny.framework.web.feign.FeignCommonException;
@@ -46,8 +46,7 @@ public class GlobalExceptionHandler {
     public CommonResult<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         List<ObjectError> objectErrors = e.getBindingResult().getAllErrors();
         String errors = objectErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(";"));
-        return CommonResult.error(CommonCodeEnum.ARGUMENT_INVALID.getCode(), errors);
-
+        return CommonResult.error(errors);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -58,6 +57,6 @@ public class GlobalExceptionHandler {
         if (objectErrors != null) {
             errors = objectErrors.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(";"));
         }
-        return CommonResult.error(CommonCodeEnum.ARGUMENT_INVALID.getCode(), errors);
+        return CommonResult.error(errors);
     }
 }

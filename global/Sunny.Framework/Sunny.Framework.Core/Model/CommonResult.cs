@@ -1,4 +1,4 @@
-﻿using Sunny.Framework.Core.Exceptions;
+﻿using Sunny.Framework.Core.Extensions;
 
 namespace Sunny.Framework.Core.Model;
 
@@ -10,12 +10,17 @@ public class CommonResult<T>(int code, string message, T data)
 
     public static CommonResult<T> Ok(T data = default)
     {
-        return new CommonResult<T>((int)CommonCodeEnum.Success, "success", data);
+        return new CommonResult<T>((int)CommonCodeEnum.Success, CommonCodeEnum.Success.GetDescription(), data);
+    }
+
+    public static CommonResult<T> Error()
+    {
+        return Error(CommonCodeEnum.Success.GetDescription());
     }
 
     public static CommonResult<T> Error(string msg)
     {
-        return Error((int)CommonCodeEnum.Error, msg);
+        return Error((int)CommonCodeEnum.Exception, msg);
     }
 
     public static CommonResult<T> Error(int code, string msg)

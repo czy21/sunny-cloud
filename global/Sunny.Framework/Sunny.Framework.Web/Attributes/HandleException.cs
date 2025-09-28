@@ -33,7 +33,7 @@ public class HandleExceptionAttribute : TypeFilterAttribute
             else
             {
                 _logger.LogError(context.Exception, context.Exception.Message);
-                context.Result = new JsonResult(CommonResult<string>.Error("inner error"));
+                context.Result = new JsonResult(CommonResult<string>.Error());
             }
 
             context.ExceptionHandled = true;

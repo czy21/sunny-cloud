@@ -1,29 +1,21 @@
 package com.sunny.framework.core.model;
 
-import com.sunny.framework.core.exception.kind.CommonCodeEnum;
-import com.sunny.framework.core.util.DateUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 public class CommonResult<T> {
+
     private Integer code;
     private String message;
     private T data;
-    private Long timestamp;
-
-    public CommonResult() {
-    }
-
-    public CommonResult(Integer code, String message, T data, Long timestamp) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-        this.timestamp = timestamp;
-    }
-
-    public CommonResult(Integer code, String message, T data) {
-        this(code, message, data, DateUtil.toTimeStamp(LocalDateTime.now()));
-    }
 
     public Integer getCode() {
         return code;
@@ -47,14 +39,6 @@ public class CommonResult<T> {
 
     public void setData(T data) {
         this.data = data;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Long getTimestamp() {
-        return this.timestamp;
     }
 
     public static <T> CommonResult<T> ok() {

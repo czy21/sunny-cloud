@@ -1,6 +1,6 @@
 package com.sunny.framework.core.exception;
 
-import com.sunny.framework.core.exception.kind.CommonCodeEnum;
+import com.sunny.framework.core.model.CommonCodeEnum;
 import lombok.Getter;
 import lombok.Setter;
 

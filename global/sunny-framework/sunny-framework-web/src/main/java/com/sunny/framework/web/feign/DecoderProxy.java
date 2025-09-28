@@ -1,7 +1,7 @@
 package com.sunny.framework.web.feign;
 
 
-import com.sunny.framework.core.exception.kind.CommonCodeEnum;
+import com.sunny.framework.core.model.CommonCodeEnum;
 import com.sunny.framework.core.model.CommonResult;
 import feign.FeignException;
 import feign.Response;

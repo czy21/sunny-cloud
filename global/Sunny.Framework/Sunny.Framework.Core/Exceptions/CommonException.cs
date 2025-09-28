@@ -1,4 +1,6 @@
-﻿namespace Sunny.Framework.Core.Exceptions;
+﻿using Sunny.Framework.Core.Model;
+
+namespace Sunny.Framework.Core.Exceptions;
 
 public class CommonException : Exception
 {
@@ -11,6 +13,6 @@ public class CommonException : Exception
 
     public CommonException(string message) : base(message)
     {
-        Code = (int)CommonCodeEnum.Error;
+        Code = (int)CommonCodeEnum.Exception;
     }
 }

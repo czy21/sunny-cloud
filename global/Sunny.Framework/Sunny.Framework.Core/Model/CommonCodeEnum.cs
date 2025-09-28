@@ -1,7 +1,9 @@
-﻿namespace Sunny.Framework.Core.Exceptions;
+﻿using System.ComponentModel;
+
+namespace Sunny.Framework.Core.Model;
 
 public enum CommonCodeEnum
 {
-    Error = -1,
-    Success = 0,
+    [Description("success")] Success = 0,
+    [Description("internal error")] Exception = -1,
 }
