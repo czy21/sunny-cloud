@@ -9,7 +9,7 @@
       </template>
     </dynamic-el-column>
   </el-table-column>
-  <el-table-column :label="props.node.name" :prop="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||props.node.width||150" v-else>
+  <el-table-column :label="props.node.name" :prop="props.node.prop" header-align="center" :fixed="props.node.fixed" :width="props.node.style?.width||props.node.width||''" v-else>
     <template #header="scope">
       {{ renderHeader(props.node, scope) }}
     </template>

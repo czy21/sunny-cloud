@@ -71,3 +71,13 @@ export const buildByPath = (all: any[], attr: { idKey?: string, parentKey?: stri
     }
     return root.children
 }
+
+export const flatten = (root,childKey='children')=>{
+  const result = []
+  if (root[childKey]?.length) {
+    for (const child of root[childKey]) {
+      result.push(child, ...flatten(child, childKey))
+    }
+  }
+  return result
+}
