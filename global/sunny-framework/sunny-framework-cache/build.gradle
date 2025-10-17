@@ -1,5 +1,0 @@
-dependencies {
-    api 'com.fasterxml.jackson.core:jackson-databind'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    api "org.redisson:redisson-spring-boot-starter"
-}

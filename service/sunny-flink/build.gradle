@@ -26,5 +26,5 @@ subprojects {
         }
     }
 
-    apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/lombok.build.gradle"
+    apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/lombok.build.gradle"
 }

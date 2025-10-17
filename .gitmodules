@@ -1,3 +1,6 @@
 [submodule "script"]
 	path = script
 	url = https://gitea.czy21.com:8443/czyhome/script
+[submodule "framework"]
+	path = framework
+	url = https://gitea.czy21.com:8443/czyhome/sunny-framework

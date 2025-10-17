@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot'
 }
 
-apply from: "${rootDir}/../../global/sunny-framework/buildSrc/src/main/groovy/spring.boot.gradle"
+apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/spring.boot.gradle"
 
 dependencies {
     api project(":sunny-system-core")
