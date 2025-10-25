@@ -1,5 +1,6 @@
 plugins {
     id 'org.springframework.boot' apply false
+    id 'common.build' apply false
 }
 
 def publish_modules = [
@@ -8,12 +9,17 @@ def publish_modules = [
         "sunny-auth-security"
 ]
 
-
-
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: "common.build"
+    apply plugin: "lombok.build"
+
+    if (project.name in publish_modules) {
+        apply plugin: "publish.build"
+    }
+
     group = 'com.sunny'
     version = '0.1.0-SNAPSHOT'
 
@@ -24,12 +30,12 @@ subprojects {
         imports {
             mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
         }
+        dependencies {
+            dependency 'com.sunny:sunny-auth-security:0.1.0-SNAPSHOT'
+        }
     }
 
-    apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/common.build.gradle"
-    apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/lombok.build.gradle"
-
-    if (project.name in publish_modules) {
-        apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/publish.build.gradle"
+    dependencies {
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
     }
 }

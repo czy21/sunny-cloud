@@ -1,4 +1,4 @@
 {
-  "extends": "../../global/sunny-framework-js/packages/vue/tsconfig.app.json",
+  "extends": "../../framework/sunny-framework-js/packages/vue/tsconfig.app.json",
   "compilerOptions": {}
 }

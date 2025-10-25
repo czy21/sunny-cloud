@@ -1,11 +1,13 @@
 plugins {
     id 'org.springframework.boot' apply false
     id 'com.github.johnrengelman.shadow' apply false
+    id 'lombok.build' apply false
 }
 
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'lombok.build'
     apply plugin: 'flink.build'
 
     group = 'com.sunny'
@@ -25,6 +27,4 @@ subprojects {
             mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
         }
     }
-
-    apply from: "${rootDir}/../../framework/sunny-framework-java/buildSrc/src/main/groovy/lombok.build.gradle"
 }

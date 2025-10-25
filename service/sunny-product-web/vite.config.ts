@@ -1,7 +1,7 @@
 import {fileURLToPath, URL} from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import {resolveFrameworkImporter} from "../../global/sunny-framework-js/plugin"
+import {resolveFrameworkImporter} from "../../framework/sunny-framework-js/plugin"
 
 const alias = {
   "@": "src",

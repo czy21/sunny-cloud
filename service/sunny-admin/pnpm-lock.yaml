@@ -10,12 +10,12 @@ importers:
     dependencies:
       '@sunny-framework-js/core':
         specifier: workspace:*
-        version: link:../../global/sunny-framework-js/packages/core
+        version: link:../../framework/sunny-framework-js/packages/core
       '@sunny-framework-js/vue':
         specifier: workspace:*
-        version: link:../../global/sunny-framework-js/packages/vue
+        version: link:../../framework/sunny-framework-js/packages/vue
 
-  ../../global/sunny-framework-js/packages/core:
+  ../../framework/sunny-framework-js/packages/core:
     dependencies:
       '@types/js-cookie':
         specifier: ^3.0.6
@@ -33,7 +33,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
 
-  ../../global/sunny-framework-js/packages/vue:
+  ../../framework/sunny-framework-js/packages/vue:
     dependencies:
       '@element-plus/icons-vue':
         specifier: ^2.3.1
