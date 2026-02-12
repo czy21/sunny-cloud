@@ -1,11 +1,9 @@
-import Vuex from 'vuex'
 import {store} from '@sunny-framework-js/vue'
 
-const {app, getters} = store
+const {useAppStore, useTabStore} = store
 
-export default new Vuex.Store({
-    modules: {
-        app
-    },
-    getters
-})
+export {
+    useAppStore,
+    useTabStore
+}
+export * from './modules/user'

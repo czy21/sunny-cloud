@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import {util} from "@sunny-framework-js/core";
-import {helper} from '@sunny-framework-js/vue';
+import helper from '@h';
 
 const routes = [
     {
@@ -31,10 +31,6 @@ const routes = [
             {
                 path: "/sys/table/dynamic-vxe-table",
                 component: () => import('@v/table/dynamic-vxe-table.vue')
-            },
-            {
-                path: "/sys/table/dynamic-naive-table",
-                component: () => import('@v/table/dynamic-naive-table.vue')
             }
         ],
         beforeEnter: (to: any, from: any, next: any) => {

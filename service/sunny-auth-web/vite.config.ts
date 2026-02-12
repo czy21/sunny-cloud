@@ -1,5 +1,6 @@
+import fs from "fs";
+import path from "path";
 import {fileURLToPath, URL} from 'node:url'
-
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -7,9 +8,12 @@ import {generateVersion, resolveFrameworkImporter} from "../../framework/sunny-f
 
 const alias = {
     "@": "src",
+    "@h": "src/helper",
     "@v": "src/view",
     "@c": "src/component"
 }
+
+// const version_number = fs.readFileSync(path.join(__dirname, "../../version"), {encoding: "utf-8"})
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,7 +21,7 @@ export default defineConfig({
         vue(),
         vueJsx(),
         resolveFrameworkImporter(__dirname),
-        generateVersion(__dirname)
+        // generateVersion(__dirname, "build", {"version": version_number})
     ],
     build: {
         outDir: "build",
@@ -28,11 +32,11 @@ export default defineConfig({
         }
     },
     resolve: {
-        alias: Object.keys(alias).reduce((p, c) => ({ ...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url)) }), {})
+        alias: Object.keys(alias).reduce((p, c) => ({...p, [c]: fileURLToPath(new URL(alias[c], import.meta.url))}), {})
     },
     css: {
         preprocessorOptions: {
-            scss: { api: 'modern-compiler' },
+            scss: {api: 'modern-compiler'},
         }
     },
     server: {

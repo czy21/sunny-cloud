@@ -1,5 +1,5 @@
 pluginManagement {
-    includeBuild("../framework/sunny-framework-gradle")
+    includeBuild("../framework/sunny-framework-java/sunny-framework-gradle")
     plugins {
         id "com.github.node-gradle.node" version "7.1.0"
     }

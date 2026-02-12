@@ -1,7 +1,7 @@
 pluginManagement {
-    includeBuild("../../framework/sunny-framework-gradle")
+    includeBuild("../../framework/sunny-framework-java/sunny-framework-gradle")
     def props = new Properties()
-    file("../../framework/sunny-framework-gradle/version.properties").withInputStream {
+    file("../../framework/sunny-framework-java/version.properties").withInputStream {
         props.load(it)
     }
     plugins {

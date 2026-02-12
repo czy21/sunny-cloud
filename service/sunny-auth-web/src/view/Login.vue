@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import router from "@/router";
-import {helper} from '@sunny-framework-js/vue';
+import helper from '@h';
 import {util} from "@sunny-framework-js/core"
 import type {FormInstance, FormRules} from "element-plus";
 

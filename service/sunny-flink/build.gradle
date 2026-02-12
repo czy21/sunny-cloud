@@ -1,6 +1,6 @@
 plugins {
     id 'org.springframework.boot' apply false
-    id 'com.github.johnrengelman.shadow' apply false
+    id 'com.gradleup.shadow' apply false
     id 'lombok.build' apply false
 }
 
@@ -12,12 +12,12 @@ subprojects {
 
     group = 'com.sunny'
 
-    targetCompatibility = JavaVersion.VERSION_11
-    sourceCompatibility = JavaVersion.VERSION_11
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
+//    targetCompatibility = JavaVersion.VERSION_11
+//    sourceCompatibility = JavaVersion.VERSION_11
+//
+//    tasks.withType(JavaCompile) {
+//        options.encoding = 'UTF-8'
+//    }
 
     dependencyManagement {
         generatedPomCustomization {
