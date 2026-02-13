@@ -1,57 +1,30 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
+import {useUserStore} from "@/store";
 import {util} from "@sunny-framework-js/core";
-import helper from '@h';
+import menus from '@/menu'
 
 const routes = [
     {
+        name: 'Home',
         path: '/',
         component: () => import('@/layout/Home.vue'),
+        redirect: '/dashboard',
         children: [
-            {
-                name: "Dashboard",
-                path: "dashboard",
-                component: () => import('@v/dashboard.vue')
-            },
-            {
-                path: "/sys/user",
-                component: () => import('@v/user/index.vue')
-            },
-            {
-                path: "/sys/chat",
-                component: () => import('@v/chat/index.vue')
-            },
-            {
-                path: "/sys/menu",
-                component: () => import('@v/menu/index.vue')
-            },
-            {
-                path: "/sys/table/dynamic-el-table",
-                component: () => import('@v/table/dynamic-el-table.vue')
-            },
-            {
-                path: "/sys/table/dynamic-vxe-table",
-                component: () => import('@v/table/dynamic-vxe-table.vue')
-            }
-        ],
-        beforeEnter: (to: any, from: any, next: any) => {
-            helper.api.checkVersion()
-            
-            if (import.meta.env.DEV) {
-                util.cookie.setToken(import.meta.env.VITE_AUTHORIZATION)
-            }
-            const token = util.cookie.getToken()
-            if (!token) {
-                helper.api.get("auth/login-uri").then((t: any) => {
-                    window.location.href = t.data.data + "?redirectUri=" + window.location
-                })
-            } else {
-                next()
-            }
-        }
-    },
+            ...util.tree.flatten({children: menus}).map(t => {
+                const extra = t.extra instanceof String ? JSON.parse(t.extra || '{}') : t.extra;
+                return {
+                    name: t.code,
+                    path: t.path.startsWith('/') ? t.path.slice(1) : t.path,
+                    meta: {title: t.name, ...extra?.meta},
+                    component: t.component,
+                }
+            }),
+        ]
+    }
 ]
+
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(),
     routes
 })
 

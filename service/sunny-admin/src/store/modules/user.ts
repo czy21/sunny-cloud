@@ -1,5 +1,6 @@
 import helper from '@h'
 import {defineStore} from 'pinia'
+import {DynamicMenus} from '@/menu'
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -8,23 +9,8 @@ export const useUserStore = defineStore('user', {
     }),
     actions: {
         async getProfile() {
-            const res = await helper.api.get('user/profile')
-            this.profile = {...res.data.data, ...{loaded: true}}
-            this.profile['menus'] = [
-                {
-                    code: 'Dashboard',
-                    name: '首页',
-                    path: '/dashboard',
-                    component: 'dashboard.vue',
-                    type: 'MENU',
-                    sort: 0,
-                    extra: {
-                        meta: {
-                            affix: true
-                        }
-                    }
-                }, ...(this.profile.menus)
-            ]
+            this.profile['loaded'] = true
+            this.profile['menus'] = DynamicMenus
         },
         async logout(redirectFunc?: () => void) {
             helper.api.get("logout").then(() => {
