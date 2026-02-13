@@ -1,5 +1,5 @@
 dependencies {
-    api project(":sunny-stock-api")
+    api project(":sunny-stock:sunny-stock-api")
     api "com.sunny:sunny-framework-bundle"
 //    api 'io.seata:seata-spring-boot-starter'
 }

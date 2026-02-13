@@ -1,27 +1,47 @@
 plugins {
-    id "com.github.node-gradle.node" apply false
+    id 'org.springframework.boot' apply false
     id 'common.build' apply false
 }
 
-["clean", "build"].each { t ->
-    tasks.register("${t}") {
-        group = "build"
-        gradle.getIncludedBuilds().each { p ->
-            def modules = p.properties.get("target").availableModules
-            if (modules.size() == 1) {
-                dependsOn p.task(":${t}")
-            } else {
-                modules.findAll { m -> m.right.projectPath != ":" }.each { m ->
-                    dependsOn p.task(":${m.right.projectName}:${t}")
-                }
-            }
-        }
-    }
-}
+def frontend_modules = [
+        "sunny-admin",
+        "sunny-auth-web",
+        "sunny-product-web"
+]
 
 subprojects {
-    if (file("${projectDir}/package.json").exists()) {
-        apply plugin: 'com.github.node-gradle.node'
-        apply plugin: "node.build"
+    if (project.name in frontend_modules) {
+
+    } else {
+        apply plugin: 'java-library'
+        apply plugin: 'maven-publish'
+        apply plugin: 'io.spring.dependency-management'
+        apply plugin: "common.build"
+        apply plugin: "lombok.build"
+
+        if ("${name}".endsWith("-api")) {
+            apply plugin: "publish.build"
+        }
+
+        pluginManager.withPlugin("org.springframework.boot") {
+            apply plugin: 'spring.boot'
+        }
+
+        group = 'com.sunny'
+        version = '0.1.0-SNAPSHOT'
+
+        dependencyManagement {
+            generatedPomCustomization {
+                enabled = false
+            }
+            imports {
+                mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+            }
+        }
+
+        dependencies {
+            testImplementation "org.springframework.boot:spring-boot-starter-test"
+            testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        }
     }
 }

@@ -1,8 +1,8 @@
 plugins {
     id 'org.springframework.boot'
-    id 'spring.boot'
+
 }
 
 dependencies {
-    api project(":sunny-order-core")
+    api project(":sunny-order:sunny-order-core")
 }

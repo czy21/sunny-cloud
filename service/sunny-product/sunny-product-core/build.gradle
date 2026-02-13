@@ -1,6 +1,6 @@
 dependencies {
-    api project(":sunny-product-api")
+    api project(":sunny-product:sunny-product-api")
     api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
-    api 'com.sunny:sunny-auth-security'
+    api project(':sunny-auth:sunny-auth-security')
 }

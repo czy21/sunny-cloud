@@ -1,8 +1,8 @@
 plugins {
     id 'org.springframework.boot'
-    id 'spring.boot'
+
 }
 
 dependencies {
-    api project(":sunny-example-core")
+    api project(":sunny-example:sunny-example-core")
 }

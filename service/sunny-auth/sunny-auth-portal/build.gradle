@@ -1,8 +1,8 @@
 plugins {
     id 'org.springframework.boot'
-    id 'spring.boot'
+
 }
 
 dependencies {
-    api project(":sunny-auth-core")
+    api project(":sunny-auth:sunny-auth-core")
 }

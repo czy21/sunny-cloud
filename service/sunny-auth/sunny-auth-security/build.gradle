@@ -1,4 +1,4 @@
 dependencies {
-    api project(":sunny-auth-common")
+    api project(":sunny-auth:sunny-auth-common")
     api 'org.springframework.boot:spring-boot-starter-security'
 }

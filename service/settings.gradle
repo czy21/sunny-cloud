@@ -1,14 +1,34 @@
 pluginManagement {
     includeBuild("../framework/sunny-framework-java/sunny-framework-gradle")
+    def props = new Properties()
+    file("../framework/sunny-framework-java/version.properties").withInputStream {
+        props.load(it)
+    }
     plugins {
+        id 'org.springframework.boot' version props["springBootVersion"]
         id "com.github.node-gradle.node" version "7.1.0"
     }
 }
 
-settingsDir.list().findAll { file("${it}/build.gradle").exists() }.each {
-    includeBuild("${it}")
+def includeModule(moduleName) {
+    file("${moduleName}").list().findAll { file("${moduleName}/${it}/build.gradle").exists() }.each {
+        include("${moduleName}:${it}")
+    }
 }
 
-settingsDir.list().findAll { file("${it}/package.json").exists() }.each {
-    include("${it}")
-}
+include 'sunny-admin'
+include 'sunny-auth-web'
+include 'sunny-product-web'
+
+include 'sunny-gateway'
+
+includeModule("sunny-example")
+includeModule("sunny-auth")
+includeModule("sunny-system")
+includeModule("sunny-order")
+includeModule("sunny-stock")
+includeModule("sunny-product")
+includeModule("sunny-finance")
+
+
+includeBuild('sunny-flink')

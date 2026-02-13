@@ -1,8 +1,8 @@
 plugins {
     id 'org.springframework.boot'
-    id 'spring.boot'
+
 }
 
 dependencies {
-    api project(":sunny-finance-core")
+    api project(":sunny-finance:sunny-finance-core")
 }

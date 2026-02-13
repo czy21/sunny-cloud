@@ -1,8 +1,8 @@
 dependencies {
-    api project(":sunny-order-api")
+    api project(":sunny-order:sunny-order-api")
     api "com.sunny:sunny-framework-bundle"
     api 'com.sunny:sunny-framework-job'
-    api 'com.sunny:sunny-auth-security'
+    api project(':sunny-auth:sunny-auth-security')
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.statemachine:spring-statemachine-starter'
     api ('org.springframework.statemachine:spring-statemachine-data-jpa'){

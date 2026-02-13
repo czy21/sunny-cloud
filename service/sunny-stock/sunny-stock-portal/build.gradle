@@ -1,8 +1,8 @@
 plugins {
     id 'org.springframework.boot'
-    id 'spring.boot'
+
 }
 
 dependencies {
-    api project(":sunny-stock-core")
+    api project(":sunny-stock:sunny-stock-core")
 }
