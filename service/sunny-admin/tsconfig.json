@@ -2,6 +2,6 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "../../framework/sunny-framework-js/tsconfig.node.json" }
+    { "path": "./node_modules/@sunny-framework-js/core/tsconfig.node.json" }
   ]
 }

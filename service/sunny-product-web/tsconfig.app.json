@@ -1,4 +1,4 @@
 {
-  "extends": "../../framework/sunny-framework-js/packages/react/tsconfig.app.json",
+  "extends": "./node_modules/@sunny-framework-js/react/tsconfig.app.json",
   "compilerOptions": {}
 }
