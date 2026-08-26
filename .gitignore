@@ -51,3 +51,5 @@ __pycache__/
 
 # cicd
 .jenkins
+
+generator.properties

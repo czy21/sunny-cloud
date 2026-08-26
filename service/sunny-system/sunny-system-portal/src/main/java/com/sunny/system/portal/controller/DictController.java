@@ -6,7 +6,6 @@ import com.sunny.framework.core.model.PagingResult;
 import com.sunny.framework.core.model.SimpleItemModel;
 import com.sunny.framework.web.controller.BaseController;
 import com.sunny.system.core.model.dto.DictDTO;
-import com.sunny.system.core.model.po.DictPO;
 import com.sunny.system.core.model.query.DictQuery;
 import com.sunny.system.core.model.query.SimpleQuery;
 import com.sunny.system.core.model.vo.DictVO;

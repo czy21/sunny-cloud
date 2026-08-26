@@ -1,3 +1,7 @@
+plugins {
+    id 'mybatis.build'
+}
+
 dependencies {
     api project(":sunny-system:sunny-system-api")
     api "com.sunny:sunny-framework-bundle"
@@ -6,4 +10,8 @@ dependencies {
     api project(':sunny-auth:sunny-auth-security')
     api "org.springframework.boot:spring-boot-starter-jooq"
     api 'com.alibaba.cola:cola-component-statemachine:5.0.0'
+}
+
+tasks.named('mybatisGenerate', JavaExec) {
+    args('-contextids', 'simple', '-javaMergeEnabled')
 }

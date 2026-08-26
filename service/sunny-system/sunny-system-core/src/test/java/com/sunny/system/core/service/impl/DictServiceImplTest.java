@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.page.PageMethod;
 import com.sunny.framework.core.model.PagingResult;
 import com.sunny.system.core.automap.DictAutoMap;
-import com.sunny.system.core.mapper.DictMapper;
+import com.sunny.system.core.mapper.SysDictMapper;
 import com.sunny.system.core.model.dto.DictDTO;
 import com.sunny.system.core.model.query.DictQuery;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +29,7 @@ public class DictServiceImplTest {
     StringRedisTemplate redisTemplate;
 
     @Mock
-    DictMapper dictMapper;
+    SysDictMapper sysDictMapper;
 
     @Mock
     DictAutoMap dictAutoMap;
@@ -40,7 +40,7 @@ public class DictServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        dictService = new DictServiceImpl(redisTemplate, objectMapper, dictMapper, dictAutoMap);
+        dictService = new DictServiceImpl(redisTemplate, objectMapper, sysDictMapper, dictAutoMap);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class DictServiceImplTest {
         pageHelper.when(() -> PageHelper.startPage(query.getPage(), query.getPageSize())).thenReturn(page);
         page.addAll(list);
 
-        Mockito.when(dictMapper.selectList(query)).thenReturn(list);
+        Mockito.when(sysDictMapper.selectList(query)).thenReturn(list);
         PagingResult<DictDTO> dto = dictService.page(query);
 
         Assertions.assertEquals(dto.getList().get(0).getId(), d1.getId());

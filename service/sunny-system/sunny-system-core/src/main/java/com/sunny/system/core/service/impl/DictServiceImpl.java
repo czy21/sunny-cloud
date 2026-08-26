@@ -12,9 +12,9 @@ import com.sunny.framework.core.model.SimpleItemModel;
 import com.sunny.system.core.automap.DictAutoMap;
 import com.sunny.system.core.constant.CacheConstant;
 import com.sunny.system.core.kind.DictValueKind;
-import com.sunny.system.core.mapper.DictMapper;
+import com.sunny.system.core.mapper.SysDictMapper;
 import com.sunny.system.core.model.dto.DictDTO;
-import com.sunny.system.core.model.po.DictPO;
+import com.sunny.system.core.model.SysDict;
 import com.sunny.system.core.model.query.DictQuery;
 import com.sunny.system.core.model.query.SimpleQuery;
 import com.sunny.system.core.model.vo.DictVO;
@@ -41,18 +41,18 @@ public class DictServiceImpl implements DictService {
 
     StringRedisTemplate redisTemplate;
     ObjectMapper objectMapper;
-    DictMapper dictMapper;
+    SysDictMapper sysDictMapper;
     DictAutoMap dictAutoMap;
 
     public DictServiceImpl(StringRedisTemplate redisTemplate,
                            ObjectMapper objectMapper,
-                           DictMapper dictMapper,
+                           SysDictMapper sysDictMapper,
                            DictAutoMap dictAutoMap) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper.copy();
         this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.dictMapper = dictMapper;
+        this.sysDictMapper = sysDictMapper;
         this.dictAutoMap = dictAutoMap;
     }
 
@@ -95,7 +95,7 @@ public class DictServiceImpl implements DictService {
     @Cacheable(value = CacheConstant.DICT_KEY_PREFIX, key = "#code", unless = "#result==null")
     @Override
     public DictDTO findByCode(String code) {
-        return dictMapper.selectOneByCode(code);
+        return sysDictMapper.selectOneByCode(code);
     }
 
     @CacheEvict(value = CacheConstant.DICT_KEY_PREFIX, key = "#code")
@@ -107,7 +107,7 @@ public class DictServiceImpl implements DictService {
     @Override
     public PagingResult<DictDTO> page(DictQuery query) {
         try (Page<DictDTO> page = PageHelper.startPage(query.getPage(), query.getPageSize())) {
-            PageInfo<DictDTO> pageInfo = page.doSelectPageInfo(() -> dictMapper.selectList(query));
+            PageInfo<DictDTO> pageInfo = page.doSelectPageInfo(() -> sysDictMapper.selectList(query));
             if (CollectionUtils.isNotEmpty(pageInfo.getList())) {
                 pageInfo.getList().forEach(t -> {
                     Optional.ofNullable(DICT_VALUE_KIND_MAP.get(t.getValueType())).ifPresent(p -> t.setValueTypeName(p.getLabel()));
@@ -119,39 +119,39 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public DictDTO detail(Long id) {
-        DictDTO dto = dictMapper.selectById(id);
+        DictDTO dto = sysDictMapper.selectById(id);
         Optional.ofNullable(DICT_VALUE_KIND_MAP.get(dto.getValueType())).ifPresent(p -> dto.setValueTypeName(p.getLabel()));
         return dto;
     }
 
     @Override
     public void add(DictVO dto) {
-        DictPO po = dictAutoMap.mapToPO(dto);
+        SysDict po = dictAutoMap.mapToPO(dto);
         po.setId(null);
         checkUnique(po, false);
-        dictMapper.insert(po);
+        sysDictMapper.insert(po);
     }
 
     @CacheEvict(value = CacheConstant.DICT_KEY_PREFIX, key = "#dto.code")
     @Override
     public void edit(DictVO dto) {
-        DictPO po = dictAutoMap.mapToPO(dto);
+        SysDict po = dictAutoMap.mapToPO(dto);
         checkUnique(po, true);
-        dictMapper.updateByPrimaryKeySelective(po);
+        sysDictMapper.updateByPrimaryKeySelective(po);
     }
 
-    private void checkUnique(DictPO po, boolean includeId) {
-        if (dictMapper.exists(po, includeId)) {
+    private void checkUnique(SysDict po, boolean includeId) {
+        if (sysDictMapper.exists(po, includeId)) {
             throw new CommonException("编码已存在");
         }
     }
 
     @Override
     public void delete(Long id) {
-        String code = dictMapper.selectCodeById(id);
+        String code = sysDictMapper.selectCodeById(id);
         if (StringUtils.isNotEmpty(code)) {
             ((DictService) AopContext.currentProxy()).evictByCode(code);
         }
-        dictMapper.deleteById(id);
+        sysDictMapper.deleteById(id);
     }
 }
