@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'org.springframework.boot'
     id 'org.graalvm.buildtools.native' version '0.10.4'
-    id 'common.build'
+    id 'com.sunny.framework.common'
 }
 
 apply plugin: 'io.spring.dependency-management'

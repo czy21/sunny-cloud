@@ -1,7 +1,10 @@
 plugins {
     id 'org.springframework.boot' apply false
-    id 'common.build' apply false
+    id 'com.sunny.framework.common' apply false
 }
+
+group = 'com.sunny'
+version = '1.0.0-SNAPSHOT'
 
 def frontend_modules = [
         "sunny-admin",
@@ -16,28 +19,31 @@ subprojects {
         apply plugin: 'java-library'
         apply plugin: 'maven-publish'
         apply plugin: 'io.spring.dependency-management'
-        apply plugin: "common.build"
-        apply plugin: "lombok.build"
+        apply plugin: "com.sunny.framework.common"
+        apply plugin: "com.sunny.framework.lombok"
 
         if ("${name}".endsWith("-api")) {
-            apply plugin: "publish.build"
+            apply plugin: "com.sunny.framework.publish"
         }
 
         pluginManager.withPlugin("org.springframework.boot") {
-            apply plugin: 'spring.boot'
+            apply plugin: 'com.sunny.framework.spring.boot'
         }
 
-        group = 'com.sunny'
-        version = '0.1.0-SNAPSHOT'
+        group = rootProject.group
+        version = rootProject.version
 
         dependencyManagement {
             generatedPomCustomization {
                 enabled = false
             }
             imports {
-                mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+                mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
             }
+            dependencies {}
         }
+
+        apply from: "${project.rootDir}/../framework/sunny-framework-java/dependency.gradle"
 
         dependencies {
             testImplementation "org.springframework.boot:spring-boot-starter-test"

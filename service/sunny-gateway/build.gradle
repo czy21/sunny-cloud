@@ -1,8 +1,8 @@
 plugins {
     id 'java-library'
     id 'org.springframework.boot'
-    id 'common.build'
-    id 'lombok.build'
+    id 'com.sunny.framework.common'
+    id 'com.sunny.framework.lombok'
 }
 
 dependencies {

@@ -1,7 +1,6 @@
 pluginManagement {
-    includeBuild("../framework/sunny-framework-java/sunny-framework-gradle")
     def props = new Properties()
-    file("../framework/sunny-framework-java/version.properties").withInputStream {
+    file("../framework/sunny-framework-java/gradle.properties").withInputStream {
         props.load(it)
     }
     plugins {
@@ -9,6 +8,8 @@ pluginManagement {
         id "com.github.node-gradle.node" version "7.1.0"
     }
 }
+
+includeBuild("../framework/sunny-framework-java")
 
 def includeModule(moduleName) {
     file("${moduleName}").list().findAll { file("${moduleName}/${it}/build.gradle").exists() }.each {

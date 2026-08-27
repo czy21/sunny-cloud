@@ -1,14 +1,14 @@
 plugins {
     id 'org.springframework.boot' apply false
     id 'com.gradleup.shadow' apply false
-    id 'lombok.build' apply false
+    id 'com.sunny.framework.lombok' apply false
 }
 
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'lombok.build'
-    apply plugin: 'flink.build'
+    apply plugin: 'com.sunny.framework.lombok'
+    apply plugin: 'com.sunny.flink'
 
     group = 'com.sunny'
 
