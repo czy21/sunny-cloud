@@ -1,15 +1,19 @@
 pluginManagement {
-    def props = new Properties()
-    file("../framework/sunny-framework-java/gradle.properties").withInputStream {
-        props.load(it)
-    }
     plugins {
-        id 'org.springframework.boot' version props["springBootVersion"]
+        id 'com.sunny.framework.gradle' version sunnyFrameworkVersion
+
+        id 'org.springframework.boot' version springBootVersion
+        id 'org.graalvm.buildtools.native' version '1.1.11'
         id "com.github.node-gradle.node" version "7.1.0"
     }
 }
 
-includeBuild("../framework/sunny-framework-java")
+gradle.ext.development = providers.gradleProperty('development').map { it.toBoolean() }.orElse(false).get()
+gradle.ext.sunnyFrameworkPath = file("../../sunny-framework/sunny-framework-java")
+
+if (gradle.ext.development) {
+    includeBuild("${gradle.ext.sunnyFrameworkPath}")
+}
 
 def includeModule(moduleName) {
     file("${moduleName}").list().findAll { file("${moduleName}/${it}/build.gradle").exists() }.each {
@@ -30,6 +34,3 @@ includeModule("sunny-order")
 includeModule("sunny-stock")
 includeModule("sunny-product")
 includeModule("sunny-finance")
-
-
-includeBuild('sunny-flink')

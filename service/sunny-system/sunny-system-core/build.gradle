@@ -13,5 +13,5 @@ dependencies {
 }
 
 tasks.named('mybatisGenerate', JavaExec) {
-    args('-contextids', 'simple', '-javaMergeEnabled')
+    args('-javaMergeEnabled')
 }

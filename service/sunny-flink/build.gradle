@@ -1,8 +1,10 @@
 plugins {
+    id 'com.sunny.framework.gradle' apply false
     id 'org.springframework.boot' apply false
     id 'com.gradleup.shadow' apply false
-    id 'com.sunny.framework.lombok' apply false
 }
+
+group = 'com.sunny'
 
 subprojects {
     apply plugin: 'java-library'
@@ -10,21 +12,14 @@ subprojects {
     apply plugin: 'com.sunny.framework.lombok'
     apply plugin: 'com.sunny.flink'
 
-    group = 'com.sunny'
-
-//    targetCompatibility = JavaVersion.VERSION_11
-//    sourceCompatibility = JavaVersion.VERSION_11
-//
-//    tasks.withType(JavaCompile) {
-//        options.encoding = 'UTF-8'
-//    }
+    group = rootProject.version
 
     dependencyManagement {
         generatedPomCustomization {
             enabled = false
         }
         imports {
-            mavenBom "com.sunny:sunny-framework-bom:3.0.0-SNAPSHOT"
+            mavenBom "com.sunny:sunny-framework-bom:${sunnyFrameworkVersion}"
         }
     }
 }

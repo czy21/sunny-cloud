@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sunny</groupId>
-    <artifactId>sunny-maven</artifactId>
+    <artifactId>sunny-example</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>sunny-maven-api</module>
-        <module>sunny-maven-core</module>
-        <module>sunny-maven-portal</module>
+        <module>sunny-example-api</module>
+        <module>sunny-example-core</module>
+        <module>sunny-example-portal</module>
     </modules>
 
     <properties>
@@ -33,12 +33,12 @@
             </dependency>
             <dependency>
                 <groupId>com.sunny</groupId>
-                <artifactId>sunny-maven-api</artifactId>
+                <artifactId>sunny-example-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sunny</groupId>
-                <artifactId>sunny-maven-core</artifactId>
+                <artifactId>sunny-example-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -47,6 +47,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

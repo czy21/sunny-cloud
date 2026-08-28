@@ -20,6 +20,7 @@ type python3
 
 sh_file="${0}"
 sh_name="$(basename ${0})"
-run_py=${dir}/../../script/run.py
+root_path=$(realpath ${dir}/../)
+run_py=${root_path}/../script/run.py
 
-CLI="${python_exec} -B ${run_py} --file ${sh_file}"
+CLI="env root_path=${root_path} ${python_exec} -B ${run_py} --file ${sh_file}"

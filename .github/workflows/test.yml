@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - run: |
+          [ -f "$HOME/.bashrc" ] && source $HOME/.bashrc
+          (
+            cd service
+            chmod +x ./gradlew && ./gradlew -Ddevelopment=false build
+          )

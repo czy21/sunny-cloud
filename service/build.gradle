@@ -1,6 +1,6 @@
 plugins {
+    id 'com.sunny.framework.gradle' apply false
     id 'org.springframework.boot' apply false
-    id 'com.sunny.framework.common' apply false
 }
 
 group = 'com.sunny'
@@ -38,12 +38,14 @@ subprojects {
                 enabled = false
             }
             imports {
-                mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+                mavenBom gradle.ext.development ? org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES : "com.sunny:sunny-framework-bom:${sunnyFrameworkVersion}"
             }
             dependencies {}
         }
 
-        apply from: "${project.rootDir}/../framework/sunny-framework-java/dependency.gradle"
+        if (gradle.ext.development) {
+            apply from: "${gradle.ext.sunnyFrameworkPath}/dependency.gradle"
+        }
 
         dependencies {
             testImplementation "org.springframework.boot:spring-boot-starter-test"
